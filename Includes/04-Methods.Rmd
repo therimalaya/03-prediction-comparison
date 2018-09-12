@@ -1,0 +1,50 @@
+---
+bibliography: ../ref-db.bib
+---
+
+# Methods
+
+The aim of this paper is to compare some customary methods such as Principal Component Regression (PCR), Partial Least Squares (PLS), Ridge and Lasso with some stat-of-the-art methods such as envelope estimation and simultaneous envelope estimation. This will also make comparison on the methods based on reduced regression such as PCR, PLS and envelope with that of Shrinkage methods such as Ridge and Lasso. The estimation methods used for comparison as follows.
+
+a) Principal Component Regression (PCR)
+a) Partial Least Squares Regression using single response per model (PLS1)
+a) Partial Least Squares Regression using all response together (PLS2)
+a) Ridge Regression
+a) Lasso Regression
+a) Envelope estimation in predictor space (Xenv)[@cook2015foundations]
+a) Simultaneous estimation of envelope in both predictor and response space (Senv)[@cook2015simultaneous]
+
+## Modification in envelope estimation
+
+Since envelope estimators (Xenv and Senv) are based on maximum likelihood estimation (MLE), it fails to estimate on wide matrices, i.e. $p > n$. In order to incorporate these method in our comparison, we have used the principal components $(\mathbf{z})$ of predictor variables $(\mathbf{x})$ using required number of components for capturing 97.5\% of the variation in it. The new set of variables $\mathbf{z}$ were used for envelope estimation. The regression coefficients $(\hat{\boldsymbol{\alpha}})$ corresponding to these new variables $\mathbf{z}$ were transformed back to obtain coefficients for each predictor variables $(\boldsymbol{\hat{\beta}})$ as,
+
+$$\hat{\boldsymbol{\beta}} = \mathbf{e}_k\hat{\boldsymbol{\alpha}_k}$$ where, $\mathbf{e}_k$ is the eigenvectors with $k$ number of components.
+
+## Comparison Criteria
+
+The models are compared on following three basis.
+
+Estimation Error
+: Diagonal elements of \@ref(eq:est-error) is used as estimation error of each response in every fitted model.
+  \begin{equation}
+  \text{estimation error} = \left(\boldsymbol{\beta} - \boldsymbol{\hat{\beta}}\right)^t\left(\boldsymbol{\beta} - \boldsymbol{\hat{\beta}}\right)
+  (\#eq:est-error)
+  \end{equation}
+  where, $\boldsymbol{\beta}$ and $\boldsymbol{\hat{\beta}}$ are true and estimated regression coefficient corresponding to \@ref(eq:model-1).
+
+Prediction Error
+: Diagonal elements of \@ref(eq:pred-error) is used as estimation error of each response in every fitted model.
+
+\begin{equation}
+\text{prediction error} = \left(\boldsymbol{\beta} - \boldsymbol{\hat{\beta}}\right)^t\Sigma_{xx}\left(\boldsymbol{\beta} - \boldsymbol{\hat{\beta}}\right) + \Sigma_{y|x}
+(\#eq:pred-error)
+\end{equation}
+where, $\Sigma_{xx}$ is the true covariance matrix of predictor and $\Sigma_{y\mid x}$ is the true model error both obtained from simulation.
+
+Comparison of estimated coefficients with true coefficients
+: A graphical comparison of estimated coefficient from different estimators is compared with the true coefficients. (_need some statistical way of doing so_) This shows how each additional components contributes on finding beta coefficients closer to the true value. This also helps us to see if the additional components contains noise how the estimates deviates from the true coefficients.
+
+```{r pcr-coef-plot-1, fig.width = 8, fig.scap = c("Method: PCR", "Method: PLS1"), fig.cap = "Coefficient Estimates", fig.show = 'hold', warning = FALSE, eval = FALSE}
+coef_plot(design = 1, method = "PCR", ncomp = 5)
+coef_plot(design = 1, method = "PLS1", ncomp = 5)
+```

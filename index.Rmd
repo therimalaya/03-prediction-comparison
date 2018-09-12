@@ -1,0 +1,58 @@
+---
+site: bookdown::bookdown_site
+title: 'Comparison of Multivariate Estimation Methods'
+date: "`r Sys.Date()`"
+author:
+  - name: Raju Rimal
+    email: raju.rimal@nmbu.no
+    affiliation: KBM
+    footnote: Corresponding Author
+  - name: Trygve Almøy
+    email: trygve.almoy@nmbu.no
+    affiliation: KBM
+  - name: Solve Sæbø
+    email: solve.sabo@nmbu.no
+    affiliation: NMBU
+address:
+  - code: KBM
+    address: Faculty of Chemistry and Bioinformatics, Norwegian University of Life Sciences, Ås, Norway
+  - code: NMBU
+    address: Prorector, Norwegian University of Life Sciences, Ås, Norway
+classoption: ["12pt", "3p", "authoryear"]
+monofont: 'sourcecodepro'
+monofontoptions: "Scale=0.7"
+colorlinks: true
+linespacing: 1.5
+fontfamily: mathpazo
+use-landscape-page: yes
+tables: yes
+template: 'templates/Elsarticle.tex'
+bibliography: ref-db.bib
+biblio-title: References
+biblio-style: elsarticle-harv
+github-repo: therimalaya/multivariate-comparison
+url: 'http\://therimalaya.github.io/multivariate-comparison'
+knit: 'bookdown::render_book'
+keywords: ['model-comparison', 'multi-response', 'simrel']
+abstract: |
+    While Data science is battling to extract information from enormous explosion of data, many estimators and algorithms are being developed for better prediction. Researchers and data scientists often introduce new methods and evaluate them based on various aspects of data. However, these studies seldom study the impact of/on multiple response model. This study compares some newly-developed (envelope estimation) and well-established estimators (PLS, PCR, Ridge and Lasso) based on the simulated data specifically designed by variying properties such as multicollinearity, correlation between multiple response and amount of information content in latent variables. This study aims to identify itself as an additional eye for researcher to look at these methods.
+---
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, cache=FALSE}
+options(digits = 3, scipen = 999)
+source("scripts/00-function.r")
+source("scripts/01-setup.r")
+knitr::opts_chunk$set(comment = NULL, out.width = "100%", echo = FALSE)
+```
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, cache=TRUE}
+source("scripts/03-collection.r")
+```
+
+# Introduction #
+
+"Big Data" is becoming a focal discussion in many discipline. Massive explosion of data, integrated with information in several variables and features, have made exploration and analysis more difficult. Researchers are devising new methods and algorithms in order to extract such information weather to study the relationship between variables or to create a predictive model. Mostly, the models used for study contains predictor variables that are directly or indirectly correlated with other predictor variables and many response variables. These interlinked relationship observed as a nature of data influences any study whether it is a predictive modeling or an inference. 
+
+Modern inter-disciplinary research fields such as chemometrics, echonometrics and bioinformatics are handling multi-response models extensively. This paper attempts to compare some of such methods and their performance on linear model data with specifically designed properties. The properties includes coefficient of determination, correlation between response variables, correlation between predictor variables and number of predictor variables. These properties are discussed more in [Experimental Design] section.
+
+@saebo2015simrel and @Alm_y_1996 have made similar comparison with single response setting. @Rimal_2018 has introduced a method for simulating multi-response data based on data properties as parameters. The study also has made a basic comparison on some estimation methods and their interaction with the data properties of a multi-response model. The main aim of this paper is to present a comprehensive comparison of contemporary estimation methods with customary estimation methods using dataset simulated with particular properties. An experimental design and the methods under comparison are discussed followed by a brief discussion of strategy behind the data simulation.

@@ -1,0 +1,153 @@
+---
+bibliography: ../ref-db.bib
+editor_options:
+  chunk_output_type: console
+---
+
+# Analysis
+
+```{r knitr_setup}
+options(knitr.kable.NA = '')
+docs_format <- ifelse(knitr::is_latex_output(), "latex", "html")
+print_manova <- function(tbl, format = docs_format, level = 0.05, ...){
+    signif_idx <- which(tbl[, ncol(tbl)] <= level)
+    knitr::kable(tbl, digits = 3, booktabs = TRUE,
+                 longtable = TRUE, format = format,
+                 escape = FALSE, linesep = "", ...) %>%
+        kableExtra::kable_styling(latex_options = c("repeat_header")) %>%
+            kableExtra::column_spec(1:7, monospace = TRUE) %>%
+            kableExtra::row_spec(signif_idx, color = "red")
+}
+```
+
+In order to carry out a proper statistical comparison, a multivariate linear model is used with prediction and estimation error with respect to each response variables as dependent variables and the interaction of simulation parameters (`p`, `gamma`, `eta` and `R2`) and `Methods` as independent variables as \@ref(eq:full-model).
+
+\begin{equation}
+\mathbf{y} = \boldsymbol{\mu} + \texttt{p} \times \texttt{gamma} \times \texttt{eta} \times \texttt{R2} \times \texttt{Methods} + \boldsymbol{\varepsilon}
+(\#eq:full-model)
+\end{equation}
+where, $y_j$ is the prediction error in one model and estimation error in another corresponding to response $j$. Let us discuss the results of Multivariate Analysis of Variance (MANOVA) for both of these models.
+
+## Prediction error model:
+Using the prediction error corresponding to response $j$ as $y_j$ in \@ref(eq:full-model) a 2nd interaction of methods and simulation parameters as predictors, a clear high F-statistic corresponding to Pillai statistic for coefficient of determination (`R2`) has suggested high influence of `R2` in the model. In order to look for effects of other interactions, we have used model \@ref(eq:separate-pred-model) fitted for low and high coefficient of determination separately.
+
+\begin{equation}
+\mathbf{y} = \boldsymbol{\mu} + \texttt{p} \times \texttt{gamma} \times \texttt{eta} \times \texttt{Methods} + \boldsymbol{\varepsilon}
+(\#eq:separate-pred-model)
+\end{equation}
+
+```{r prediction-model}
+pred_dta <- design_chr %>%
+    select_if(function(x) n_distinct(x) > 1) %>%
+    mutate(Design = as.character(1:n())) %>%
+    mutate_at(vars(p, gamma, R2, eta), as.factor) %>%
+    right_join(pred_error, by = "Design") %>%
+    mutate_if(is.character, as.factor) %>%
+    mutate_at("p", as.factor) %>%
+    mutate(Response = paste0("Y", Response))
+
+pred_dta_min <- pred_dta %>%
+    group_by(p, gamma, eta, R2, Replication, Method, Response) %>%
+    summarize(Pred_Error = min(Pred_Error)) %>%
+    spread(Response, Pred_Error)
+
+pred_mdl <- lm(cbind(Y1, Y2, Y3, Y4) ~ p * gamma * eta * R2 * Method,
+               data = pred_dta_min)
+pred_mdl_R2_low <- lm(cbind(Y1, Y2, Y3, Y4) ~ p * gamma * eta * Method,
+                      subset = R2 == 0.4, data = pred_dta_min)
+pred_mdl_R2_high <- lm(cbind(Y1, Y2, Y3, Y4) ~ p * gamma * eta * Method,
+                      subset = R2 == 0.8, data = pred_dta_min)
+```
+
+
+```{r pred-anova}
+pred_aov_R2_low <- anova(pred_mdl_R2_low)
+pred_aov_R2_high <- anova(pred_mdl_R2_high)
+```
+
+
+```{r pred-aov-R2-high}
+pred_aov_R2_high %>%
+    .[-1, ] %>%
+    as.data.frame() %>%
+    rownames_to_column(var = "variables") %>%
+    print_manova(caption = "ANOVA for prediction error model for high coefficient of determination")
+```
+
+
+```{r pred-aov-R2-low}
+pred_aov_R2_low %>%
+    .[-1, ] %>%
+    as.data.frame() %>%
+    rownames_to_column(var = "variables") %>%
+    print_manova(caption = "ANOVA for prediction error model for low coefficient of determination")
+```
+
+From the ANOVA tables \@ref(tab:pred-aov-R2-high) and \@ref(tab:pred-aov-R2-low), we can see that the factor `eta` has high effect on prediction error in both the cases of low and high coefficient of determination. Also, Also, the tables show that Methods have significantly large second and third order interaction with `gamma` and `eta`, however this is mostly dominated by the high main effect of `eta` which is same in both the models.
+
+(ref:gamma-eff-pred-R2-low) Effect of `gamma:Method` corresponding to the complete prediction error model with low coefficient of determination (`R2` = 0.4)
+
+(ref:gamma-eff-pred-R2-high) Effect of `gamma:Method` corresponding to the complete prediction error model with high coefficient of determination (`R2` = 0.8)
+
+```{r gamma-eff-pred-R2-low, fig.align='center', fig.cap='(ref:gamma-eff-pred-R2-low)', fig.asp=0.5, fig.retina=2, fig.width = 7, fig.pos = 'H'}
+eff_df("gamma:Method", pred_mdl_R2_low) %>%
+    eff_plot(reorder = TRUE, margins = TRUE)
+```
+
+```{r gamma-eff-pred-R2-high, fig.align='center', fig.cap='(ref:gamma-eff-pred-R2-high)', fig.asp=0.5, fig.retina=2, fig.width = 7, fig.pos = 'H'}
+eff_df("gamma:Method", pred_mdl_R2_high) %>%
+    eff_plot(reorder = TRUE, margins = TRUE)
+```
+
+Although, methods have similar prediction performance for different levels of `eta`, `R2` and `p`, the difference is considerable for low and high multicollinearity in case of both low (Figure \@ref(fig:gamma-eff-pred-R2-low)) and high (Figure \@ref(fig:gamma-eff-pred-R2-high)) `R2`.
+
+## Estimation error
+
+```{r estimation-model}
+est_dta <- design_chr %>% mutate(Design = as.character(1:n())) %>%
+    mutate_at(vars(p, gamma, eta, R2), as.factor) %>%
+    right_join(est_error, by = "Design") %>%
+    mutate_if(is.character, as.factor) %>%
+    mutate_at("p", as.factor) %>%
+    mutate(Response = paste0("Y", Response))
+
+est_dta_min <- est_dta %>%
+    group_by(p, gamma, eta, R2, Replication, Method, Response) %>%
+    summarize(Est_Error = min(Est_Error)) %>%
+    spread(Response, Est_Error)
+
+est_mdl <- lm(cbind(Y1, Y2, Y3, Y4) ~ p * gamma * eta * R2 * Method,
+              data = est_dta_min)
+```
+
+```{r estimation-model-anova}
+est_aov <- anova(est_mdl)
+print_manova(est_aov,
+             caption = "ANOVA corresponding to estimation error model")
+```
+
+__Some plots and descriptions on estimation error models__
+
+Based on the simulation design and ANOVA analysis, following analysis revolves abound the inter-connection between both prediction and estimation errors and the properties of data. The analysis is based on comparison of true and estimated regression coefficients, estimation error and the prediction error. Following four groups can be identified from the simulation design (see table \@ref(tab:design-table)):
+
+a) Wide vs Tall prediction matrix (`r catvec(opts$p)`)
+a) High vs low multicollinearity (`r catvec(opts$gamma)`)
+a) High vs low coefficient of determination (`r catvec(opts$R2)`)
+a) Different levels of correlation between responses (`r catvec(opts$eta)`)
+
+## Error (prediction and estimation) Analysis
+
+```{r error-plot-pcr, fig.show='hold', fig.asp = 1, out.width = '50%', fig.width = 5}
+err_plots_1 <- list(
+  pcr   = get_err_plot(1, "PCR"),
+  pls1  = get_err_plot(1, "PLS1"),
+  pls2  = get_err_plot(1, "PLS2"),
+  xenv  = get_err_plot(1, "Xenv"),
+  senv  = get_err_plot(1, "Senv")
+)
+
+for (plt in err_plots_1) plot(plt)
+```
+
+## Regression Coefficients
+

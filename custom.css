@@ -1,0 +1,45 @@
+.container-fluid.main-container p, div p, p, dl > dd{
+    padding: 15px 0px;
+    text-align: justify;
+    line-height: 2.8rem;
+}
+.container-fluid.main-container,
+.table.table-condensed, pre, code, table {
+    font-size: large;
+}
+#header{
+  display:grid;
+  grid-template-areas:
+    "title title title"
+    "author-1 author-2 author-3"
+    "affil-1 affil-2 affil-3"
+    "date date date"
+    "abstract abstract abstract";
+}
+#header > .title{
+  grid-area: title;
+}
+#header > .date{
+  grid-area: date;
+}
+.abstract{
+  grid-area: abstract
+}
+#header h4:nth-of-type(1){
+  grid-area: author-1;
+}
+#header h4:nth-of-type(2){
+  grid-area: author-2;
+}
+#header h4:nth-of-type(3){
+  grid-area: author-3;
+}
+#header address:nth-of-type(1){
+  grid-area: affil-1;
+}
+#header address:nth-of-type(2){
+  grid-area: affil-2;
+}
+#header address:nth-of-type(3){
+  grid-area: affil-3;
+}

@@ -1,0 +1,53 @@
+\documentclass[$if(classoptions)$$for(classoptions)$$classoptions$$sep$$endfor$$endif$]{moderncv}
+\moderncvstyle{banking}
+\moderncvcolor{blue}
+\usepackage[scale=0.75]{geometry} % Reduce document margins
+
+%-------------------------------------------------------------------------------
+%	NAME AND CONTACT INFORMATION SECTION
+%-------------------------------------------------------------------------------
+
+\firstname{$firstname$} % Your first name
+\familyname{$lastname$} % Your last name
+
+$if(title)$\title{$title$}$endif$
+
+\renewcommand*{\emaillink}[2][]{%
+  \ifthenelse{\equal{#1}{}}%
+    {#2}%
+    {\href{mailto:#2}{#1}}}
+
+\address{$address.street$, $address.city$}{$address.postcode$, $address.country$}
+\mobile{(+47) $contact.phone$}
+\email{$contact.email$}
+% \email{$contact.email$}
+%\homepage{www.mathatistics.com}
+%\social[linkedin][https://www.linkedin.com/in/therimalaya]{therimalaya}
+%\social[github][https://github.com/therimalaya]{therimalaya}
+
+
+%-------------------------------------------------------------------------------
+
+\begin{document}
+
+%-------------------------------------------------------------------------------
+%	COVER LETTER
+%-------------------------------------------------------------------------------
+
+\recipient{$recipient.name$}{$for(recipient.address)$$recipient.address$\\$endfor$} % Letter recipient
+\date{$date$} % Letter date
+\opening{$greeting$} % Opening greeting
+\closing{$closing$} % Closing phrase
+%\enclosure[Attached]{curriculum vit\ae{}} % List of enclosed documents
+
+\makelettertitle % Print letter title
+
+$body$
+
+\vspace{12pt}
+
+\makeletterclosing % Print letter signature
+
+%----------------------------------------------------------------------------------------
+
+\end{document}

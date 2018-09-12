@@ -1,0 +1,277 @@
+%review=doublespace preprint=single 5p=2 column
+\documentclass[$for(classoption)$$classoption$$sep$,$endfor$]{elsarticle}
+
+%% add packages %%
+%% ------------ %%
+\usepackage[hyphens]{url}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{caption}
+\usepackage{subfig}
+\usepackage{amssymb, amsmath}
+\usepackage[inline]{enumitem}
+\usepackage{float}
+\usepackage{tabularx}
+\usepackage[dvipsnames, table]{xcolor}
+\usepackage{ifxetex, ifluatex}
+\usepackage{fixltx2e}
+\usepackage[unicode=true, colorlinks]{hyperref}
+\usepackage{cleveref}
+\usepackage{tabu}
+\usepackage{mathpazo}
+%% ------------ %%
+
+%% Conditional Packages %%
+%% -------------------- %%
+
+$if(graphics)$
+\usepackage{graphicx}
+% We will generate all images so they have a width \maxwidth. This means
+% that they will get their normal width if they fit onto the page, but
+% are scaled down if they would overflow the margins.
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+\else\Gin@nat@width\fi}
+\makeatother
+\let\Oldincludegraphics\includegraphics
+\renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=\maxwidth]{#1}}
+$endif$
+
+
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[utf8]{inputenc}
+
+$if(euro)$
+  \usepackage{eurosym}
+$endif$
+
+\else % if luatex or xelatex
+  \usepackage{fontspec}
+  \ifxetex
+    \usepackage{xltxtra,xunicode}
+  \fi
+  \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+  \newcommand{\euro}{€}
+
+$if(mainfont)$
+    \setmainfont{$mainfont$}
+$endif$
+
+$if(sansfont)$
+    \setsansfont{$sansfont$}
+$endif$
+
+$if(monofont)$
+    \setmonofont{$monofont$}
+$endif$
+
+$if(mathfont)$
+    \setmathfont{$mathfont$}
+$endif$
+
+\fi
+
+% use microtype if available
+\IfFileExists{microtype.sty}{\usepackage{microtype}}{}
+
+$if(geometry)$
+\usepackage[$for(geometry)$$geometry$$sep$,$endfor$]{geometry}
+$endif$
+
+$if(listings)$
+\usepackage{listings}
+$endif$
+
+$if(lhs)$
+\lstnewenvironment{code}{\lstset{language=Haskell,basicstyle=\small\ttfamily}}{}
+$endif$
+
+$if(highlighting-macros)$
+$highlighting-macros$
+$endif$
+
+$if(verbatim-in-note)$
+\usepackage{fancyvrb}
+$endif$
+
+$if(tables)$
+\usepackage{longtable}
+$endif$
+
+$if(strikeout)$
+\usepackage[normalem]{ulem}
+% avoid problems with \sout in headers with hyperref:
+\pdfstringdefDisableCommands{\renewcommand{\sout}{}}
+$endif$
+
+$if(verbatim-in-note)$
+\VerbatimFootnotes % allows verbatim text in footnotes
+$endif$
+
+$if(lang)$
+\ifxetex
+  \usepackage{polyglossia}
+  \setmainlanguage{$mainlang$}
+\else
+  \usepackage[$lang$]{babel}
+\fi
+$endif$
+
+% Pandoc toggle for numbering sections (defaults to be off)
+$if(numbersections)$
+\setcounter{secnumdepth}{5}
+$else$
+\setcounter{secnumdepth}{0}
+$endif$
+
+%% Use Landscape Pages
+$if(use-landscape-page)$
+\usepackage{lscape}
+$endif$
+
+$if(linespacing)$
+\usepackage{setspace}
+\setstretch{$linespacing$}
+$endif$
+
+$if(mathpazo)$
+\usepackage{mathpazo}
+$else$
+\usepackage{lmodern}
+$endif$
+
+%% -------------------- %%
+
+%% Create and Provide some customizations %%
+%% -------------------------------------- %%
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+  
+%% Custom macros
+\newtheorem{mydef}{Definition}
+\newcommand{\bs}[1]{\ensuremath{\boldsymbol{#1}}}
+\newcommand{\diag}[1]{\mathrm{diag}\left(#1\right)}
+\newcommand{\seq}[3][1]{\ensuremath{#2_{#1},\ldots,\,#2_{#3}}}
+\newcommand{\note}[1]{\marginpar{\scriptsize\tt{\color{RoyalBlue}#1}}}
+\newcommand{\edit}[1]{{\color{OrangeRed} #1}}
+
+% set some lengths
+\setlength{\parindent}{0pt}
+% \setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+
+%% Hyperref color setup
+\AtBeginDocument{%
+  %% Define Colors
+  \newcommand\myshade{80}
+  \colorlet{mylinkcolor}{$if(linkcolor)$$linkcolor$$else$violet$endif$!\myshade!black}
+  \colorlet{mycitecolor}{$if(citecolor)$$citecolor$$else$YellowOrange$endif$!\myshade!black}
+  \colorlet{myurlcolor}{$if(urlcolor)$$urlcolor$$else$Aquamarine$endif$!\myshade!black}
+
+  \hypersetup{
+    breaklinks = true,
+    bookmarks  = true,
+    pdfauthor  = {$author-meta$},
+    pdftitle   = {$title-meta$},
+    linkcolor  = mylinkcolor,
+    citecolor  = mycitecolor,
+    urlcolor   = myurlcolor,
+    colorlinks = $if(colorlinks)$true$else$false$endif$,
+  }
+}
+\urlstyle{same}  % don't use monospace font for urls
+%% -------------------------------------- %%
+
+%% Customizations %%
+%% -------------- %%
+$if(linenumbers)$\linenumbers$endif$ % turn line numbering on
+
+$if(links-as-notes)$
+% Make links footnotes instead of hotlinks:
+\renewcommand{\href}[2]{#2\footnote{\url{#1}}}
+$endif$
+%% -------------- %%
+
+%% Configure Bibliography %%
+%% ---------------------- %%
+$if(biblio-style)$
+\bibliographystyle{$biblio-style$}
+$else$
+\bibliographystyle{elsarticle-num-names}
+$endif$
+$if(biboption)$
+\biboptions{$biboption$}
+$else$
+\biboptions{square}
+$endif$
+
+% \makeatletter
+% \providecommand{\doi}[1]{%
+%   \begingroup
+%     \let\bibinfo\@secondoftwo
+%     \urlstyle{rm}%
+%     \href{http://dx.doi.org/#1}{%
+%       doi:\discretionary{}{}{}%
+%       \nolinkurl{#1}%
+%     }%
+%   \endgroup
+% }
+% \makeatother
+
+% 
+
+%% Header Includes %%
+%% --------------- %%
+$for(header-includes)$
+$header-includes$
+$endfor$
+%% --------------- %%
+
+$preamble$
+
+\begin{document}
+%% --- Front Matter Start --- %%
+\begin{frontmatter}
+
+  \title{$title$}
+  
+  $for(author)$
+  \author[$author.affiliation$]{$author.name$$if(author.footnote)$\corref{c1}$endif$}
+  $if(author.email)$ \ead{$author.email$} $endif$
+  $if(author.footnote)$ \cortext[c1]{$author.footnote$}$endif$
+  $endfor$
+  $for(address)$
+  \address[$address.code$]{$address.address$}
+  $endfor$
+
+  \begin{abstract}
+  $abstract$
+  \end{abstract}
+  $if(keywords)$ \begin{keyword} $for(keywords)$$keywords$$sep$,$endfor$\end{keyword}$endif$
+
+\end{frontmatter}
+
+$body$
+
+
+$if(bibliography)$
+$if(biblio-title)$
+$if(book-class)$
+\renewcommand\bibname{$biblio-title$}
+$else$
+\renewcommand\refname{$biblio-title$}
+$endif$
+$endif$
+\bibliography{$for(bibliography)$$bibliography$$sep$,$endfor$}
+$endif$
+
+$for(include-after)$
+$include-after$
+$endfor$
+
+\end{document}

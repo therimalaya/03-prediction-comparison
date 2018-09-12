@@ -1,0 +1,39 @@
+bookdown::gitbook:
+  dev: svglite
+  number_sections: no
+  css: style.css
+  citation_package: natbib
+  github-repo: "therimalaya/multivariate-comparison"
+  description: "Comparison of Multivariate Estimation Methods"
+  url: "http://therimalaya.github.io/multivariate-comparison/"
+  config:
+    toc:
+      collapse: section
+      before: '<li><a href="./index.html">Multivariate Comparison</a></li>'
+      after: '<li class="toc-footer"><a href="https://bookdown.org" target="blank">Published with BookDown</a></li>'
+    download: ['epub', 'pdf']
+    sharing: 
+      github: yes
+      facebook: no
+      twitter: yes
+      google: yes
+bookdown::tufte_html_book:
+  toc: yes
+  css: [style.css, toc.css]
+bookdown::html_document2:
+  citation_package: natbib
+  dev: svglite
+  fig_caption: yes
+  theme: yeti
+  number_sections: no
+  css: "custom.css"
+bookdown::pdf_book:
+  fig_caption: yes
+  citation_package: natbib
+  md_extensions: -autolink_bare_uris
+  template: 'templates/Elsarticle.tex'
+  keep_tex: yes
+  dev: "pdf"
+bookdown::epub_book:
+  dev: svglite
+bookdown::word_document2: default

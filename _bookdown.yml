@@ -1,0 +1,22 @@
+book_filename: "main"
+repo: https://github.com/therimalaya/multivariate-comparison/
+edit: https://github.com/therimalaya/multivariate-comparison/edit/master/%s
+output_dir: docs
+clean: [packages.bib, bookdown.bbl]
+rmd_files: [
+  "index.Rmd", 
+  "Includes/02-SimulationModel.Rmd",
+  "Includes/03-ExperimentalDesign.Rmd",
+  "Includes/04-Methods.Rmd",
+  "Includes/05-Analysis.Rmd",
+  "Includes/06-DiscussionConclusion.Rmd",
+  "Includes/07-References.Rmd",
+  "Includes/08-Appendix.Rmd",
+  ]
+language:
+  label:
+    fig: "Figure "
+    tab: "Table "
+  ui:
+    edit: "Edit"
+    chapter_name: "Chapter "

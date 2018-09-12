@@ -1,0 +1,86 @@
+---
+bibliography: ../ref-db.bib
+---
+
+# Simulation Model #
+
+Consider a model where response variable $(\mathbf{y})$ and predictor variable $(\mathbf{x})$ follows normal distribution as follows,
+
+\begin{equation}
+  \begin{bmatrix}
+    \mathbf{y} \\ \mathbf{x}
+  \end{bmatrix} \sim \mathbf{N}
+  \left(
+    \begin{bmatrix}
+      \boldsymbol{\mu}_y \\
+      \boldsymbol{\mu}_x
+    \end{bmatrix},
+    \begin{bmatrix}
+    \boldsymbol{\Sigma}_{yy} & \boldsymbol{\Sigma}_{yx} \\
+    \boldsymbol{\Sigma}_{xy} & \boldsymbol{\Sigma}_{xx}
+    \end{bmatrix}
+  \right)
+  (\#eq:model-1)
+\end{equation}
+
+where, $\boldsymbol{\Sigma}_{yy}$ is the variance-covariance matrix of $\mathbf{y}$ and $\boldsymbol{\Sigma}_{xx}$ is the variance-covariance matrix of $\mathbf{x}$. The covariance between $\mathbf{x}$ and $\mathbf{y}$ is $\boldsymbol{\Sigma}_{xy}$. $\boldsymbol{\mu}_y$ and $\boldsymbol{\mu}_x$ are mean vector of $\mathbf{x}$ and $\mathbf{y}$ respectively. An equivalent regression model of \@ref(eq:model-1) can be defined as,
+
+\begin{equation}
+\mathbf{y} = \mu_y + \boldsymbol{\beta}^t(\mathbf{x} - \mu_x) + \epsilon
+(\#eq:reg-model-1)
+\end{equation}
+where, $\boldsymbol{\beta}^t$ is a matrix of regression coefficients and $\epsilon$ is an error term such that $\epsilon \sim N(0, \Sigma_{y|x})$
+
+In a casual relationship model like \@ref(eq:reg-model-1), we assume that the variation in response $\mathbf{y}$ is caused by the predictor $\mathbf{x}$. However, in many situations, only small proportion of the variation in $\mathbf{x}$ have some connection with $\mathbf{y}$. This space can be referred as relevant or material space of $\mathbf{x}$ and rest as irrelevant or immaterial space. In the similar manner, we can assume that only some part of variation in $\mathbf{y}$ is caused by the predictors or contains the information (Figure-\@ref(fig:relevant-space)). Following the concept of relevant and irrelevant space **(Helland & Trygve, 1994)**, a set of latent variables (such as principal components) that spans these space can be imagined in both predictors and response space. Let us consider the components that spans the relevant predictor space as predictor components and the components that spans the relevant response space as response components. Further let us define the components that spans the irrelevant space as irrelevant components.
+
+```{r relevant-space, out.width = "80%", fig.asp = 0.7, retina = 2, fig.align = 'center', message = FALSE, fig.cap = "Relevant space in a regression model"}
+plot_relspace()
+```
+
+Estimation methods like Partial Least Square Regression and many of its derivetives have been using the idea of relevant components in predictor space for better estimation and prediction (_perhaps need citation_). More recent methods such as Simultaneous Envelope [@cook2015simultaneous]  have extended the concept to formulate informative response space (envelope) to decrease error variance in both prediction and estimation.
+
+---
+
+Define a transformation $\mathbf{w} = \mathbf{Qy}$ and $\mathbf{z} = \mathbf{Rx}$ such that $\mathbf{Q}$ and $\mathbf{R}$ are orthogonal rotation matrix which transform $\mathbf{x}$ and $\mathbf{y}$ into latent components $\mathbf{z}$ and $\mathbf{w}$ respectively. An equivalent model to \@ref(eq:model-1) can be defined as,
+
+\begin{equation}
+  \begin{bmatrix}
+    \mathbf{w} \\ \mathbf{z}
+  \end{bmatrix} \sim \mathbf{N}
+  \left(
+    \begin{bmatrix}
+      \boldsymbol{\mu}_w \\
+      \boldsymbol{\mu}_z
+    \end{bmatrix},
+    \begin{bmatrix}
+    \boldsymbol{\Sigma}_{ww} & \boldsymbol{\Sigma}_{wz} \\
+    \boldsymbol{\Sigma}_{zw} & \boldsymbol{\Sigma}_{zz}
+    \end{bmatrix}
+  \right) = \mathbf{N}
+  \left(
+    \begin{bmatrix}
+      \mathbf{Q}\boldsymbol{\mu}_w \\
+      \mathbf{R}\boldsymbol{\mu}_z
+    \end{bmatrix},
+    \begin{bmatrix}
+    \mathbf{Q}\boldsymbol{\Sigma}_{ww}\mathbf{Q}^t & \mathbf{Q}\boldsymbol{\Sigma}_{wz}\mathbf{R}^t \\
+    \mathbf{R}\boldsymbol{\Sigma}_{zw}\mathbf{Q}^t & \mathbf{R}\boldsymbol{\Sigma}_{zz}\mathbf{R}^t
+    \end{bmatrix}
+  \right)
+  (\#eq:model-2)
+\end{equation}
+
+Here, $\mathbf{w}$ and $\mathbf{z}$ can be considered as principal components of response (response components) and predictors (predictor components) respectively. A regression model equivalent to \@ref(eq:model-2) can be defined as,
+
+\begin{equation}
+\mathbf{w} = \mu_w + \boldsymbol{\alpha}^t(\mathbf{z} - \mu_z) + \tau
+(\#eq:reg-model-2)
+\end{equation}
+where, $\boldsymbol{\alpha}^t$ is a matrix of regression coefficients and $\tau$ is an error term such that $\tau \sim N(0, \Sigma_{w|z})$
+
+_**If we should write this part perhaps we should describe how data are simulated from the model above**_
+
+---
+
+In this study, data is simulated based on model-\@ref(eq:model-1) using an R-package "`simrel`". @Rimal_2018 has discussed the concept behind the simulation in detail that is implemented in the R-package. Properties in the simulated data such as its dimension, correlation structure and signal-to-noise ratio are controlled through parameters. The estimation methods under comparison, discussed in [Methods] section, are tested against these dataset and evaluated on the basis of their performance on both prediction and estimation.
+

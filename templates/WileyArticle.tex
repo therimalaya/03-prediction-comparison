@@ -1,0 +1,137 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% A template for Wiley article submissions.
+% Developed by Overleaf. 
+%
+% Please note that whilst this template provides a 
+% preview of the typeset manuscript for submission, it 
+% will not necessarily be the final publication layout.
+%
+% Usage notes:
+% The "blind" option will make anonymous all author, affiliationiation, correspondence and funding information.
+% Use "num-refs" option for numerical citation and references style.
+% Use "alpha-refs" option for author-year citation and references style.
+
+\documentclass[$for(classoption)$$classoption$$sep$,$endfor$]{wiley-article}
+% \documentclass[blind,alpha-refs]{wiley-article}
+
+% Add additional packages here if required
+\usepackage{siunitx}
+
+%% ---- My Customizations --------------
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{subfig}
+\usepackage{float}
+% \usepackage{amssymb, amsmath}
+% \usepackage[utf8]{inputenc}
+% \usepackage[inline]{enumitem}
+% \usepackage{pgf, tikz}
+% \usepackage{amsthm}
+
+% Longtable
+$if(longtable)$
+\usepackage{longtable}
+$endif$
+
+% %% Custom macros
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}
+  \setlength{\parskip}{0pt}
+}
+
+%% Custom Lengths
+% \setlength{\parindent}{0pt}
+% \setlength{\parskip}{9pt}
+%% ------ My Customizations ends --------
+
+% Update article type if known
+\papertype{Original Article}
+% Include section in journal if known, otherwise delete
+\paperfield{Journal Section}
+
+\title{$title$}
+
+% List abbreviations here, if any. Please note that it is preferred that abbreviations be defined at the first instance they appear in the text, rather than creating an abbreviations list.
+% \abbrevs{ABC, a black cat; DEF, doesn't ever fret; GHI, goes home immediately.}
+$if(abbrev)$ \abbrevs{$abbrev$} $endif$
+
+% Include full author names and degrees, when required by the journal.
+% Use the \authfn to add symbols for additional footnotes and present addresses, if any. Usually start with 1 for notes about author contributions; then continuing with 2 etc if any author has a different present address.
+$for(author)$
+\author[$if(author.address)$$author.label$$else$1$endif$$if(author.presentadd)$\authfn{1}$endif$$if(author.footnote)$\authfn{2}$endif$]{$author.name$}
+$if(author.address)$\affil[$author.label$]{$author.address$}$endif$
+$if(author.presentadd)$\presentadd[\authfn{1}]{$author.presentadd$}$endif$
+$if(author.footnote)$\contrib[\authfn{2}]{$author.footnote$}$endif$
+$endfor$
+
+$if(address.address)$\corraddress{$address.address$}$endif$
+$if(address.email)$\corremail{$address.email$}$endif$
+
+$if(runningAuthor)$\runningauthor{$runningAuthor$ et al.}$endif$
+
+$if(fundingInfo)$\fundinginfo{$fundingInfo$}$endif$
+% 
+% \author[1\authfn{1}]{Author One PhD}
+% \author[2\authfn{1}]{Author A.~Two MD}
+% \author[2\authfn{2}\authfn{1}]{Author Three PhD}
+% \author[2]{Author B.~Four}
+% 
+% \contrib[\authfn{1}]{Equally contributing author.}
+% 
+% % Include full affiliationiation details for all author
+% \affil[1]{Department, Institution, City, State or Province, Postal Code, Country}
+% \affil[2]{Department, Institution, City, State or Province, Postal Code, Country}
+% 
+% \presentadd[\authfn{2}]{Department, Institution, City, State or Province, Postal Code, Country}
+% 
+% \corraddress{Author One PhD, Department, Institution, City, State or Province, Postal Code, Country}
+% \corremail{correspondingauthor@email.com}
+
+% Include the name of the author that should appear in the running header
+
+% Linespacing
+$if(linespacing)$
+\usepackage[nodisplayskipstretch]{setspace}
+$endif$
+
+% Floating figures and tables at the end of document
+$if(endfloat)$
+\usepackage[nolists, tablesfirst]{endfloat}
+$endif$
+
+% Pandoc header
+$for(header-includes)$
+$header-includes$
+$endfor$
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+$abstract$
+% Please include a maximum of seven keywords
+$if(keywords)$\keywords{$keywords$}$endif$
+\end{abstract}
+
+% Linespacing
+$if(linespacing)$
+\setstretch{$linespacing$}
+$endif$
+
+$body$
+
+\printendnotes
+
+% Submissions are not required to reflect the precise reference formatting of the journal (use of italics, bold etc.), however it is important that all key elements of each reference are included.
+\bibliography{$for(bibliography)$$bibliography$$sep$,$endfor$}
+
+% \begin{biography}[example-image-1x1]{A.~One}
+% Please check with the journal's author guidelines whether author biographies are required. They are usually only included for review-type articles, and typically require photos and brief biographies (up to 75 words) for each author.
+% \bigskip
+% \bigskip
+% \end{biography}
+
+% \graphicalabstract{example-image-1x1}{Please check the journal's author guildines for whether a graphical abstract, key points, new findings, or other items are required for display in the Table of Contents.}
+
+\end{document}

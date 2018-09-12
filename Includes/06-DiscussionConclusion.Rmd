@@ -1,0 +1,6 @@
+---
+bibliography: ../ref-db.bib
+---
+
+# Discussion
+<!-- Discussion -->
