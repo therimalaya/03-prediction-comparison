@@ -42,8 +42,6 @@ rsconnect/
 # Related to project
 scripts/robj/coef-error
 includes/ltximg*/*
-scripts/robj/coef-error
-scripts/robj-bak/
 auxiliary
 
 # LaTeX related
