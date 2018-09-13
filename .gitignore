@@ -45,3 +45,4 @@ includes/ltximg*/*
 auxiliary
 
 # LaTeX related
+.Rproj.user
