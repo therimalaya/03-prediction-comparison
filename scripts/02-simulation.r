@@ -10,6 +10,13 @@ tsk_grid <- expand.grid(dgn = 1:nrow(design), mthd = mthds)
 mthd  <- as.character(tsk_grid[tsk, 'mthd'])
 dgn   <- tsk_grid[tsk, 'dgn']
 mthd_idx <- which(mthd == mthds)
+wide_idx <- design %>%
+    rownames_to_column("Design") %>%
+    filter(p > n) %>%
+    select(Design) %>%
+    unlist() %>%
+    unname() %>%
+    as.integer()
 
 ## Each simulation is replicated 50 times ----
 ## This gives 50 different dataset with same properties
@@ -28,7 +35,7 @@ out <- map(1:50, function(r) {
   mthd_chr <- formatC(mthd_idx, digits = 0, width = 2, format = "f", flag = "0")
   rep_chr  <- formatC(r, digits = 0, width = 2, format = "f", flag = "0")
   seed     <- as.numeric(paste0(dgn_chr, mthd_chr, rep_chr))
-  use_pc <- mthd %in% c("Xenv", "Yenv", "Senv")
+  use_pc <- all(mthd %in% c("Xenv", "Yenv", "Senv"), dgn %in% wide_idx)
   set.seed(seed)
   res <- design %>%
     get_design(dgn) %>%

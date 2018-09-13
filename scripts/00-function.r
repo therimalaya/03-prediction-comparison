@@ -241,15 +241,6 @@ get_est_beta <- function(fit, model_name, beta_fun = get_beta(tolower(model_name
         out <- beta_fun(fit, intercept = intercept)
         out <- apply(out, 2:3, function(x) rotation_mat %*% x)
         dimnames(out)[[1]] <- paste0("X", 1:dim(out)[1])
-        ## browser()
-        ## tmp <- array(dim = c(dim(rotation_mat)[1], dim(out)[-1]))
-        ## for (idx in seq.int(dim(out)[3])) {
-        ##   tmp[, , idx] <- rotation_mat %*% out[, , idx]
-        ## }
-        ## dnames <- dimnames(out)
-        ## dnames[[1]] <- paste0("X", 1:dim(tmp)[1])
-        ## dimnames(tmp) <- dnames
-        ## out <- tmp
     } else {
         out <- beta_fun(fit, intercept = intercept)
     }
