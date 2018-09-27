@@ -96,6 +96,12 @@ get_data <- function(sim_obj, need_pc = FALSE, prop = ifelse(need_pc, 0.95, NULL
     } else {
         X <- sim_obj$X
         out <- data.frame(y = I(Y), x = I(X))
+        if (!is.null(sim_obj$ntest)) {
+            testY <- sim_obj$testY
+            testX <- sim_obj$testX
+            test_out <- data.frame(y = I(testY), x = I(testX))
+            out <- rbind(train = out, test = test_out)
+        }
     }
     class(out) <- append(class(out), "simrel_data")
     return(out)
