@@ -26,8 +26,9 @@ html:
 	Rscript --quiet _render.R "bookdown::html_document2" && mv main.html public/index.html
 
 serve:
-	browser-sync start --server $(DIR) --files $(DIR) --no-open --no-ui
-
+	Rscript --quiet -e "servr::httd('docs', port = 5555)"
+	# browser-sync start --server $(DIR) --files $(DIR) --no-open --no-ui
+	
 clean:
 	rm -rf $(DIR)
 

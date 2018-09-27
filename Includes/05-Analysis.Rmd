@@ -36,6 +36,11 @@ Using the prediction error corresponding to response $j$ as $y_j$ in \@ref(eq:fu
 (\#eq:separate-pred-model)
 \end{equation}
 
+```{r}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+
 ```{r prediction-model}
 pred_dta <- design_chr %>%
     select_if(function(x) n_distinct(x) > 1) %>%

@@ -57,16 +57,16 @@ An example of simulation parameters for the first design is as follows:
 
 ```{r sample_design, echo = TRUE, eval = FALSE}
 simrel(
-    n      = 100,                 ## Observations
-    p      = 20,                  ## Predictors
-    m      = 4,                   ## Response
-    q      = 20,                  ## Relevant predictors
-    relpos = list(c(1, 2, 3, 4)), ## Position of predictor components
-    eta    = 0,                   ## Decay factor of response eigenvalues
-    gamma  = 0.2,                 ## Decay factor of predictor eigenvalues
-    R2     = 0.8,                 ## Coefficient of determination
-    ypos   = list(c(1, 2, 3, 4)),
-    type   = "multivariate"
+  n      = 100L,                  ## Observations
+  p      = 20L,                   ## Predictors
+  m      = 4L,                    ## Response
+  q      = 20,                    ## Relevant predictors
+  relpos = list(c(1, 2, 3, 4)),   ## Position of predictor components
+  eta    = 0,                     ## Decay factor of response eigenvalues
+  gamma  = 0.2,                   ## Decay factor of predictor eigenvalues
+  R2     = 0.8,                   ## Coefficient of determination
+  ypos   = list(c(1, 2, 3, 4)), 
+  type   = "multivariate"
 )
 ```
 

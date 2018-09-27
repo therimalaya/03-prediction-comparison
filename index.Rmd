@@ -26,7 +26,6 @@ linespacing: 1.5
 fontfamily: mathpazo
 use-landscape-page: yes
 tables: yes
-template: 'templates/Elsarticle.tex'
 bibliography: ref-db.bib
 biblio-title: References
 biblio-style: elsarticle-harv
