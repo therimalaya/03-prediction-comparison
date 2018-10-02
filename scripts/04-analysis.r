@@ -21,7 +21,7 @@ pred_dta_min <- pred_dta %>%
 pred_mdl <- lm(cbind(Y1, Y2, Y3, Y4) ~ p * gamma * eta * relpos * Method,
                data = pred_dta_min)
 
-pred_aov <- map(paste0("Y", 1:3), function(y){
+pred_aov <- map(paste0("Y", 1:4), function(y){
     dta <- pred_dta_min %>%
         select_at(y) %>%
         rename_at(y, str_remove, "[0-9]")

@@ -84,7 +84,7 @@ get_true_value <- function(sim_obj, what = c("coef", "minerror", "sigma_x", "sig
 }
 
 ## Get data from simulated object, if need_pc than x will the principal components ----
-get_data <- function(sim_obj, need_pc = FALSE, prop = ifelse(need_pc, 0.95, NULL), ncomp = NULL) {
+get_data <- function(sim_obj, need_pc = FALSE, prop = ifelse(need_pc, 0.95, NULL), ncomp = NULL, ...) {
     Y <- sim_obj$Y
     if (need_pc) {
         pc.a <- prcomp(sim_obj$X)
@@ -102,7 +102,7 @@ get_data <- function(sim_obj, need_pc = FALSE, prop = ifelse(need_pc, 0.95, NULL
 }
 
 ## Fit a model with data and method supplied ----
-fit_model <- function(data, method = c("PCR", "PLS1", "PLS2", "Xenv", "Yenv", "Ridge", "Lasso", "Senv")) {
+fit_model <- function(data, method = c("PCR", "PLS1", "PLS2", "Xenv", "Yenv", "Ridge", "Lasso", "Senv"), ...) {
     method <- match.arg(method, method)
     if (method %in% c("Ridge", "Lasso")) {
         require(parallel)
@@ -110,13 +110,15 @@ fit_model <- function(data, method = c("PCR", "PLS1", "PLS2", "Xenv", "Yenv", "R
         registerDoParallel(cl)
         on.exit(stopCluster(cl))
     }
+    list2env(list(...), environment())
+    if (method == "Senv" & !exists('u')) u <- 2
     fit <- switch(
         method,
         PCR   = pcr(y ~ x, data = data, ncomp = 10),
         PLS2  = plsr(y ~ x, data = data, ncomp = 10),
         Xenv  = map(1:min(10, ncol(data$x)), function(nc) with(data, try(xenv(x, y, u = nc)))),
         Yenv  = map(1:ncol(data$y), function(nc) with(data, try(env(x, y, u = nc)))),
-        Senv = map(1:10, function(nc) with(data, try(stenv(x, y, q = nc, u = 2)))),
+        Senv = map(1:10, function(nc) with(data, try(stenv(x, y, q = nc, u = u)))),
         Ridge = cv.glmnet(data$x, data$y, family = "mgaussian", alpha = 0,
                           parallel = TRUE, nlambda = 100),
         Lasso = cv.glmnet(data$x, data$y, family = "mgaussian", alpha = 1,
@@ -316,7 +318,7 @@ coef_errors <- function(sim_obj, est_method, scale = FALSE, ...) {
     Ymeans <- colMeans(sim_obj$Y)
     Xmeans <- colMeans(sim_obj$X)
     coef <- dta %>%
-        fit_model(est_method) %>%
+        fit_model(est_method, ...) %>%
         get_est_beta(tolower(est_method), rotation_mat = rot, intercept = FALSE)
     coef <- compute_intercept(coef, Xmeans, Ymeans)
 
@@ -453,7 +455,8 @@ coef_plot <- function(coef_error, ncomp = NULL, err_type = "prediction") {
 }
 
 ## Error Plot -----
-err_plot <- function(coef_error, error_type = "Prediction", ncomp = NULL) {
+err_plot <- function(coef_error, error_type = "Prediction", ncomp = NULL,
+                     params = NULL, title = NULL, subtitle = NULL) {
     not_nested <- "coefficient_error" %in% class(coef_error)
     if (not_nested) coef_error <- list(coef_error)
     METHOD <- map_chr(coef_error, attr, "Method") %>% unique()
@@ -466,29 +469,30 @@ err_plot <- function(coef_error, error_type = "Prediction", ncomp = NULL) {
     }
     dta <- error_df %>%
         mutate(Response = paste0("Y", Response))
-    names(dta)[2] <- "Error"
-
+    names(dta)[grep("Error", names(dta))] <- "Error"
+    
+    params <- if (is.null(params)) c('p', 'eta', 'gamma', 'R2') else params
     prms <- attr(coef_error[[1]], "Sim_Properties")
-    lbls <- prms[c('p', 'eta', 'gamma', 'R2')]
-
-    dgn_lbl <- with(lbls, paste0("p:", p, " eta:", eta, " gamma:", gamma, " R2:", R2))
-
+    lbls <- sapply(prms[params], list2chr)
+    
+    dgn_lbl <- paste0(paste(names(lbls), lbls, sep = ": "), collapse=", ")
+    
     lbl <- dta %>%
         group_by(Response, Tuning_Param) %>%
-        summarize_at(2, mean) %>%
+        summarize_at('Error', mean) %>%
         group_by(Response) %>%
         summarize(Tuning_Param = Tuning_Param[which.min(Error)],
                   Error = min(Error)) %>%
         mutate(label = paste0(Response, " = ", round(Error, 3), " (", Tuning_Param, ")")) %>%
         arrange(Error)
-
+    
     x_lab <- if (is_shrinkage) "Lambda" else "Number of Components"
-
+    
     if (!is_shrinkage) {
         dta <- dta %>%
             mutate(Tuning_Param = as.factor(as.integer(Tuning_Param)))
     }
-
+    
     plt <- dta %>%
         ggplot(aes(Tuning_Param, Error, fill = Response)) +
         stat_summary(fun.y = mean, geom = "line", size = 0.8,
@@ -509,17 +513,20 @@ err_plot <- function(coef_error, error_type = "Prediction", ncomp = NULL) {
                                 alpha = 0.1) +
             geom_boxplot(alpha = 0.2, color = "grey70", size = 0.3)
     }
+    plt_title <- paste0(paste(error_type, "Error Plot:: "), "Method: ", METHOD)
+    if (!is.null(title)) plt_title <- paste(plt_title, title)
+    plt_subtitle <- if (is.null(subtitle)) dgn_lbl else paste(dgn_lbl, subtitle)
     plt <- plt + labs(x = x_lab, y = paste(error_type, "Error"),
                       color = "Response", fill = "Response") +
         geom_text(data = lbl, aes(label = label, color = Response),
-                  x = Inf, y = Inf, hjust = 1, vjust = seq(2, 8, 2),
+                  x = Inf, y = Inf, hjust = 1, 
+                  vjust = seq(2, nrow(lbl) * 2, 2),
                   family = "mono") +
-        ggtitle(paste0(paste(error_type, "Error Plot:: "), "Method: ", METHOD),
-                subtitle = dgn_lbl) +
+        ggtitle(plt_title, subtitle = plt_subtitle) +
         theme_light() +
         theme(plot.subtitle = element_text(family = "mono"),
               legend.position = "bottom")
-
+    
     return(plt + expand_limits(y = 0))
 }
 
