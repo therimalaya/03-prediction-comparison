@@ -12,7 +12,7 @@ serve:
 	Rscript --quiet -e "servr::httd('docs', port = 5555, host = '0.0.0.0')"
 
 clean:
-	rm -rf $(DIR)
+	rm -rf $(DIR) && rm main*.* && rm -rf _bookdown_files
 
 app:
 	Rscript -e "shiny::runApp('app/app.R', port = 4321, host = '0.0.0.0')"

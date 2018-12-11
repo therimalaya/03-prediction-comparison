@@ -1,4 +1,4 @@
-quiet = "--quiet" %in% commandArgs(FALSE)
+quiet = "--quiet" %in% commandArgs(TRUE)
 formats = commandArgs(TRUE)
 
 if (length(formats) == 0) formats = c('bookdown::pdf_book', 'bookdown::gitbook')
