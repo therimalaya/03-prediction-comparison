@@ -43,7 +43,11 @@ rsconnect/
 scripts/robj/coef-error
 includes/ltximg*/*
 auxiliary
+scripts/*scratch*
+app
 
 # LaTeX related
 .Rproj.user
 scripts/robj-bak/
+templates/auto
+main.spl

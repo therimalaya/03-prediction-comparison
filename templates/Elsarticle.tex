@@ -207,21 +207,21 @@ $endif$
 $if(biboption)$
 \biboptions{$biboption$}
 $else$
-\biboptions{square}
+\biboptions{numbers,sort&compress}
 $endif$
 
-% \makeatletter
-% \providecommand{\doi}[1]{%
-%   \begingroup
-%     \let\bibinfo\@secondoftwo
-%     \urlstyle{rm}%
-%     \href{http://dx.doi.org/#1}{%
-%       doi:\discretionary{}{}{}%
-%       \nolinkurl{#1}%
-%     }%
-%   \endgroup
-% }
-% \makeatother
+\makeatletter
+\providecommand{\doi}[1]{%
+  \begingroup
+    \let\bibinfo\@secondoftwo
+    \urlstyle{rm}%
+    \href{http://dx.doi.org/#1}{%
+      doi:\discretionary{}{}{}%
+      \nolinkurl{#1}%
+    }%
+  \endgroup
+}
+\makeatother
 
 % 
 

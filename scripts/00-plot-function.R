@@ -63,7 +63,8 @@ err_plot <- function(method = "Senv", design = 1, error_df = pred_error) {
     "Prediction" else "Estimation"
 
   load("scripts/robj/design.rdata")
-
+  
+  
   dgn_lbl <- design_chr %>%
     slice(DESIGN) %>%
     select(p, eta, gamma, R2) %>%

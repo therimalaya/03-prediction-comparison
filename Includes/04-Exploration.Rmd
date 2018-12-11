@@ -1,0 +1,99 @@
+
+# Exploration
+
+Before performing any statistical analysis, this section tries to explore some observed relationship between prediction error, simulation parameters and the prediction methods. Lets us start with visualizing the principal components of prediction errors together with some of these factors. Figure \@ref(fig:pca-scatter) plots first and second principal components of minimum prediciton prediction error for every replicates of all design. 
+
+HIGHLIGHTS:
+
+## PLOT: pca-scatter (Figure \@ref(fig:pca-scatter))
+
+- Clear indication of effect of position of relevant components on the methods. The effect seems more in case of low multicollinearity than in the case of high multicollinerity.
+- Envelope methods (`senv` and `xenv`) are less affected by the `relpos` factor.
+
+## PLOT: pca-density (Figure \@ref(fig:pca-density))
+
+- A similar interpretation as the previous plot can be made in the score density. In addition, higher correlation in response (controlled by `eta` parameter) yields in higher variation in the score of prediction error.
+- The plot in the right shows that the envelope methods are able to leverage the effect of correlation between the response while in case of others, the effect is similar in low and high correlation between the responses.
+
+```{r pca}
+pred_dta <- design_chr %>%
+    select_if(function(x) n_distinct(x) > 1) %>%
+    mutate(Design = as.character(1:n())) %>%
+    mutate_at(vars(p, gamma, relpos, eta), as.factor) %>%
+    right_join(
+      pred_error %>% 
+        filter(!Method %in% c("Ridge", "Lasso")), 
+      by = "Design") %>%
+    mutate_if(is.character, as.factor) %>%
+    mutate_at("p", as.factor) %>%
+    mutate(Response = paste0("Y", Response))
+
+pred_dta_spread <- pred_dta %>%
+    group_by(p, relpos, eta, gamma, Method, Replication, Response) %>%
+    summarize(Pred_Error = min(Pred_Error)) %>%
+    spread(Response, Pred_Error)
+
+
+pc.a <- with(pred_dta_spread, prcomp(cbind(Y1, Y2, Y3, Y4)))
+expl_var <- explvar(pc.a) %>% round(2)
+pred_dta_with_pc <- bind_cols(pred_dta_spread, as.data.frame(scores(pc.a)[]))
+
+```
+
+```{r pca-scatter, fig.cap="Exploration of Principal Components of Prediction Errors.", out.width="100%", fig.width=7, dpi=150, fig.asp=0.5}
+ggplot(pred_dta_with_pc, aes(PC1, PC2, color = relpos)) +
+  geom_hline(yintercept = 0, color = "darkgray", linetype = 2) +
+  geom_vline(xintercept = 0, color = "darkgray", linetype = 2) +
+  geom_point(alpha = 0.7, size = 1, shape = 21) +
+  facet_grid(gamma ~ Method, 
+             labeller = labeller(eta = label_both, gamma = label_both)) +
+  theme_grey(base_family = 'mono') +
+  theme(legend.position = "bottom",
+        strip.text = element_text(family = "mono")) +
+  labs(x = paste0("PC1(", expl_var[1], "%)"),
+       y = paste0("PC2(", expl_var[2], "%)")) +
+  guides(colour = guide_legend(override.aes = list(size = 3))) +
+  ggtitle("Principal Components Analysis of prediction errors") +
+  scale_x_continuous(breaks = scales::pretty_breaks(3)) +
+  scale_color_brewer(palette = "Set1")
+```
+
+```{r pca-density, fig.cap="Density of Principal Components of Prediction Errors.", out.width="100%", fig.width=9, dpi=150, fig.asp=0.5}
+plt1 <- ggplot(pred_dta_with_pc, aes(PC1, fill = relpos, color = relpos)) +
+  geom_density(alpha = 0.5) +
+  facet_grid(eta ~ Method, labeller = labeller(eta = label_both)) +
+  theme_grey(base_family = 'mono') +
+  theme(legend.position = "bottom",
+        strip.text = element_text(family = "mono")) +
+  labs(x = paste0("PC1(", expl_var[1], "%)")) +
+  ggtitle("Density of PCA scores") +
+  scale_x_continuous(breaks = scales::pretty_breaks(3)) +
+  scale_color_brewer(palette = "Set1") +
+  scale_fill_brewer(palette = "Set1")
+
+plt2 <- ggplot(pred_dta_with_pc, aes(PC1, fill = eta, color = eta)) +
+  geom_density(alpha = 0.5) +
+  facet_grid(relpos ~ Method, 
+             labeller = labeller(relpos = label_both, gamma = label_both)) +
+  theme_grey(base_family = 'mono') +
+  theme(legend.position = "bottom",
+        strip.text = element_text(family = "mono")) +
+  labs(x = paste0("PC1(", expl_var[1], "%)")) +
+  ggtitle("Density of PCA scores") +
+  scale_x_continuous(breaks = scales::pretty_breaks(3)) +
+  scale_color_brewer(palette = "Set1") +
+  scale_fill_brewer(palette = "Set1")
+
+gridExtra::grid.arrange(plt1, plt2, ncol = 2)
+```
+
+<!-- NEED SOME EXPLORATION for NUMBER OF COMPONENTS -->
+
+```{r ncomp-data}
+comp_dta_spread <- pred_dta %>%
+    filter(!Method %in% c("Ridge", "Lasso")) %>%
+    group_by(p, relpos, eta, gamma, Method, Replication, Response) %>%
+    summarize(Ncomp = Tuning_Param[which.min(Pred_Error)]) %>%
+    spread(Response, Ncomp)
+```
+

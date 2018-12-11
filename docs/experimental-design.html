@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Comparison of Multivariate Estimation Methods</title>
+  <meta name="description" content="Comparison of Multivariate Estimation Methods">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Comparison of Multivariate Estimation Methods" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="http://therimalaya.github.io/multivariate-comparison" />
+  
+  
+  <meta name="github-repo" content="therimalaya/multivariate-comparison" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Comparison of Multivariate Estimation Methods" />
+  
+  
+  
+
+
+
+<meta name="date" content="2018-12-11">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="prediction-methods.html">
+<link rel="next" href="exploration.html">
+<style type="text/css">
+p.abstract{
+  text-align: center;
+  font-weight: bold;
+}
+div.abstract{
+  margin: auto;
+  width: 90%;
+}
+</style>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./index.html">Multivariate Comparison</a></li>
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="" data-path="simulation-model.html"><a href="simulation-model.html"><i class="fa fa-check"></i>Simulation Model</a></li>
+<li class="chapter" data-level="" data-path="prediction-methods.html"><a href="prediction-methods.html"><i class="fa fa-check"></i>Prediction Methods</a><ul>
+<li class="chapter" data-level="" data-path="prediction-methods.html"><a href="prediction-methods.html#modification-in-envelope-estimation"><i class="fa fa-check"></i>Modification in envelope estimation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="experimental-design.html"><a href="experimental-design.html"><i class="fa fa-check"></i>Experimental Design</a><ul>
+<li class="chapter" data-level="" data-path="experimental-design.html"><a href="experimental-design.html#basis-of-comparison"><i class="fa fa-check"></i>Basis of comparison</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="exploration.html"><a href="exploration.html"><i class="fa fa-check"></i>Exploration</a><ul>
+<li class="chapter" data-level="" data-path="exploration.html"><a href="exploration.html#plot-pca-scatter-figure-reffigpca-scatter"><i class="fa fa-check"></i>PLOT: pca-scatter (Figure @ref(fig:pca-scatter))</a></li>
+<li class="chapter" data-level="" data-path="exploration.html"><a href="exploration.html#plot-pca-density-figure-reffigpca-density"><i class="fa fa-check"></i>PLOT: pca-density (Figure @ref(fig:pca-density))</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html"><i class="fa fa-check"></i>Statistical Analysis</a><ul>
+<li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html#effect-analysis"><i class="fa fa-check"></i>Effect Analysis</a></li>
+<li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html#a-partial-least-square-analysis-on-the-model"><i class="fa fa-check"></i>A partial least square analysis on the model</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="appendix"><span><b>Appendix A</b></span></li>
+<li class="divider"></li>
+<li class="toc-footer"><a href="https://bookdown.org" target="blank">Published with BookDown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Comparison of Multivariate Estimation Methods</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="experimental-design" class="section level1">
+<h1>Experimental Design</h1>
+<p>Comparing prediction methods requires measurement of their prediction ability. Data with specific nature are simulated some of which are easier to predict than others. These data are simulated using the R-package <code>simrel</code> which are discussed in <span class="citation">Sæbø, Almøy, and Helland (<a href="references.html#ref-saebo2015simrel">2015</a>)</span> and <span class="citation">Rimal, Almøy, and Sæbø (<a href="references.html#ref-Rimal2018">2018</a>)</span>. Here we will use four different factors: a) Number of predictors (<code>p</code>), b) Multicollinearity in predictor variables (<code>gamma</code>), c) Correlation in response variables (<code>eta</code>) and d) position of predictor components relevant for the response (<code>relpos</code>). Using two levels of <code>p</code>, <code>gamma</code> and <code>relpos</code> and four levels of <code>eta</code>, 32 set of distinct properties are designed for the simulation.</p>
+<dl>
+<dt><strong>Number of predictors:</strong></dt>
+<dd>In order to observe the performance of the methods on tall and wide predictor matrices, 20 and 250 predictor variables are simulated. Parameter <code>p</code> controls this properties in <code>simrel</code> function.
+</dd>
+<dt><strong>Multicollinearity in predictor variables:</strong></dt>
+<dd><p>Highly collinear predictors can be explained completely by few components. Parameter <code>gamma</code> (<span class="math inline">\(\gamma\)</span>) in <code>simrel</code> controls the eigenvalues of the predictor variables as <a href="experimental-design.html#eq:gamma">(5)</a>.</p>
+<span class="math display" id="eq:gamma">\[\begin{equation}
+  \lambda_i = e^{-\gamma(i - 1), \gamma &gt; 0} \text{ and } i = 1, 2, \ldots, p
+  \tag{5}
+  \end{equation}\]</span>
+</dd>
+</dl>
+<p>Here, <span class="math inline">\(\lambda_i, i = 1, 2, \ldots p\)</span> are eigenvalues of predictor variables. Here we have used 0.2 and 0.9 as different levels of <code>gamma</code>. Higher the value of gamma, higher will be the correlation between predictors and vice versa.</p>
+<dl>
+<dt><strong>Correlation in response variables:</strong></dt>
+<dd><p>Correlation in response variables is less explored area. Here we have tried to explore that part with 4 levels of correlation in response variables. We have used <code>eta</code> <span class="math inline">\(\eta\)</span> parameter of <code>simrel</code> for controlling the eigenvalues corresponding to response variables as <a href="experimental-design.html#eq:eta">(6)</a>.</p>
+<span class="math display" id="eq:eta">\[\begin{equation}
+  \kappa_i = e^{-\eta(i - 1), \eta &gt; 0} \text{ and } j = 1, 2, \ldots, m
+  \tag{6}
+\end{equation}\]</span>
+</dd>
+</dl>
+<p>Here, <span class="math inline">\(\kappa_i, i = 1, 2, \ldots m\)</span> are eigenvalues of response variables and <code>m</code> is number of response variables. Here we have used 0, 0.4, 0.8 and 1.2 as different levels of <code>eta</code>. Larger the value of eta, larger will be the correlation between response variables and vice versa.</p>
+<dl>
+<dt><strong>Position of predictor components relevant to the response:</strong></dt>
+<dd>Here principal components of predictors are ordered. In other words, the first principal components captures most of the variation in predictors and second captures the most in the rest and so on. In highly collinear predictors, the variation captured by first few components are relatively high. However, if those components are not relevant for the response, prediction becomes difficult. Here, two levels of position of these relevant components are used as 1, 2, 3, 4 and 5, 6, 7, 8.
+</dd>
+</dl>
+<!--
+
+__Coefficient of determination:__
+: Coefficient of determination controls signal-to-noise ratio in simulated data and influence the prediction heavily. `R2` parameters in `simrel` package is used to specify coefficient of determination correlation for a response components. Here we have used single response component which contains information for the relevant predictor components. The single informative response components is *blended* in `m` response variables. Here we have used ... levels of coefficient of determination `R2` ($\rho^2$) corresponding to the single response component.
+
+-->
+<p>Further, a complete factorial design from the levels of above parameters gave us 32 designs. Each design is associated with a dataset having unique properties. Figure~<a href="experimental-design.html#fig:design-plot">2</a>, shows all the design obtained from above factors. For each design and prediction method, 50 datasets were simulated for replication. In total, there were <span class="math inline">\(5 \times 32 \times 50\)</span>, i.e. 8000 dataset simulated.</p>
+<div class="figure"><span id="fig:design-plot"></span>
+<img src="main_files/figure-html/design-plot-1.svg" alt="Experimental Design of simulation parameters. Each point represents an unique data property." width="100%" />
+<p class="caption">
+Figure 2: Experimental Design of simulation parameters. Each point represents an unique data property.
+</p>
+</div>
+<dl>
+<dt><strong>Common parameters:</strong></dt>
+<dd>Each dataset was simulated with <span class="math inline">\(n = 100\)</span> number of observation and <span class="math inline">\(m = 4\)</span> response variables. Further, the coefficient of determination corresponding to each response components in all the designs is set to and 0.8. In addition, we have assumed that there is only 1 number of informative response component. So, that the first informative response component is rotated orthogonally together with 3 uninformative response components. This spread out the information in all simulated response variables. For further details on the simulation tool see: <span class="citation">(<span class="citeproc-not-found" data-reference-id="Rimal_2018"><strong>???</strong></span>)</span>.
+</dd>
+</dl>
+<p>An example of simulation parameters for the first design is as follows:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">simrel</span>(
+    <span class="dt">n       =</span> <span class="dv">100</span>,                 ## Training samples
+    <span class="dt">p       =</span> <span class="dv">20</span>,                  ## Predictors
+    <span class="dt">m       =</span> <span class="dv">4</span>,                   ## Responses
+    <span class="dt">q       =</span> <span class="dv">20</span>,                  ## Relevant predictors
+    <span class="dt">relpos  =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)), ## Relevant predictor components index
+    <span class="dt">eta     =</span> <span class="dv">0</span>,                   ## Decay factor of response eigenvalues
+    <span class="dt">gamma   =</span> <span class="fl">0.2</span>,                 ## Decay factor of predictor eigenvalues
+    <span class="dt">R2      =</span> <span class="fl">0.8</span>,                 ## Coefficient of determination
+    <span class="dt">ypos    =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)),
+    <span class="dt">type    =</span> <span class="st">&quot;multivariate&quot;</span>
+)</code></pre></div>
+<div class="figure"><span id="fig:cov-plot-1"></span>
+<img src="main_files/figure-html/cov-plot-1-1.svg" alt="(left) Covariance structure of latent components. (right) Covariance structure of predictor and response" width="100%" />
+<p class="caption">
+Figure 3: (left) Covariance structure of latent components. (right) Covariance structure of predictor and response
+</p>
+</div>
+<p>Figure <a href="experimental-design.html#fig:cov-plot-1">3</a> shows the covariance structure of the data simulated with this design. The figure shows that the predictor components at position 1, 2, 3 and 4 are relevant for first response components. After the rotation with orthogonal rotation matrix, all predictors are somewhat relevant for all response variables holding other properties like multicollinearity and coefficient of determination. For this same design, the Figure <a href="experimental-design.html#fig:est-cov-plot">4</a>(top left) shows that the predictor components 1, 2, 3 and 4 are relevant for the first response components. All other predictor components are irrelevant and all other response components are uninformative. However, due to orthogonal rotation of the informative response component together with uninformative response components, all response variables in population have similar covariance with the relevant predictor components (Figure <a href="experimental-design.html#fig:est-cov-plot">4</a>(top right)). The sample covariances between the predictors components and predictor variables with response variables are in Figure <a href="experimental-design.html#fig:est-cov-plot">4</a> (bottom left) and (bottom right) respectively.</p>
+<!-- Figure \@ref(fig:est-cov-plot) shows the covariance structure of this design. The left plot shows that only first four predictor components at position 1, 2, 3 and 4 have high covariance with first response components. Remaining predictor components are not relevant for any of the response components and since response space is explained by single components, response components except 1 has zero covariance with the predictors components. This is the population covariance structure of the simulated. The right plot, where as, shows that the all the predictor components have non-zero covariance with all the response components where first few components have large covariance than the later components. The `eta` parameters controls the eigenvalues corresponding to response variables, it should be relatively easier to predict fourth response than first since it has less variation present in the data and will be easier to explain by the predictors. This is explored in [analysis] section of this paper. -->
+<div class="figure"><span id="fig:est-cov-plot"></span>
+<img src="main_files/figure-html/est-cov-plot-1.svg" alt="Expected Scaled absolute covariance between predictor components and response components (top left). Expected Scaled absolute covariance between predictor components and response variables (top right). Sample scaled absolute covariance between predictor components and response variables (bottom left). Sample scaled absolute covariance between predictor variables and response variables (bottom right). The bar in the background are eigenvalues corresponding to each components in population (top plots) and in sample (bottom plots)." width="100%" />
+<p class="caption">
+Figure 4: Expected Scaled absolute covariance between predictor components and response components (top left). Expected Scaled absolute covariance between predictor components and response variables (top right). Sample scaled absolute covariance between predictor components and response variables (bottom left). Sample scaled absolute covariance between predictor variables and response variables (bottom right). The bar in the background are eigenvalues corresponding to each components in population (top plots) and in sample (bottom plots).
+</p>
+</div>
+<p>The discussion here is made on the first design. A similar discussion can be made on all 32 designs where each of the design holds the properties of the data they simulate. These data are used by the prediction methods discussed in previous section. Each prediction methods are given independent dataset simulated in order to give them equal opportunity to understand the dynamics in the data.</p>
+<div id="basis-of-comparison" class="section level2">
+<h2>Basis of comparison</h2>
+<p>This study focuses mainly on the prediction performance of the methods and emphasis specifically on the interaction between the properties of the data, controlled by the simulation parameters, and the prediction methods. The prediction performance is measured by the prediction error for each response as in <a href="experimental-design.html#eq:pred-error">(7)</a>. The prediction is the theoretically computed expected prediction when the model is applied to unseen observations corresponding to each response variable.</p>
+<span class="math display" id="eq:pred-error">\[\begin{equation}
+\text{prediction error}_j = \frac{1}{\sigma_{y_j|x}}\left[\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)^t\Sigma_{xx}\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)\right] + 1
+\tag{7}
+\end{equation}\]</span>
+<p>where, <span class="math inline">\(\Sigma_{xx}\)</span> is the true covariance matrix of predictor and <span class="math inline">\(\Sigma_{y_j\mid x}\)</span> is the true model error both obtained from simulation for response <span class="math inline">\(j = 1, \ldots m\)</span>. Here prediction error in <a href="experimental-design.html#eq:pred-error">(7)</a> is computed for all replications of 32 designs.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="prediction-methods.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="exploration.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": true,
+"google": true,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/therimalaya/multivariate-comparison/edit/master/Includes/03-ExperimentalDesign.Rmd",
+"text": "Edit"
+},
+"download": ["main.epub", "main.pdf"],
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

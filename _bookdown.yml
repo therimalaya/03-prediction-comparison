@@ -7,9 +7,9 @@ rmd_files: [
   "index.Rmd", 
   "Includes/02-SimulationModel.Rmd",
   "Includes/03-ExperimentalDesign.Rmd",
-  "Includes/04-Methods.Rmd",
+  "Includes/04-Exploration.Rmd",
   "Includes/05-Analysis.Rmd",
-  "Includes/06-DiscussionConclusion.Rmd",
+  # "Includes/06-DiscussionConclusion.Rmd",
   "Includes/07-References.Rmd",
   "Includes/08-Appendix.Rmd",
   ]

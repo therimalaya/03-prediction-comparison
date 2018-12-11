@@ -1,0 +1,33 @@
+version: '3.7'
+services:
+  paper3:
+    build:
+      context: '.'
+      dockerfile: 'Dockerfile'
+    image: therimalaya/rocker
+    container_name: prediction-paper
+    user: 'root'
+    restart: always
+    environment:
+      - DISPLAY=${HOSTNAME}:0
+    env_file: 
+      - '.env'
+    ports:
+      - "5000:8787"
+      - "5001:5555"
+    volumes:
+      - '.:/home/therimalaya/prediction-paper'
+      - '/tmp/.X11-unix:/tmp/.X11-unix'
+    privileged: true
+    working_dir: '/home/therimalaya/prediction-paper/'
+  server:
+    image: nginx:stable-alpine
+    container_name: prediction-server
+    restart: always
+    volumes:
+      - './docs:/usr/share/nginx/html:ro'
+    ports: 
+      - '5002:80'
+    depends_on:
+      - 'paper3'
+

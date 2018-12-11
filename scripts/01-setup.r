@@ -4,8 +4,8 @@ source("scripts/00-function.r")
 
 ## ----LoadingPackages--------------------------------------------
 ## Load Required packages
-pkgs <- c("pls", "Renvlp", "simrel", "pander", "tidyverse", 
-          "reshape2", "glmnet", "doParallel", "parallel")
+pkgs <- c("pls", "Renvlp", "simrel", "pander", "tidyverse", "ggpubr",
+          "reshape2", "glmnet", "doParallel", "parallel", "gridExtra")
 for (pkg in pkgs) {
   require(pkg, quietly = T, warn.conflicts = F, character.only = T)
 }
@@ -59,6 +59,6 @@ design_chr <- design %>% mutate_if(is.list, map_chr, list2chr)
 ## Senv: Estimation of Simulteneous Envelope
 ## Ridge: Estimation using Ridge Regression
 ## Lasso: Estimation using Lasso Regression
-mthds <- c('PCR', 'PLS1', 'PLS2', 'Xenv', 'Senv', 'Ridge', 'Lasso') %>% name_it()
+mthds <- c('PCR', 'PLS1', 'PLS2', 'Xenv', 'Senv') %>% name_it()
 ## ---- Save opts, methods, design table as design.rdata ----
 save(opts, mthds, design, design_chr, file = "scripts/robj/design.rdata")
