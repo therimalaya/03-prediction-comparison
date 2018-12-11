@@ -102,7 +102,7 @@ get_data <- function(sim_obj, need_pc = FALSE, prop = ifelse(need_pc, 0.95, NULL
 }
 
 ## Fit a model with data and method supplied ----
-fit_model <- function(data, method = c("PCR", "PLS1", "PLS2", "Xenv", "Yenv", "Ridge", "Lasso", "Senv"), ...) {
+fit_model <- function(data, method = c("PCR", "PLS1", "PLS2", "Xenv", "Yenv", "Ridge", "Lasso", "Senv", "CPPLS"), ...) {
     method <- match.arg(method, method)
     if (method %in% c("Ridge", "Lasso")) {
         require(parallel)
@@ -116,6 +116,7 @@ fit_model <- function(data, method = c("PCR", "PLS1", "PLS2", "Xenv", "Yenv", "R
         method,
         PCR   = pcr(y ~ x, data = data, ncomp = 10),
         PLS2  = plsr(y ~ x, data = data, ncomp = 10),
+        CPPLS = cppls(y ~ x, data = data, ncomp = 10, trunc.pow = 0.5),
         Xenv  = map(1:min(10, ncol(data$x)), function(nc) with(data, try(xenv(x, y, u = nc)))),
         Yenv  = map(1:ncol(data$y), function(nc) with(data, try(env(x, y, u = nc)))),
         Senv = map(1:10, function(nc) with(data, try(stenv(x, y, q = nc, u = u)))),
@@ -254,12 +255,12 @@ get_est_beta <- function(fit, model_name, beta_fun = get_beta(tolower(model_name
 getPredErr <- function(coef, minerr, trueBeta, sigma, scale = FALSE){
     out <- map(0:dim(coef)[3], function(cmp){
         if (cmp == 0) {
-            bmat <- matrix(0, nrow = nrow(coef[, , cmp + 1]), 
+            bmat <- matrix(0, nrow = nrow(coef[, , cmp + 1]),
                            ncol = ncol(coef[, , cmp + 1]))
         } else {
             bmat <- coef[, , cmp]
         }
-        if (dim(sigma)[1] + 1 == nrow(bmat)) 
+        if (dim(sigma)[1] + 1 == nrow(bmat))
             sigma <- rbind(0, cbind(0, sigma))
         err_out <- t(bmat - trueBeta) %*% sigma %*% (bmat - trueBeta)
         out <- err_out + minerr
@@ -267,11 +268,11 @@ getPredErr <- function(coef, minerr, trueBeta, sigma, scale = FALSE){
         return(diag(out))
     })
     names(out) <- c("0", dimnames(coef)[[3]])
-    ret <- map_df(out, ~map_df(.x, ~data_frame(Pred_Error = .x), 
+    ret <- map_df(out, ~map_df(.x, ~data_frame(Pred_Error = .x),
                                .id = "Response"),
     .id = "Tuning_Param")
     ret <- ret %>%
-        mutate_at(c("Tuning_Param", "Response"), 
+        mutate_at(c("Tuning_Param", "Response"),
                   get_integer, empty_val = 0) %>%
         mutate_at("Response", as.integer)
     class(ret) <- append(class(ret), "prediction_error")
@@ -470,13 +471,13 @@ err_plot <- function(coef_error, error_type = "Prediction", ncomp = NULL,
     dta <- error_df %>%
         mutate(Response = paste0("Y", Response))
     names(dta)[grep("Error", names(dta))] <- "Error"
-    
+
     params <- if (is.null(params)) c('p', 'eta', 'gamma', 'R2') else params
     prms <- attr(coef_error[[1]], "Sim_Properties")
     lbls <- sapply(prms[params], list2chr)
-    
+
     dgn_lbl <- paste0(paste(names(lbls), lbls, sep = ": "), collapse=", ")
-    
+
     lbl <- dta %>%
         group_by(Response, Tuning_Param) %>%
         summarize_at('Error', mean) %>%
@@ -485,14 +486,14 @@ err_plot <- function(coef_error, error_type = "Prediction", ncomp = NULL,
                   Error = min(Error)) %>%
         mutate(label = paste0(Response, " = ", round(Error, 3), " (", Tuning_Param, ")")) %>%
         arrange(Error)
-    
+
     x_lab <- if (is_shrinkage) "Lambda" else "Number of Components"
-    
+
     if (!is_shrinkage) {
         dta <- dta %>%
             mutate(Tuning_Param = as.factor(as.integer(Tuning_Param)))
     }
-    
+
     plt <- dta %>%
         ggplot(aes(Tuning_Param, Error, fill = Response)) +
         stat_summary(fun.y = mean, geom = "line", size = 0.8,
@@ -519,14 +520,14 @@ err_plot <- function(coef_error, error_type = "Prediction", ncomp = NULL,
     plt <- plt + labs(x = x_lab, y = paste(error_type, "Error"),
                       color = "Response", fill = "Response") +
         geom_text(data = lbl, aes(label = label, color = Response),
-                  x = Inf, y = Inf, hjust = 1, 
+                  x = Inf, y = Inf, hjust = 1,
                   vjust = seq(2, nrow(lbl) * 2, 2),
                   family = "mono") +
         ggtitle(plt_title, subtitle = plt_subtitle) +
         theme_light() +
         theme(plot.subtitle = element_text(family = "mono"),
               legend.position = "bottom")
-    
+
     return(plt + expand_limits(y = 0))
 }
 

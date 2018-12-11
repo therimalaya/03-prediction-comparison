@@ -1,100 +1,151 @@
----
-bibliography: ../ref-db.bib
----
-
 # Experimental Design #
 
-A complete factorial design with different levels of parameters are used as follows. 
+Comparing prediction methods requires measurement of their prediction ability. Data with specific nature are simulated some of which are easier to predict than others. These data are simulated using the R-package `simrel` which are discussed in @saebo2015simrel and @Rimal2018. Here we will use four different factors: a) Number of predictors (`p`), b) Multicollinearity in predictor variables (`gamma`), c) Correlation in response variables (`eta`) and d) position of predictor components relevant for the response (`relpos`). Using two levels of `p`, `gamma` and `relpos` and four levels of `eta`, `r nrow(design)` set of distinct properties are designed for the simulation.
 
 __Number of predictors:__
-: In order to observe the performance of estimators on tall and wide predictor matrices, `r catvec(opts$p)` predictor variables are simulated. Parameter `p` controls this properties in `simrel` function in the R Package.
+: In order to observe the performance of the methods on tall and wide predictor matrices, `r catvec(opts$p)` predictor variables are simulated. Parameter `p` controls this properties in `simrel` function.
 
 __Multicollinearity in predictor variables:__
 : Highly collinear predictors can be explained completely by few components. Parameter `gamma` ($\gamma$) in `simrel` controls the eigenvalues of the predictor variables as \@ref(eq:gamma).
+
     \begin{equation}
       \lambda_i = e^{-\gamma(i - 1), \gamma > 0} \text{ and } i = 1, 2, \ldots, p
       (\#eq:gamma)
       \end{equation}
+
   Here, $\lambda_i, i = 1, 2, \ldots p$ are eigenvalues of predictor variables. Here we have used `r catvec(opts$gamma)` as different levels of `gamma`. Higher the value of gamma, higher will be the correlation between predictors and vice versa.
 
 __Correlation in response variables:__
 : Correlation in response variables is less explored area. Here we have tried to explore that part with `r length(opts$eta)` levels of correlation in response variables. We have used `eta` $\eta$ parameter of `simrel` for controlling the eigenvalues corresponding to response variables as \@ref(eq:eta).
+
     \begin{equation}
       \kappa_i = e^{-\eta(i - 1), \eta > 0} \text{ and } j = 1, 2, \ldots, m
       (\#eq:eta)
     \end{equation}
+
   Here, $\kappa_i, i = 1, 2, \ldots m$ are eigenvalues of response variables and `m` is number of response variables. Here we have used `r catvec(opts$eta)` as different levels of `eta`. Larger the value of eta, larger will be the correlation between response variables and vice versa.
 
+__Position of predictor components relevant to the response:__
+: Here principal components of predictors are ordered. In other words, the first principal components captures most of the variation in predictors and second captures the most in the rest and so on. In highly collinear predictors, the variation captured by first few components are relatively high. However, if those components are not relevant for the response, prediction becomes difficult. Here, two levels of position of these relevant components are used as `r catvec(sapply(opts$relpos, list2chr))`.
+
+<!--
+
 __Coefficient of determination:__
-: Coefficient of determination controls signal-to-noise ratio in simulated data and influence the prediction heavily. `R2` parameters in `simrel` package is used to specify coefficient of determination correlation for a response components. Here we have used single response component which contains information for the relevant predictor components. The single informative response components is *blended* in `m` response variables. Here we have used `r catvec(opts$R2)` levels of coefficient of determination `R2` ($\rho^2$) corresponding to the single response component.
+: Coefficient of determination controls signal-to-noise ratio in simulated data and influence the prediction heavily. `R2` parameters in `simrel` package is used to specify coefficient of determination correlation for a response components. Here we have used single response component which contains information for the relevant predictor components. The single informative response components is *blended* in `m` response variables. Here we have used ... levels of coefficient of determination `R2` ($\rho^2$) corresponding to the single response component.
 
-Further, a complete factorial design from the levels of above parameters gave us `r nrow(design)` designs. Each design is associated with a dataset having unique properties. Table~\@ref(tab:design-table), shows all the design obtained from above factors. For each design and estimation method, 50 datasets were simulated for replication. In total, there were $`r length(mthds)` \times `r nrow(design)` \times 50$, i.e. `r length(mthds) * nrow(design) * 50` dataset simulated.
+-->
 
-```{r design-table, echo = FALSE}
-out <- design_chr %>%
-    mutate(Design = 1:n()) %>%
-    select(Design, p, eta, gamma, R2)
-if (knitr::is_latex_output()) {
-    knitr::kable(cbind(out[1:16,], out[17:32, ]),
-                 caption = "Simulation parameters of all designs",
-                 booktabs = TRUE) %>%
-        kableExtra::kable_styling(full_width = TRUE) %>%
-            kableExtra::column_spec(c(1, 6), bold = TRUE)
-} else {
-    DT::datatable(
-            out,
-            caption = "Simulation parameters of all designs",
-            rownames = FALSE,
-            options = list(pageLength = 8, dom = 'tip')) %>%
-        DT::formatStyle('Design', fontWeight = 'bolder')
-}
+Further, a complete factorial design from the levels of above parameters gave us `r nrow(design)` designs. Each design is associated with a dataset having unique properties. Figure~\@ref(fig:design-plot), shows all the design obtained from above factors. For each design and prediction method, 50 datasets were simulated for replication. In total, there were $`r length(mthds)` \times `r nrow(design)` \times 50$, i.e. `r length(mthds) * nrow(design) * 50` dataset simulated.
+
+```{r design-plot, fig.cap="Experimental Design of simulation parameters. Each point represents an unique data property.", echo = FALSE, fig.asp=0.5, fig.width=8}
+design_chr %>%
+    arrange(relpos, eta, p, gamma) %>%
+    mutate(Design = row_number()) %>%
+    ggplot(aes(eta, gamma)) +
+    geom_point(shape=4) +
+    ggrepel::geom_text_repel(aes(label = Design), nudge_x = 0.03) +
+    facet_grid(p ~ relpos, labeller=label_both) +
+    scale_y_reverse(breaks = opts$gamma) +
+    scale_x_continuous(breaks = opts$eta) +
+    theme_minimal(base_size=16) +
+    theme(text=element_text(family="mono")) +
+    coord_fixed(ratio=0.5)
 ```
 
 __Common parameters:__
-: Each dataset was simulated with $n = `r unique(opts$n)`$ number of observation and $m = `r unique(opts$m)`$ response variables. Further, the position of relevant predictor components are set to at position `r catvec(unique(opts$relpos))`. In addition, we have assumed that there is only `r length(unique(design$ypos)[[1]])` number of informative response component. So, that the first informative response component is rotated orthogonally together with `r unique(opts$m) - length(unique(design$ypos)[[1]])` uninformative response components. This spread out the information in all simulated response variables. For further details see: [@Rimal_2018]. 
+: Each dataset was simulated with $n = `r unique(opts$n)`$ number of observation and $m = `r unique(opts$m)`$ response variables. Further, the coefficient of determination corresponding to each response components in all the designs is set to `r catvec(unique(opts$R2))`. In addition, we have assumed that there is only `r length(unique(design$ypos)[[1]])` number of informative response component. So, that the first informative response component is rotated orthogonally together with `r unique(opts$m) - length(unique(design$ypos)[[1]])` uninformative response components. This spread out the information in all simulated response variables. For further details on the simulation tool see: [@Rimal_2018]. 
 
 An example of simulation parameters for the first design is as follows:
 
 ```{r sample_design, echo = TRUE, eval = FALSE}
 simrel(
-  n      = 100L,                  ## Observations
-  p      = 20L,                   ## Predictors
-  m      = 4L,                    ## Response
-  q      = 20,                    ## Relevant predictors
-  relpos = list(c(1, 2, 3, 4)),   ## Position of predictor components
-  eta    = 0,                     ## Decay factor of response eigenvalues
-  gamma  = 0.2,                   ## Decay factor of predictor eigenvalues
-  R2     = 0.8,                   ## Coefficient of determination
-  ypos   = list(c(1, 2, 3, 4)), 
-  type   = "multivariate"
+    n       = 100,                 ## Training samples
+    p       = 20,                  ## Predictors
+    m       = 4,                   ## Responses
+    q       = 20,                  ## Relevant predictors
+    relpos  = list(c(1, 2, 3, 4)), ## Relevant predictor components index
+    eta     = 0,                   ## Decay factor of response eigenvalues
+    gamma   = 0.2,                 ## Decay factor of predictor eigenvalues
+    R2      = 0.8,                 ## Coefficient of determination
+    ypos    = list(c(1, 2, 3, 4)),
+    type    = "multivariate"
 )
 ```
 
-<!-- Figure~\@ref(fig:cov-design-1) shows the covariance structure of this design. The figure shows that the predictor components at position `r unique(opts$relpos)` are relevant for first response components. After the rotation with orthogonal rotation matrix, all predictors are somewhat relevant for all response variables holding other properties like multicollinearity and coefficient of determination. -->
 
-```{r cov-design-1, fig.width = 12, out.width = "100%", fig.asp = 0.4, fig.cap="(left) Covariance structure of latent components. (middle) Orthogonal rotation matrix. (right) Covariance structure of simulated data. Here, the rotation matrix rotates the matrix on the left to obtain the matrix on the right.", eval = FALSE}
-plt_type <- c("relpos", "rotation", "relpred")
-plts <- lapply(plt_type, function(type){
-  set.seed(010101)
-  plt <- design %>%
-    get_design(1) %>%
-    simulate() %>%
-    cov_plot(type = type)
-  plt + theme(axis.text.x = element_text(angle = 90, hjust = 1))
-})
-do.call(gridExtra::grid.arrange, `$<-`(plts, ncol, 3))
-```
-
-Figure \@ref(fig:est-cov-plot) shows the covariance structure of this design. The left plot shows that only first four predictor components at position `r catvec(as.numeric(str_split("1, 2, 3, 4", ",", simplify = TRUE)))` have high covariance with first response components. Remaining predictor components are not relevant for any of the response components and since response space is explained by single components, response components except 1 has zero covariance with the predictors components. This is the population covariance structure of the simulated. The right plot, where as, shows that the all the predictor components have non-zero covariance with all the response components where first few components have large covariance than the later components. The `eta` parameters controls the eigenvalues corresponding to response variables, it should be relatively easier to predict fourth response than first since it has less variation present in the data and will be easier to explain by the predictors. This is explored in [analysis] section of this paper.
-
-```{r est-cov-plot, fig.asp = 0.5, fig.width = 9, fig.cap = "Scaled covariance between predictor components and response components (left) and scaled expected covariance between predictor components and response variables (the one we obtain after rotation). The bar in the background eigenvalues corresponding to each components."}
+```{r cov-plot-1, fig.width = 9, out.width = "100%", fig.asp = 0.5, fig.cap="(left) Covariance structure of latent components. (right) Covariance structure of predictor and response", message=FALSE, eval=TRUE}
 set.seed(010101)
-design %>%
-  get_design(1) %>%
-  simulate() %>%
-  ggsimrelplot(
-    which = 2:3,
-    layout = matrix(1:2, nrow = 1)
-  )
+sobj <- design %>%
+    get_design(1) %>%
+    simulate()
+plt1 <- cov_plot(sobj, type = "relpos", facetting = FALSE) +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5),
+          panel.grid.minor = element_line(size = 0.2),
+          panel.grid.major = element_blank())
+plt2 <- cov_plot(sobj, type = "relpred", facetting = FALSE) +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5),
+          panel.grid.minor = element_line(size = 0.2),
+          panel.grid.major = element_blank()) +
+    scale_fill_brewer(palette = 'Set1',
+                      labels = paste0("Y", unlist(sobj$ypos), collapse = ", "))
+plt <- gridExtra::arrangeGrob(plt1, plt2, nrow = 1)
+grid::grid.newpage()
+grid::grid.draw(plt)
 ```
 
+Figure \@ref(fig:cov-plot-1) shows the covariance structure of the data simulated with this design. The figure shows that the predictor components at position `r catvec(unlist(sobj$relpos))` are relevant for first response components. After the rotation with orthogonal rotation matrix, all predictors are somewhat relevant for all response variables holding other properties like multicollinearity and coefficient of determination. For this same design, the Figure \@ref(fig:est-cov-plot)(top left) shows that the predictor components `r catvec(unlist(sobj$relpos))` are relevant for the first response components. All other predictor components are irrelevant and all other response components are uninformative. However, due to orthogonal rotation of the informative response component together with uninformative response components, all response variables in population have similar covariance with the relevant predictor components (Figure \@ref(fig:est-cov-plot)(top right)). The sample covariances between the predictors components and predictor variables with response variables are in Figure \@ref(fig:est-cov-plot) (bottom left) and (bottom right) respectively.
+
+<!-- Figure \@ref(fig:est-cov-plot) shows the covariance structure of this design. The left plot shows that only first four predictor components at position `r catvec(unlist(sobj$relpos))` have high covariance with first response components. Remaining predictor components are not relevant for any of the response components and since response space is explained by single components, response components except 1 has zero covariance with the predictors components. This is the population covariance structure of the simulated. The right plot, where as, shows that the all the predictor components have non-zero covariance with all the response components where first few components have large covariance than the later components. The `eta` parameters controls the eigenvalues corresponding to response variables, it should be relatively easier to predict fourth response than first since it has less variation present in the data and will be easier to explain by the predictors. This is explored in [analysis] section of this paper. -->
+
+```{r est-cov-plot, fig.asp = 0.8, fig.width = 9, fig.cap = "Expected Scaled absolute covariance between predictor components and response components (top left). Expected Scaled absolute covariance between predictor components and response variables (top right). Sample scaled absolute covariance between predictor components and response variables (bottom left). Sample scaled absolute covariance between predictor variables and response variables (bottom right). The bar in the background are eigenvalues corresponding to each components in population (top plots) and in sample (bottom plots).", warnings=FALSE, message=FALSE}
+set.seed(010101)
+sobj <- design %>%
+    get_design(1) %>%
+    simulate()
+breakx <- function(x) floor(seq(min(x), max(x), 2))
+plt1 <- ggsimrelplot(sobj, which = 2, use_population = TRUE) +
+    labs(y = NULL) +
+    theme(legend.position = c(0.99, 0.99),
+          legend.direction = "horizontal",
+          legend.justification = c(1, 1)) +
+    ggtitle("Scaled absolute population covariance",
+            "Between predictor components and response components.") +
+    guides(color = guide_legend(title.position = "top")) +
+    scale_x_continuous(breaks = breakx)
+plt2 <- ggsimrelplot(sobj, which = 3, use_population = TRUE) +
+    labs(y = NULL) +
+    theme(legend.position = c(0.99, 0.99),
+          legend.direction = "horizontal",
+          legend.justification = c(1, 1)) +
+    ggtitle("Scaled absolute population covariance",
+            "Between predictor components and response variables.") +
+    guides(color = guide_legend(title.position = "top")) +
+    scale_x_continuous(breaks = breakx)
+plt3 <- ggsimrelplot(sobj, which = 3, use_population = FALSE) +
+    labs(y = NULL) + theme(legend.position = "none") +
+    ggtitle("Scaled absolute sample covariance",
+            "Between predictor components and response variables.") +
+    scale_x_continuous(breaks = breakx)
+plt4 <- ggsimrelplot(sobj, which = 4, use_population = FALSE) +
+    labs(y = NULL) + theme(legend.position = "none") +
+    ggtitle("Scaled absolute sample covariance",
+            "Between predictor variables and response variables.") +
+    scale_x_continuous(breaks = breakx)
+plt12 <- ggpubr::ggarrange(plt1, plt2)
+plt34 <- ggpubr::ggarrange(plt3, plt4, common.legend = TRUE, legend = "bottom")
+plt <- gridExtra::arrangeGrob(plt12, plt34, ncol = 1, left = "Absolute Covariance")
+grid::grid.newpage()
+grid::grid.draw(plt)
+```
+
+The discussion here is made on the first design. A similar discussion can be made on all 32 designs where each of the design holds the properties of the data they simulate. These data are used by the prediction methods discussed in previous section. Each prediction methods are given independent dataset simulated in order to give them equal opportunity to understand the dynamics in the data.
+
+## Basis of comparison
+
+This study focuses mainly on the prediction performance of the methods and emphasis specifically on the interaction between the properties of the data, controlled by the simulation parameters, and the prediction methods. The prediction performance is measured by the prediction error for each response as in \@ref(eq:pred-error). The prediction is the theoretically computed expected prediction when the model is applied to unseen observations corresponding to each response variable.
+
+\begin{equation}
+\text{prediction error}_j = \frac{1}{\sigma_{y_j|x}}\left[\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)^t\Sigma_{xx}\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)\right] + 1
+(\#eq:pred-error)
+\end{equation}
+where, $\Sigma_{xx}$ is the true covariance matrix of predictor and $\Sigma_{y_j\mid x}$ is the true model error both obtained from simulation for response $j = 1, \ldots m$. Here prediction error in \@ref(eq:pred-error) is computed for all replications of `r nrow(design)` designs.

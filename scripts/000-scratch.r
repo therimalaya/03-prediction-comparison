@@ -23,17 +23,17 @@ sobj_2 <- simrel(
 
 
 errors <- list(
-  senv_mdl_1 = coef_errors(sobj_1, 'Senv', scale = TRUE, u = 3),
-  senv_mdl_2 = coef_errors(sobj_2, 'Senv', scale = TRUE, u = 1),
-  pls_mdl_1 = coef_errors(sobj_1, 'PLS2', scale = TRUE),
-  pls_mdl_2 = coef_errors(sobj_2, 'PLS2', scale = TRUE),
-  xenv_mdl_1 = coef_errors(sobj_1, 'Xenv', scale = TRUE),
-  xenv_mdl_2 = coef_errors(sobj_2, 'Xenv', scale = TRUE)
+  senv_mdl_1 = coef_errors(sobj_1, 'Senv', scale = FALSE, u = 3),
+  senv_mdl_2 = coef_errors(sobj_2, 'Senv', scale = FALSE, u = 1),
+  pls_mdl_1 = coef_errors(sobj_1, 'PLS2', scale = FALSE),
+  pls_mdl_2 = coef_errors(sobj_2, 'PLS2', scale = FALSE),
+  xenv_mdl_1 = coef_errors(sobj_1, 'Xenv', scale = FALSE),
+  xenv_mdl_2 = coef_errors(sobj_2, 'Xenv', scale = FALSE)
 )
 
 plts <- lapply(errors, err_plot, params = c('ypos', 'q', 'R2', 'relpos'))
 plts <- lapply(plts, function(plt) {
-  plt + coord_cartesian(ylim = c(0.9, 1.7)) +
+  plt + coord_cartesian(ylim = c(0, 1.7)) +
   theme(
     legend.position = c(0.5, 0.1),
     legend.direction = "horizontal",

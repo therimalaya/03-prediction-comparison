@@ -48,3 +48,5 @@ auxiliary
 .Rproj.user
 scripts/robj-bak/
 app
+scripts/000-scratch.r scripts/001-scratch.Rmd scripts/001-scratch.html scripts/001-scratch.md
+templates/auto

@@ -21,14 +21,14 @@ pred_dta_min <- pred_dta %>%
 pred_mdl <- lm(cbind(Y1, Y2, Y3, Y4) ~ p * gamma * eta * relpos * Method,
                data = pred_dta_min)
 
-pred_aov <- map(paste0("Y", 1:4), function(y){
-    dta <- pred_dta_min %>%
-        select_at(y) %>%
-        rename_at(y, str_remove, "[0-9]")
-    mdl <- lm(Y ~ p * gamma * eta * relpos * Method, data = dta)
-    return(mdl)
-})
-pred_aov_anova <- lapply(pred_aov, anova)
+## pred_aov <- map(paste0("Y", 1:4), function(y){
+##     dta <- pred_dta_min %>%
+##         select_at(y) %>%
+##         rename_at(y, str_remove, "[0-9]")
+##     mdl <- lm(Y ~ p * gamma * eta * relpos * Method, data = dta)
+##     return(mdl)
+## })
+## pred_aov_anova <- lapply(pred_aov, anova)
 
 
 
@@ -36,28 +36,28 @@ pred_aov_anova <- lapply(pred_aov, anova)
 ## pred_eff_plot <- eff_plot("gamma:eta:Method", pred_mdl)
 ## Multivariate model with estimation error
 est_dta <- design_chr %>% mutate(Design = as.character(1:n())) %>%
-  mutate_at(vars(p, gamma, eta, R2), as.factor) %>%
+  mutate_at(vars(p, gamma, eta, relpos), as.factor) %>%
   right_join(est_error, by = "Design") %>%
   mutate_if(is.character, as.factor) %>%
   mutate_at("p", as.factor) %>%
   mutate(Response = paste0("Y", Response))
 
 est_dta_min <- est_dta %>%
-  group_by(p, gamma, eta, R2, Replication, Method, Response) %>%
+  group_by(p, gamma, eta, relpos, Replication, Method, Response) %>%
   summarize(Est_Error = min(Est_Error)) %>%
   spread(Response, Est_Error)
 
-est_mdl <- lm(cbind(Y1, Y2, Y3) ~ p * gamma * eta * R2 * Method,
+est_mdl <- lm(cbind(Y1, Y2, Y3, Y4) ~ p * gamma * eta * relpos * Method,
               data = est_dta_min)
 
-est_aov <- map(paste0("Y", 1:3), function(y){
-    dta <- est_dta_min %>%
-        select_at(y) %>%
-        rename_at(y, str_remove, "[0-9]")
-    mdl <- lm(Y ~ p * gamma * eta * R2 * Method, data = dta)
-    return(mdl)
-})
-est_aov_anova <- lapply(est_aov, anova)
+## est_aov <- map(paste0("Y", 1:3), function(y){
+##     dta <- est_dta_min %>%
+##         select_at(y) %>%
+##         rename_at(y, str_remove, "[0-9]")
+##     mdl <- lm(Y ~ p * gamma * eta * R2 * Method, data = dta)
+##     return(mdl)
+## })
+## est_aov_anova <- lapply(est_aov, anova)
 
 ## anova(est_mdl)
 ## est_eff_plot <- eff_plot("gamma:eta:Method", est_mdl,
