@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Comparison of Multivariate Estimation Methods</title>
   <meta name="description" content="Comparison of Multivariate Estimation Methods">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
   <meta property="og:title" content="Comparison of Multivariate Estimation Methods" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2018-12-11">
+<meta name="date" content="2018-12-17">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -59,41 +59,67 @@ div.abstract{
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -150,7 +176,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="prediction-methods" class="section level1">
 <h1>Prediction Methods</h1>
-<p>Partial least squares regression (PLS) and Principal component regression (PCR) has been used in many discipline such as chemometrics, echonometrics, bioinformatrics and machine learning where wide predictor matrices, i.e. <span class="math inline">\(p\)</span> (number or predictors) &gt; <span class="math inline">\(n\)</span> (number of observation) is common. These methods are popular in multivariate analysis specially for exploratory study and prediction. In the recent years, a concept of envelope introduced by <span class="citation">R. Dennis Cook, Li, and Chiaromonte (<a href="references.html#ref-Cook2007a">2007</a>)</span> based on reduction in regression model has been implemented for the development of envelope estimation in the subsequent papers. In this study, we will following estimation methods based on their prediction performance in different nature of data simulated with controlled properties.</p>
+<p>Partial least squares regression (PLS) and Principal component regression (PCR) has been used in many discipline such as chemometrics, econometrics, bioinformatics and machine learning where wide predictor matrices, i.e. <span class="math inline">\(p\)</span> (number or predictors) &gt; <span class="math inline">\(n\)</span> (number of observation) is common. These methods are popular in multivariate analysis specially for exploratory study and prediction. In the recent years, a concept of envelope introduced by <span class="citation">Cook, Li, and Chiaromonte (<a href="references.html#ref-Cook2007a">2007</a>)</span> based on reduction in regression model has been implemented for the development of envelope estimation in the subsequent papers. In this study, we will following estimation methods based on their prediction performance in different nature of data simulated with controlled properties.</p>
 <dl>
 <dt><em>Principal Components Regression (PCR):</em></dt>
 <dd>Principal components are the linear combination of predictor variables such that the transformation makes the new variables uncorrelated and the variation of the original dataset captured by them are ordered. In other words, each successive components captures maximum variation left by the preceding components in predictor variables <span class="citation">(Jolliffe <a href="references.html#ref-Jolliffe2002">2002</a>)</span>. Principal components regression uses these principal components to explain the variation in the response.
@@ -159,14 +185,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <dd>Two variant of PLS: PLS1 and PLS2 will be used for comparison. The first one consider individual response variables separately, i.e. each response are predicted with a single response model while the later consider all response variables together. In PLS regression the components are determined such as to maximize a covariance between response and predictor <span class="citation">(Jong <a href="references.html#ref-DeJong1993">1993</a>)</span>.
 </dd>
 <dt><em>Envelopes:</em></dt>
-<dd>Envelopes, introduced by <span class="citation">R. Dennis Cook, Li, and Chiaromonte (<a href="references.html#ref-Cook2007a">2007</a>)</span>, was first used as response envelope <span class="citation">(R Dennis Cook, Li, and Chiaromonte <a href="references.html#ref-cook2010envelope">2010</a>)</span> as a smallest subspace <span class="math inline">\(\mathcal{E}\)</span> in response space such that span of regression coefficients lies in that space. Since a multivariate linear regression model contains both relevant (material) and irrelevant (immaterial) variation in both response and predictor. The relevant part provides information while irrelevant part increases the estimative variation. The concept of envelope uses the relevant part for estimation while excluding the irrelevant part consequently gaining the efficiency of the model <span class="citation">(R. Dennis Cook and Zhang <a href="references.html#ref-cook2016algorithms">2016</a>)</span>.
+<dd>Envelopes, introduced by <span class="citation">Cook, Li, and Chiaromonte (<a href="references.html#ref-Cook2007a">2007</a>)</span>, was first used as response envelope <span class="citation">(Cook, Li, and Chiaromonte <a href="references.html#ref-cook2010envelope">2010</a>)</span> as a smallest subspace <span class="math inline">\(\mathcal{E}\)</span> in response space such that span of regression coefficients lies in that space. Since a multivariate linear regression model contains both relevant (material) and irrelevant (immaterial) variation in both response and predictor. The relevant part provides information while irrelevant part increases the estimative variation. The concept of envelope uses the relevant part for estimation while excluding the irrelevant part consequently gaining the efficiency of the model <span class="citation">(Cook and Zhang <a href="references.html#ref-cook2016algorithms">2016</a>)</span>.
 </dd>
-<dd>The concept was later extended to predictor space where the predictor envelope was defined <span class="citation">(R. D. Cook, Helland, and Su <a href="references.html#ref-cook2013envelopes">2013</a>)</span>. Further <span class="citation">R. Dennis Cook and Zhang (<a href="references.html#ref-cook2015simultaneous">2015</a>)</span> uses envelopes for joint reduction of the responses and predictors and argued to produce efficiency gains greater than using individual envelops either of the response and predictors. Here in this study we will also use predictor envelope (Xenv) and simultaneous envelope (Senv) for the comparison.
+<dd>The concept was later extended to predictor space where the predictor envelope was defined <span class="citation">(Cook, Helland, and Su <a href="references.html#ref-cook2013envelopes">2013</a>)</span>. Further <span class="citation">Cook and Zhang (<a href="references.html#ref-cook2015simultaneous">2015</a>)</span> uses envelopes for joint reduction of the responses and predictors and argued to produce efficiency gains greater than using individual envelops either of the response and predictors. Here in this study we will also use predictor envelope (Xenv) and simultaneous envelope (Senv) for the comparison.
 </dd>
 </dl>
 <div id="modification-in-envelope-estimation" class="section level2">
 <h2>Modification in envelope estimation</h2>
-<p>Since envelope estimators (Xenv and Senv) are based on maximum likelihood estimation (MLE), it fails to estimate on wide matrices, i.e. <span class="math inline">\(p &gt; n\)</span>. In order to incorporate these method in our comparison, we have used the principal components <span class="math inline">\((\mathbf{z})\)</span> of predictor variables <span class="math inline">\((\mathbf{x})\)</span> using required number of components for capturing 97.5% of the variation in it. The new set of variables <span class="math inline">\(\mathbf{z}\)</span> were used for envelope estimation. The regression coefficients <span class="math inline">\((\hat{\boldsymbol{\alpha}})\)</span> corresponding to these new variables <span class="math inline">\(\mathbf{z}\)</span> were transformed back to obtain coefficients for each predictor variables <span class="math inline">\((\boldsymbol{\hat{\beta}})\)</span> as,</p>
+<p>Since envelope estimators (Xenv and Senv) are based on maximum likelihood estimation (MLE), it fails to estimate on wide matrices, i.e. <span class="math inline">\(p &gt; n\)</span>. In order to incorporate these method in our comparison, we have used the principal components <span class="math inline">\((\mathbf{z})\)</span> of predictor variables <span class="math inline">\((\mathbf{x})\)</span> using required number of components for capturing 97.5% of the variation in it. The new set of variables <span class="math inline">\(\mathbf{z}\)</span> were used for envelope estimation. The regression coefficients <span class="math inline">\((\hat{\boldsymbol{\alpha}})\)</span> corresponding to these new variables <span class="math inline">\(\mathbf{z}\)</span> were transformed back to obtain coefficients for each predictor variables <span class="math inline">\((\boldsymbol{\hat{\beta}})\)</span> as,</p>
 <p><span class="math display">\[\hat{\boldsymbol{\beta}} = \mathbf{e}_k\hat{\boldsymbol{\alpha}_k}\]</span> where, <span class="math inline">\(\mathbf{e}_k\)</span> is the eigenvectors with <span class="math inline">\(k\)</span> number of components.</p>
 
 </div>
@@ -223,7 +249,7 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    var src = "";
+    var src = "true";
     if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(src))
       src = src.replace(/^https?:/, '');

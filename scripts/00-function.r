@@ -813,7 +813,7 @@ plot_relspace <- function(rect_height = c(0.6, 0.6), rect_width = c(0.2, 0.6), r
               hjust = 0, gp = gpar(cex = 1.6))
     ## Subtitle of the diagram ----
     grid.text(x = y_x0, y = 0.88, hjust = 0, gp = gpar(cex = 0.9),
-              label = "A concept behind reduction of regression model")
+              label = "A concept for reduction of regression models")
 
     ## Labels on top of the X and Y boxes ----
     grid.text(x = y_x0 + y_width/2,
@@ -831,13 +831,13 @@ plot_relspace <- function(rect_height = c(0.6, 0.6), rect_width = c(0.2, 0.6), r
     grid.text(x = y_x0 + y_width/2,
               y = y_y0 + y_height,
               vjust = 1.5,
-              label = "Redudent Y\ninformation",
+              label = "Redundant Y\ninformation",
               gp = gpar(cex = 0.8))
     grid.text(x = x_x0 + x_width/2 ,
               y = x_y0 + x_height,
               vjust = 1.5,
               gp = gpar(cex = 0.8),
-              label = "Irrelevant X-Space\n redudent information and noise")
+              label = "Irrelevant X-Space\n redundant information and noise")
 
     ## Big arror from X to Y to represent their connection ----
     big_arrow <- function(lw = 22, color = "grey40"){
