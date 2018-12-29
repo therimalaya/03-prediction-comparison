@@ -1,51 +1,57 @@
-
 # Exploration
 
-Before performing any statistical analysis, this section tries to explore some observed relationship between prediction error, simulation parameters and the prediction methods. Lets us start with visualizing the principal components of prediction errors together with some of these factors. Figure \@ref(fig:pca-scatter) plots first and second principal components of minimum prediciton prediction error for every replicates of all design. 
+The structure of final data for further analysis contains five factors including the prediction methods and prediction error computed using \@ref(eq:pred-error) corresponding to `r num_vec[unique(opts$m)]` responses using 0 to 10 predictor components for all 50 replications. Thus there are `r nrow(design)` (design) $\times$ `r length(mthds)` (methods) $\times$ 11 (number of components) $\times$ 50 (replications), i.e. `r nrow(design) * length(mthds) * 11 * 50` observations. Here the variables `Y1` to `Y4` corresponds to prediction error of response variables.
 
-HIGHLIGHTS:
-
-## PLOT: pca-scatter (Figure \@ref(fig:pca-scatter))
-
-- Clear indication of effect of position of relevant components on the methods. The effect seems more in case of low multicollinearity than in the case of high multicollinerity.
-- Envelope methods (`senv` and `xenv`) are less affected by the `relpos` factor.
-
-## PLOT: pca-density (Figure \@ref(fig:pca-density))
-
-- A similar interpretation as the previous plot can be made in the score density. In addition, higher correlation in response (controlled by `eta` parameter) yields in higher variation in the score of prediction error.
-- The plot in the right shows that the envelope methods are able to leverage the effect of correlation between the response while in case of others, the effect is similar in low and high correlation between the responses.
-
-```{r pca}
+```{r data-together}
 pred_dta <- design_chr %>%
     select_if(function(x) n_distinct(x) > 1) %>%
     mutate(Design = as.character(1:n())) %>%
     mutate_at(vars(p, gamma, relpos, eta), as.factor) %>%
     right_join(
-      pred_error %>% 
-        filter(!Method %in% c("Ridge", "Lasso")), 
-      by = "Design") %>%
+        pred_error %>%
+        filter(!Method %in% c("Ridge", "Lasso")),
+        by = "Design") %>%
     mutate_if(is.character, as.factor) %>%
     mutate_at("p", as.factor) %>%
     mutate(Response = paste0("Y", Response))
-
-pred_dta_spread <- pred_dta %>%
+pred_min <- pred_dta %>%
     group_by(p, relpos, eta, gamma, Method, Replication, Response) %>%
     summarize(Pred_Error = min(Pred_Error)) %>%
     spread(Response, Pred_Error)
-
-
-pc.a <- with(pred_dta_spread, prcomp(cbind(Y1, Y2, Y3, Y4)))
-expl_var <- explvar(pc.a) %>% round(2)
-pred_dta_with_pc <- bind_cols(pred_dta_spread, as.data.frame(scores(pc.a)[]))
-
+pred_spread_df <- pred_dta %>%
+    as.data.frame() %>%
+    select(-Design, -q) %>%
+    spread(Response, Pred_Error)
+comp_min <- pred_dta %>%
+    filter(!Method %in% c("Ridge", "Lasso")) %>%
+    group_by(p, relpos, eta, gamma, Method, Replication, Response) %>%
+    summarize(ncomp = Tuning_Param[which.min(Pred_Error)]) %>%
+    spread(Response, ncomp)
 ```
 
-```{r pca-scatter, fig.cap="Exploration of Principal Components of Prediction Errors.", out.width="100%", fig.width=7, dpi=150, fig.asp=0.5}
+Before performing any statistical analysis, this section tries to explore some observed relationship between the prediction error, the simulation parameters and the prediction methods. In the analysis onward for each factor combination and replication, we will use two datasets:
+
+- One with minimum prediction error that a method can give using arbitrary number of components (_Error Dataset_)
+- Another with the number of components that the method has used to give that minimum prediction error (_Component Dataset_)
+
+Figure \@ref(fig:pred-pca-hist-mthd-gamma-relpos) plots first two principal components of _error dataset_ using columns from `Y1` to `Y4`. Since higher prediction error results in high scores the plot shows that the PCR, PLS1 and PLS2 methods are influenced by two levels of position of relevant predictor components. When the position of relevant predictors are at positon `r opts$relpos[2]`, the eigenvalues corresponding to them becomes smaller making those designs difficult to model. However, the envelope methods have less influence of `relpos` in this regard. In addition, the effect of `gamma`, the level of multicollinearity, has less effect of all cases. This indicates that the methods are somewhat reobust to handle collinear predictors.
+
+```{r pca}
+pred_pca <- with(pred_min, prcomp(cbind(Y1, Y2, Y3, Y4)))
+expl_var <- explvar(pred_pca) %>% round(2)
+pred_dta_with_pc <- bind_cols(pred_min, as.data.frame(scores(pred_pca)[]))
+
+comp_pca <- with(comp_min, prcomp(cbind(Y1, Y2, Y3, Y4)))
+comp_expl_var <- explvar(comp_pca) %>% round(2)
+comp_dta_with_pc <- bind_cols(comp_min, as.data.frame(scores(comp_pca)[]))
+```
+
+```{r pca-scatter, fig.cap="Exploration of Principal Components of Prediction Errors.", out.width="100%", fig.width=7, dpi=150, fig.asp=0.5, eval=FALSE}
 ggplot(pred_dta_with_pc, aes(PC1, PC2, color = relpos)) +
   geom_hline(yintercept = 0, color = "darkgray", linetype = 2) +
   geom_vline(xintercept = 0, color = "darkgray", linetype = 2) +
   geom_point(alpha = 0.7, size = 1, shape = 21) +
-  facet_grid(gamma ~ Method, 
+  facet_grid(gamma ~ Method,
              labeller = labeller(eta = label_both, gamma = label_both)) +
   theme_grey(base_family = 'mono') +
   theme(legend.position = "bottom",
@@ -58,42 +64,51 @@ ggplot(pred_dta_with_pc, aes(PC1, PC2, color = relpos)) +
   scale_color_brewer(palette = "Set1")
 ```
 
-```{r pca-density, fig.cap="Density of Principal Components of Prediction Errors.", out.width="100%", fig.width=9, dpi=150, fig.asp=0.5}
-plt1 <- ggplot(pred_dta_with_pc, aes(PC1, fill = relpos, color = relpos)) +
-  geom_density(alpha = 0.5) +
-  facet_grid(eta ~ Method, labeller = labeller(eta = label_both)) +
+```{r, pred-pca-hist-mthd-gamma-relpos, message=FALSE, warning=FALSE}
+pc_density_plot <- function(dta) {
+  dta %>% 
+  ggplot(aes(PC1, eta, fill = relpos, color = relpos)) +
+  geom_density_ridges(
+      scale = 0.9,
+      alpha = 0.4, size = 0.25) +
+  geom_density_ridges(
+    scale = 0.95,
+    alpha = 0.2, size = 0.25,
+    stat = "binline", bins = 30) +
+  facet_grid(
+    gamma ~ Method, scales = 'free_x',
+    labeller = labeller(gamma = label_both)) +
   theme_grey(base_family = 'mono') +
-  theme(legend.position = "bottom",
-        strip.text = element_text(family = "mono")) +
+  theme(
+    legend.position = "bottom",
+    strip.text = element_text(family = "mono")) +
   labs(x = paste0("PC1(", expl_var[1], "%)")) +
   ggtitle("Density of PCA scores") +
   scale_x_continuous(breaks = scales::pretty_breaks(3)) +
   scale_color_brewer(palette = "Set1") +
   scale_fill_brewer(palette = "Set1")
-
-plt2 <- ggplot(pred_dta_with_pc, aes(PC1, fill = eta, color = eta)) +
-  geom_density(alpha = 0.5) +
-  facet_grid(relpos ~ Method, 
-             labeller = labeller(relpos = label_both, gamma = label_both)) +
-  theme_grey(base_family = 'mono') +
-  theme(legend.position = "bottom",
-        strip.text = element_text(family = "mono")) +
-  labs(x = paste0("PC1(", expl_var[1], "%)")) +
-  ggtitle("Density of PCA scores") +
-  scale_x_continuous(breaks = scales::pretty_breaks(3)) +
-  scale_color_brewer(palette = "Set1") +
-  scale_fill_brewer(palette = "Set1")
-
-gridExtra::grid.arrange(plt1, plt2, ncol = 2)
+}
+pc_density_plot(pred_dta_with_pc)
 ```
 
-<!-- NEED SOME EXPLORATION for NUMBER OF COMPONENTS -->
+- A similar interpretation as the previous plot can be made in the score density. In addition, higher correlation in response (controlled by `eta` parameter) yields in higher variation in the score of prediction error.
+- The plot in the right shows that the envelope methods are able to leverage the effect of correlation between the response while in case of others, the effect is similar in low and high correlation between the responses.
 
-```{r ncomp-data}
-comp_dta_spread <- pred_dta %>%
-    filter(!Method %in% c("Ridge", "Lasso")) %>%
-    group_by(p, relpos, eta, gamma, Method, Replication, Response) %>%
-    summarize(Ncomp = Tuning_Param[which.min(Pred_Error)]) %>%
-    spread(Response, Ncomp)
+```{r, pca-hist-mthd-eta, fig.asp = 0.5, out.width='100%', fig.cap="PC1 histogram subdivided by methods where each histogram are drawn on individual baseline for different levels of interaction between positon of relevant components and the level of multicollinearity.", eval=FALSE}
+ggplot(pred_dta_with_pc, aes(PC1, eta, fill = eta, color = eta)) +
+  geom_density_ridges(alpha = 0.4) +
+  facet_grid(. ~ Method, scales = 'free_x') +
+  theme_grey(base_family = 'mono') +
+  theme(legend.position = "bottom",
+        strip.text = element_text(family = "mono")) +
+  labs(x = paste0("PC1(", expl_var[1], "%)")) +
+  ggtitle("Density of PCA scores") +
+  scale_x_continuous(breaks = scales::pretty_breaks(3)) +
+  scale_color_brewer(palette = "Set1") +
+  scale_fill_brewer(palette = "Set1")
+```
+
+```{r, comp-pca-hist-mthd-gamma-relpos, message=FALSE, warning=FALSE}
+pc_density_plot(comp_dta_with_pc)
 ```
 

@@ -28,4 +28,5 @@ iterators
 parallel
 doParallel
 gridExtra
+ggridges
 bindrcpp

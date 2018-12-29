@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Comparison of Multivariate Estimation Methods</title>
-  <meta name="description" content="Comparison of Multivariate Estimation Methods">
+  <title>Comparison of Multivariate Prediction Methods</title>
+  <meta name="description" content="Comparison of Multivariate Prediction Methods">
   <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="Comparison of Multivariate Estimation Methods" />
+  <meta property="og:title" content="Comparison of Multivariate Prediction Methods" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="http://therimalaya.github.io/multivariate-comparison" />
   
@@ -17,14 +17,14 @@
   <meta name="github-repo" content="therimalaya/multivariate-comparison" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Comparison of Multivariate Estimation Methods" />
+  <meta name="twitter:title" content="Comparison of Multivariate Prediction Methods" />
   
   
   
 
 
 
-<meta name="date" content="2018-12-17">
+<meta name="date" content="2018-12-29">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -76,7 +76,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -145,10 +145,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="experimental-design.html"><a href="experimental-design.html"><i class="fa fa-check"></i>Experimental Design</a><ul>
 <li class="chapter" data-level="" data-path="experimental-design.html"><a href="experimental-design.html#basis-of-comparison"><i class="fa fa-check"></i>Basis of comparison</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="exploration.html"><a href="exploration.html"><i class="fa fa-check"></i>Exploration</a><ul>
-<li class="chapter" data-level="" data-path="exploration.html"><a href="exploration.html#plot-pca-scatter-figure-reffigpca-scatter"><i class="fa fa-check"></i>PLOT: pca-scatter (Figure @ref(fig:pca-scatter))</a></li>
-<li class="chapter" data-level="" data-path="exploration.html"><a href="exploration.html#plot-pca-density-figure-reffigpca-density"><i class="fa fa-check"></i>PLOT: pca-density (Figure @ref(fig:pca-density))</a></li>
-</ul></li>
+<li class="chapter" data-level="" data-path="exploration.html"><a href="exploration.html"><i class="fa fa-check"></i>Exploration</a></li>
 <li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html"><i class="fa fa-check"></i>Statistical Analysis</a><ul>
 <li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html#effect-analysis"><i class="fa fa-check"></i>Effect Analysis</a></li>
 <li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html#a-partial-least-square-analysis-on-the-model"><i class="fa fa-check"></i>A partial least square analysis on the model</a></li>
@@ -166,7 +163,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Comparison of Multivariate Estimation Methods</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Comparison of Multivariate Prediction Methods</a>
           </h1>
         </div>
 
@@ -199,7 +196,7 @@ where, <span class="math inline">\(\mathbf{y}\)</span> is the vector of predicti
 <div class="figure"><span id="fig:prediction-model-plot"></span>
 <img src="main_files/figure-html/prediction-model-plot-1.svg" alt="Pillai Statistic and F-value for the MANOVA model. The bar represents the F-value and the text labels are Pillai Statistic for corresponding factor." width="100%" />
 <p class="caption">
-Figure 7: Pillai Statistic and F-value for the MANOVA model. The bar represents the F-value and the text labels are Pillai Statistic for corresponding factor.
+Figure 5: Pillai Statistic and F-value for the MANOVA model. The bar represents the F-value and the text labels are Pillai Statistic for corresponding factor.
 </p>
 </div>
 <p>SOME OBSERVATIONS:</p>
@@ -214,31 +211,31 @@ Figure 7: Pillai Statistic and F-value for the MANOVA model. The bar represents 
 <h2>Effect Analysis</h2>
 <p>ON PREDICTION ERROR MODEL:</p>
 <ul>
-<li>It would be desirable to observe effect of these interactions. Figure <a href="statistical-analysis.html#fig:pred-eff-plots">8</a> (left) shows clear difference of <code>eta</code> for a given <code>relpos</code>. The plot also shows a clear difference in effect of methods on prediction error.</li>
-<li>Figure <a href="statistical-analysis.html#fig:pred-eff-plots">8</a> (right) shows effect of <code>gamma</code> for a given <code>method</code> and <code>eta</code>. It shows that these methods gives low prediction error is high multicollinear situations.</li>
+<li>It would be desirable to observe effect of these interactions. Figure <a href="statistical-analysis.html#fig:pred-eff-plots">6</a> (left) shows clear difference of <code>eta</code> for a given <code>relpos</code>. The plot also shows a clear difference in effect of methods on prediction error.</li>
+<li>Figure <a href="statistical-analysis.html#fig:pred-eff-plots">6</a> (right) shows effect of <code>gamma</code> for a given <code>method</code> and <code>eta</code>. It shows that these methods gives low prediction error is high multicollinear situations.</li>
 </ul>
 <div class="figure"><span id="fig:pred-eff-plots"></span>
 <img src="main_files/figure-html/pred-eff-plots-1.svg" alt="Effect plot of some interactions of the multivariate linear model" width="100%" />
 <p class="caption">
-Figure 8: Effect plot of some interactions of the multivariate linear model
+Figure 6: Effect plot of some interactions of the multivariate linear model
 </p>
 </div>
 <p>ON MINIMUM NUMBER OF COMPONENTS MODEL:</p>
 <ul>
-<li>Figure <a href="statistical-analysis.html#fig:comp-eff-plots">9</a> (left) shows that <code>xenv</code> has used minimum number of components followed by <code>senv</code> methods than others in order to get their minimum prediction error.</li>
+<li>Figure <a href="statistical-analysis.html#fig:comp-eff-plots">7</a> (left) shows that <code>xenv</code> has used minimum number of components followed by <code>senv</code> methods than others in order to get their minimum prediction error.</li>
 <li>The same figure also suggest that the minimum number of components used by <code>PLS1</code>, <code>PLS2</code> and <code>PCR</code> vary and has high effect of <code>eta</code>. The <code>senv</code> model which consider both X and Y correlation structure while estimating regression coefficients has smallest variation of number of components used for different <code>eta</code> parameters.</li>
-<li>Figure <a href="statistical-analysis.html#fig:comp-eff-plots">9</a> (right) shows that in case of low multicollinearity in the model <code>PLS</code> methods are used less number of components than <code>PCR</code>. This is expected since, <code>PLS</code> methods consider the covariance structure of predictor and response which <code>PCR</code> does not.</li>
+<li>Figure <a href="statistical-analysis.html#fig:comp-eff-plots">7</a> (right) shows that in case of low multicollinearity in the model <code>PLS</code> methods are used less number of components than <code>PCR</code>. This is expected since, <code>PLS</code> methods consider the covariance structure of predictor and response which <code>PCR</code> does not.</li>
 </ul>
 <div class="figure"><span id="fig:comp-eff-plots"></span>
 <img src="main_files/figure-html/comp-eff-plots-1.svg" alt="Effect plot of some interactions of the multivariate linear model" width="100%" />
 <p class="caption">
-Figure 9: Effect plot of some interactions of the multivariate linear model
+Figure 7: Effect plot of some interactions of the multivariate linear model
 </p>
 </div>
 <p>ADDITIONAL OBSERVATIONS:</p>
 <ul>
 <li>Place for variable selection</li>
-<li>A PLS model is used to cross-validate the effects of these factors. The loading plot for the same model but only with second order interaction is in figure <a href="statistical-analysis.html#fig:pls-loadings">10</a>.</li>
+<li>A PLS model is used to cross-validate the effects of these factors. The loading plot for the same model but only with second order interaction is in figure <a href="statistical-analysis.html#fig:pls-loadings">8</a>.</li>
 </ul>
 </div>
 <div id="a-partial-least-square-analysis-on-the-model" class="section level2">
@@ -247,12 +244,12 @@ Figure 9: Effect plot of some interactions of the multivariate linear model
 <div class="figure"><span id="fig:pls-loadings"></span>
 <img src="main_files/figure-html/pls-loadings-1.svg" alt="PLS Loadings (Component 1)" width="100%" />
 <p class="caption">
-Figure 10: PLS Loadings (Component 1)
+Figure 8: PLS Loadings (Component 1)
 </p>
 </div>
 <p>SOME OBSERVATIONS:</p>
 <ul>
-<li>The loadings for first components plotted in Figure-<a href="statistical-analysis.html#fig:pls-loadings">10</a> has clearly separated the envelope models from the rest by giving positive loading for them and negative for the rest.</li>
+<li>The loadings for first components plotted in Figure-<a href="statistical-analysis.html#fig:pls-loadings">8</a> has clearly separated the envelope models from the rest by giving positive loading for them and negative for the rest.</li>
 <li>This components has only explained 7.969 in prediction error model and 7.697 in minimum components model.</li>
 </ul>
 <p>CONFUSION:</p>

@@ -478,7 +478,7 @@ err_plot <- function(coef_error, error_type = "Prediction", ncomp = NULL,
         mutate(Response = paste0("Y", Response))
     names(dta)[grep("Error", names(dta))] <- "Error"
 
-    params <- if (is.null(params)) c('p', 'eta', 'gamma', 'R2') else params
+    params <- if (is.null(params)) c('p', 'eta', 'gamma', 'relpos') else params
     prms <- attr(coef_error[[1]], "Sim_Properties")
     lbls <- sapply(prms[params], list2chr)
 
@@ -534,7 +534,7 @@ err_plot <- function(coef_error, error_type = "Prediction", ncomp = NULL,
         theme(plot.subtitle = element_text(family = "mono"),
               legend.position = "bottom")
 
-    return(plt + expand_limits(y = 0))
+    return(plt)
 }
 
 ## Effect Plot ----
@@ -873,132 +873,132 @@ plot_relspace <- function(rect_height = c(0.6, 0.6), rect_width = c(0.2, 0.6), r
 }
 
 ## ---- Very IMPURE Functions ----
-## Coefficient Plot ----
-get_coef <- function(design, method) {
-    out <- map_df(design, function(dgn){
-        fname <- paste0("scripts/robj/coef-error/dgn-", dgn, "-", tolower(method), ".Rdata")
-        load(fname)
-        is_shrinkage <- method %in% c("Ridge", "Lasso")
-        out <- map_df(out, function(x) {
-            ret <- x[["coefficients"]]
-            ret <- gather(ret, Tuning_Param, Coef, -c(1:2, ncol(ret)))
-            ret <- ret %>%
-                mutate_at("Tuning_Param", if (is_shrinkage) as.numeric else get_integer) %>%
-                mutate_if(is.factor, as.character)
-        }, .id = "Replication")
-        return(out)
-    }, .id = "Design")
-    return(as_tibble(out))
-}
-coef_plot <- function(design, method, ncomp = ifelse(method == "Yenv", 3, 7), error_type = "prediction") {
-    ncomp <- if (length(ncomp) == 1) 1:ncomp
-    dgn <- as.character(design)
-    coef <- get_coef(dgn, method) %>%
-        mutate_at(vars(Predictor, Response), ~as.integer(get_integer(.x)))
-
-    is_shrinkage <- method %in% c("Ridge", "Lasso")
-    group_vars <- c("Design", "Predictor", "Response", "Est_type")
-
-    if (is_shrinkage) {
-        err_dta_chr <- switch(error_type, prediction = "pred_error", estimation = "est_error")
-        if (!exists(err_dta_chr)) stop("Load prediction and estimation error data frame first!")
-        err_dta <- get(err_dta_chr)
-        tp <- err_dta %>%
-            filter(Method == method, Design == dgn) %>%
-            group_by(Replication, Response) %>%
-            top_n(-1, wt = get(names(err_dta)[4])) %>%
-            ungroup() %>%
-            select(Tuning_Param) %>%
-            distinct() %>%
-            .[[1]]
-        dta <- coef %>%
-            filter(Tuning_Param %in% tp)
-    } else {
-        group_vars <- append(group_vars, "Tuning_Param")
-        dta <- coef %>%
-            filter(Tuning_Param %in% ncomp)
-    }
-
-    dta <- dta %>%
-        gather(Est_type, Est_value, True, Coef) %>%
-        group_by_at(group_vars) %>%
-        rename(Component = Tuning_Param)
-
-    dta_avg <- dta %>%
-        summarize_at("Est_value", mean) %>%
-        ungroup() %>%
-        mutate(Est_type = case_when(
-            Est_type == "True" ~ "True",
-            Est_type == "Coef" ~ "Estimated")
-        )
-
-    facet_form <- if (!is_shrinkage) {
-        as.formula(Response ~ Component)
-    } else {
-        as.formula(Response ~ .)
-    }
-    sub_title <- with(design_chr %>% slice(as.numeric(design)), {
-        paste0("p: ", p, ", relpos: ", relpos,
-               ", gamma: ", gamma, ", eta: ", eta, ", R2: ", R2)
-    })
-
-    plt <- dta_avg %>%
-        ggplot(aes(Predictor, Est_value, color = Est_type, group = Est_type)) +
-        geom_line() + geom_point(shape = 21, size = 0.7) +
-        theme(legend.position = "bottom",
-              plot.subtitle = element_text(family = "mono")) +
-        labs(y = "Coefficient", color = NULL) +
-        facet_grid(facet_form, labeller = label_both) +
-        ggtitle(paste("Coefficient plot:: ", paste("Design:", design, "Method:", method)),
-                sub_title)
-    return(plt)
-}
-## Error Plot ----
-get_err_plot <- function(design, method, flip_facet = FALSE) {
-    dgn <- as.character(design)
-    is_shrinkage <- tolower(method) %in% c("ridge", "lasso")
-    x_lab <- ifelse(!(is_shrinkage), "Number of Component", "Lambda")
-    dta <- est_error %>%
-        filter(Design == dgn, Method == method) %>%
-        left_join(pred_error %>% filter(Design == dgn, Method == method),
-                  by = c("Design", "Method", "Replication", "Tuning_Param", "Response")) %>%
-        rename(Prediction = Pred_Error, Estimation = Est_Error) %>%
-        gather(Error_type, Error, Estimation, Prediction) %>%
-        mutate(Response = factor(Response))
-    group_vars <- c("Design", "Method", "Response", "Error_type")
-    if (!is_shrinkage) group_vars <- append(group_vars, "Tuning_Param")
-    dta_avg <- dta %>%
-        group_by(Design, Method, Response, Tuning_Param, Error_type) %>%
-        summarize(Error = mean(Error))
-    dta_min <- dta_avg %>%
-        group_by(Design, Method, Response, Error_type) %>%
-        filter(Error == min(Error)) %>%
-        arrange(Error) %>%
-        mutate(label = paste0("Y", Response, ": ", round(Error, 3)))
-    dgn_lbl <- design_chr %>% slice(design) %>%
-        select(p, eta, gamma, R2) %>% as.data.frame()
-    dgn_lbl <- paste(paste(names(dgn_lbl), dgn_lbl, sep = ": "), collapse = " ")
-    facet_formula <- if (flip_facet) as.formula(. ~ Error_type) else as.formula(Error_type ~ .)
-    v_just <- rep(seq(1, design_chr$m[design] * 2, 2), 2)
-    plt <- dta_avg %>%
-        ggplot(aes(Tuning_Param, Error, color = Response, group = Response)) +
-        facet_grid(facet_formula, scales = 'free_y') +
-        geom_line() +
-        labs(x = x_lab, color = "Response") +
-        theme(legend.position = "bottom",
-              plot.subtitle = element_text(family = "mono")) +
-        ggtitle(paste0("Estimation and Perediction Error: ", method),
-                subtitle = dgn_lbl)
-    if (!is_shrinkage) {
-        plt <- plt + geom_point()  +
-            scale_x_continuous(breaks = 0:10)
-    }
-    plt <- plt +
-        geom_text(data = dta_min, x = Inf, y = Inf, show.legend = FALSE,
-                  aes(label = label, color = Response),
-                  inherit.aes = FALSE, hjust = 1, vjust = v_just) +
-        geom_point(data = dta_min, fill = "white", shape = 21)
-    return(plt)
-    ## Relevant Space Plot
-    ## Estimation Error Plot ----------------------
-}
+# ## Coefficient Plot ----
+# get_coef <- function(design, method) {
+#     out <- map_df(design, function(dgn){
+#         fname <- paste0("scripts/robj/coef-error/dgn-", dgn, "-", tolower(method), ".Rdata")
+#         load(fname)
+#         is_shrinkage <- method %in% c("Ridge", "Lasso")
+#         out <- map_df(out, function(x) {
+#             ret <- x[["coefficients"]]
+#             ret <- gather(ret, Tuning_Param, Coef, -c(1:2, ncol(ret)))
+#             ret <- ret %>%
+#                 mutate_at("Tuning_Param", if (is_shrinkage) as.numeric else get_integer) %>%
+#                 mutate_if(is.factor, as.character)
+#         }, .id = "Replication")
+#         return(out)
+#     }, .id = "Design")
+#     return(as_tibble(out))
+# }
+# coef_plot <- function(design, method, ncomp = ifelse(method == "Yenv", 3, 7), error_type = "prediction") {
+#     ncomp <- if (length(ncomp) == 1) 1:ncomp
+#     dgn <- as.character(design)
+#     coef <- get_coef(dgn, method) %>%
+#         mutate_at(vars(Predictor, Response), ~as.integer(get_integer(.x)))
+# 
+#     is_shrinkage <- method %in% c("Ridge", "Lasso")
+#     group_vars <- c("Design", "Predictor", "Response", "Est_type")
+# 
+#     if (is_shrinkage) {
+#         err_dta_chr <- switch(error_type, prediction = "pred_error", estimation = "est_error")
+#         if (!exists(err_dta_chr)) stop("Load prediction and estimation error data frame first!")
+#         err_dta <- get(err_dta_chr)
+#         tp <- err_dta %>%
+#             filter(Method == method, Design == dgn) %>%
+#             group_by(Replication, Response) %>%
+#             top_n(-1, wt = get(names(err_dta)[4])) %>%
+#             ungroup() %>%
+#             select(Tuning_Param) %>%
+#             distinct() %>%
+#             .[[1]]
+#         dta <- coef %>%
+#             filter(Tuning_Param %in% tp)
+#     } else {
+#         group_vars <- append(group_vars, "Tuning_Param")
+#         dta <- coef %>%
+#             filter(Tuning_Param %in% ncomp)
+#     }
+# 
+#     dta <- dta %>%
+#         gather(Est_type, Est_value, True, Coef) %>%
+#         group_by_at(group_vars) %>%
+#         rename(Component = Tuning_Param)
+# 
+#     dta_avg <- dta %>%
+#         summarize_at("Est_value", mean) %>%
+#         ungroup() %>%
+#         mutate(Est_type = case_when(
+#             Est_type == "True" ~ "True",
+#             Est_type == "Coef" ~ "Estimated")
+#         )
+# 
+#     facet_form <- if (!is_shrinkage) {
+#         as.formula(Response ~ Component)
+#     } else {
+#         as.formula(Response ~ .)
+#     }
+#     sub_title <- with(design_chr %>% slice(as.numeric(design)), {
+#         paste0("p: ", p, ", relpos: ", relpos,
+#                ", gamma: ", gamma, ", eta: ", eta, ", R2: ", R2)
+#     })
+# 
+#     plt <- dta_avg %>%
+#         ggplot(aes(Predictor, Est_value, color = Est_type, group = Est_type)) +
+#         geom_line() + geom_point(shape = 21, size = 0.7) +
+#         theme(legend.position = "bottom",
+#               plot.subtitle = element_text(family = "mono")) +
+#         labs(y = "Coefficient", color = NULL) +
+#         facet_grid(facet_form, labeller = label_both) +
+#         ggtitle(paste("Coefficient plot:: ", paste("Design:", design, "Method:", method)),
+#                 sub_title)
+#     return(plt)
+# }
+# ## Error Plot ----
+# get_err_plot <- function(design, method, flip_facet = FALSE) {
+#     dgn <- as.character(design)
+#     is_shrinkage <- tolower(method) %in% c("ridge", "lasso")
+#     x_lab <- ifelse(!(is_shrinkage), "Number of Component", "Lambda")
+#     dta <- est_error %>%
+#         filter(Design == dgn, Method == method) %>%
+#         left_join(pred_error %>% filter(Design == dgn, Method == method),
+#                   by = c("Design", "Method", "Replication", "Tuning_Param", "Response")) %>%
+#         rename(Prediction = Pred_Error, Estimation = Est_Error) %>%
+#         gather(Error_type, Error, Estimation, Prediction) %>%
+#         mutate(Response = factor(Response))
+#     group_vars <- c("Design", "Method", "Response", "Error_type")
+#     if (!is_shrinkage) group_vars <- append(group_vars, "Tuning_Param")
+#     dta_avg <- dta %>%
+#         group_by(Design, Method, Response, Tuning_Param, Error_type) %>%
+#         summarize(Error = mean(Error))
+#     dta_min <- dta_avg %>%
+#         group_by(Design, Method, Response, Error_type) %>%
+#         filter(Error == min(Error)) %>%
+#         arrange(Error) %>%
+#         mutate(label = paste0("Y", Response, ": ", round(Error, 3)))
+#     dgn_lbl <- design_chr %>% slice(design) %>%
+#         select(p, eta, gamma, R2) %>% as.data.frame()
+#     dgn_lbl <- paste(paste(names(dgn_lbl), dgn_lbl, sep = ": "), collapse = " ")
+#     facet_formula <- if (flip_facet) as.formula(. ~ Error_type) else as.formula(Error_type ~ .)
+#     v_just <- rep(seq(1, design_chr$m[design] * 2, 2), 2)
+#     plt <- dta_avg %>%
+#         ggplot(aes(Tuning_Param, Error, color = Response, group = Response)) +
+#         facet_grid(facet_formula, scales = 'free_y') +
+#         geom_line() +
+#         labs(x = x_lab, color = "Response") +
+#         theme(legend.position = "bottom",
+#               plot.subtitle = element_text(family = "mono")) +
+#         ggtitle(paste0("Estimation and Perediction Error: ", method),
+#                 subtitle = dgn_lbl)
+#     if (!is_shrinkage) {
+#         plt <- plt + geom_point()  +
+#             scale_x_continuous(breaks = 0:10)
+#     }
+#     plt <- plt +
+#         geom_text(data = dta_min, x = Inf, y = Inf, show.legend = FALSE,
+#                   aes(label = label, color = Response),
+#                   inherit.aes = FALSE, hjust = 1, vjust = v_just) +
+#         geom_point(data = dta_min, fill = "white", shape = 21)
+#     return(plt)
+#     ## Relevant Space Plot
+#     ## Estimation Error Plot ----------------------
+# }

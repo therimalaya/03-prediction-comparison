@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Comparison of Multivariate Estimation Methods</title>
-  <meta name="description" content="Comparison of Multivariate Estimation Methods">
+  <title>Comparison of Multivariate Prediction Methods</title>
+  <meta name="description" content="Comparison of Multivariate Prediction Methods">
   <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="Comparison of Multivariate Estimation Methods" />
+  <meta property="og:title" content="Comparison of Multivariate Prediction Methods" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="http://therimalaya.github.io/multivariate-comparison" />
   
@@ -17,14 +17,14 @@
   <meta name="github-repo" content="therimalaya/multivariate-comparison" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Comparison of Multivariate Estimation Methods" />
+  <meta name="twitter:title" content="Comparison of Multivariate Prediction Methods" />
   
   
   
 
 
 
-<meta name="date" content="2018-12-17">
+<meta name="date" content="2018-12-29">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -76,7 +76,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -145,10 +145,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="experimental-design.html"><a href="experimental-design.html"><i class="fa fa-check"></i>Experimental Design</a><ul>
 <li class="chapter" data-level="" data-path="experimental-design.html"><a href="experimental-design.html#basis-of-comparison"><i class="fa fa-check"></i>Basis of comparison</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="exploration.html"><a href="exploration.html"><i class="fa fa-check"></i>Exploration</a><ul>
-<li class="chapter" data-level="" data-path="exploration.html"><a href="exploration.html#plot-pca-scatter-figure-reffigpca-scatter"><i class="fa fa-check"></i>PLOT: pca-scatter (Figure @ref(fig:pca-scatter))</a></li>
-<li class="chapter" data-level="" data-path="exploration.html"><a href="exploration.html#plot-pca-density-figure-reffigpca-density"><i class="fa fa-check"></i>PLOT: pca-density (Figure @ref(fig:pca-density))</a></li>
-</ul></li>
+<li class="chapter" data-level="" data-path="exploration.html"><a href="exploration.html"><i class="fa fa-check"></i>Exploration</a></li>
 <li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html"><i class="fa fa-check"></i>Statistical Analysis</a><ul>
 <li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html#effect-analysis"><i class="fa fa-check"></i>Effect Analysis</a></li>
 <li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html#a-partial-least-square-analysis-on-the-model"><i class="fa fa-check"></i>A partial least square analysis on the model</a></li>
@@ -166,7 +163,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Comparison of Multivariate Estimation Methods</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Comparison of Multivariate Prediction Methods</a>
           </h1>
         </div>
 
@@ -175,7 +172,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="header">
-<h1 class="title">Comparison of Multivariate Estimation Methods</h1>
+<h1 class="title">Comparison of Multivariate Prediction Methods</h1>
 <p class="author"><em>Raju Rimal</em></p>
 <address class="author_afil">
 KBM<br><a class="author_email" href="mailto:#"><a href="mailto:raju.rimal@nmbu.no" class="email">raju.rimal@nmbu.no</a></a>
@@ -188,10 +185,10 @@ KBM<br><a class="author_email" href="mailto:#"><a href="mailto:trygve.almoy@nmbu
 <address class="author_afil">
 NMBU<br><a class="author_email" href="mailto:#"><a href="mailto:solve.sabo@nmbu.no" class="email">solve.sabo@nmbu.no</a></a>
 </address>
-<p class="date"><em>2018-12-17</em></p>
+<p class="date"><em>2018-12-29</em></p>
 <div class="abstract">
 <p class="abstract">Abstract</p>
-While Data science is battling to extract information from the enormous explosion of data, many estimators and algorithms are being developed for better prediction. Researchers and data scientists often introduce new methods and evaluate them based on various aspects of data. <del>However, these studies seldom study the impact of/on multiple response model.</del> This study compares some newly-developed (envelope estimation) and well-established (PLS, PCR) prediction methods based on simulated data specifically designed by varying properties such as multicollinearity, correlation between multiple responses and amount of information content in predictor variables. This study aims to give some insight on these methods and help researcher to understand and use them for further study.
+While Data science is battling to extract information from the enormous explosion of data, many estimators and algorithms are being developed for better prediction. Researchers and data scientists often introduce new methods and evaluate them based on various aspects of data. However, studies on the impact of/on model with multiple response model is limited. This study compares some newly-developed (envelope) and well-established (PLS, PCR) prediction methods based on simulated data specifically designed by varying properties such as multicollinearity, correlation between multiple responses and amount of information content in predictor variables. This study aims to give some insight on these methods and help researcher to understand and use them for further study.
 </div>
 </div>
 <div id="introduction" class="section level1">

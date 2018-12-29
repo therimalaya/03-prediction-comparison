@@ -1,5 +1,5 @@
 bookdown::gitbook:
-  dev: svglite
+  dev: svg
   number_sections: no
   css: style.css
   citation_package: natbib
@@ -35,5 +35,6 @@ bookdown::pdf_book:
   keep_tex: yes
   dev: "pdf"
 bookdown::epub_book:
-  dev: svglite
+  dev: svg
+  
 # bookdown::word_document2: default

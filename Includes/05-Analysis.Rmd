@@ -44,12 +44,12 @@ Prediction methods also varies on number of components they use to get the minim
 ## Full Prediction Model
 pred_mdl <- lm(
   formula = cbind(Y1, Y2, Y3, Y4) ~ (p + gamma + eta + relpos + Method) ^ 3,
-  data = pred_dta_spread)
+  data = pred_min)
 
 ## Full Component Model
 comp_mdl <- lm(
   formula = cbind(Y1, Y2, Y3, Y4) ~ (p + gamma + eta + relpos + Method) ^ 3,
-  data = comp_dta_spread)
+  data = comp_min)
 
 ## Anova for Full Prediction Model
 pred_aov <- anova(pred_mdl) %>%
@@ -165,10 +165,10 @@ ADDITIONAL OBSERVATIONS:
 ```{r pls-model}
 pred_pls_mdl <- plsr(
   formula = cbind(Y1, Y2, Y3, Y4) ~ (p + gamma + eta + relpos + Method) ^ 2, 
-  data = pred_dta_spread, validation = "CV", segments = 10, scale = TRUE)
+  data = pred_min, validation = "CV", segments = 10, scale = TRUE)
 comp_pls_mdl <- plsr(
   formula = cbind(Y1, Y2, Y3, Y4) ~ (p + gamma + eta + relpos + Method) ^ 2, 
-  data = comp_dta_spread, validation = "CV", segments = 10, scale = TRUE)
+  data = comp_min, validation = "CV", segments = 10, scale = TRUE)
 ```
 
 ```{r, fig.asp=1, fig.width=8}

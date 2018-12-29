@@ -5,7 +5,8 @@ source("scripts/00-function.r")
 ## ----LoadingPackages--------------------------------------------
 ## Load Required packages
 pkgs <- c("pls", "Renvlp", "simrel", "pander", "tidyverse", "ggpubr",
-          "reshape2", "glmnet", "doParallel", "parallel", "gridExtra")
+          "reshape2", "glmnet", "doParallel", "parallel", "gridExtra",
+          "ggridges")
 for (pkg in pkgs) {
   require(pkg, quietly = T, warn.conflicts = F, character.only = T)
 }

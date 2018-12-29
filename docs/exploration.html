@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Comparison of Multivariate Estimation Methods</title>
-  <meta name="description" content="Comparison of Multivariate Estimation Methods">
+  <title>Comparison of Multivariate Prediction Methods</title>
+  <meta name="description" content="Comparison of Multivariate Prediction Methods">
   <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="Comparison of Multivariate Estimation Methods" />
+  <meta property="og:title" content="Comparison of Multivariate Prediction Methods" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="http://therimalaya.github.io/multivariate-comparison" />
   
@@ -17,14 +17,14 @@
   <meta name="github-repo" content="therimalaya/multivariate-comparison" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Comparison of Multivariate Estimation Methods" />
+  <meta name="twitter:title" content="Comparison of Multivariate Prediction Methods" />
   
   
   
 
 
 
-<meta name="date" content="2018-12-17">
+<meta name="date" content="2018-12-29">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -76,7 +76,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -145,10 +145,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="experimental-design.html"><a href="experimental-design.html"><i class="fa fa-check"></i>Experimental Design</a><ul>
 <li class="chapter" data-level="" data-path="experimental-design.html"><a href="experimental-design.html#basis-of-comparison"><i class="fa fa-check"></i>Basis of comparison</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="exploration.html"><a href="exploration.html"><i class="fa fa-check"></i>Exploration</a><ul>
-<li class="chapter" data-level="" data-path="exploration.html"><a href="exploration.html#plot-pca-scatter-figure-reffigpca-scatter"><i class="fa fa-check"></i>PLOT: pca-scatter (Figure @ref(fig:pca-scatter))</a></li>
-<li class="chapter" data-level="" data-path="exploration.html"><a href="exploration.html#plot-pca-density-figure-reffigpca-density"><i class="fa fa-check"></i>PLOT: pca-density (Figure @ref(fig:pca-density))</a></li>
-</ul></li>
+<li class="chapter" data-level="" data-path="exploration.html"><a href="exploration.html"><i class="fa fa-check"></i>Exploration</a></li>
 <li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html"><i class="fa fa-check"></i>Statistical Analysis</a><ul>
 <li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html#effect-analysis"><i class="fa fa-check"></i>Effect Analysis</a></li>
 <li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html#a-partial-least-square-analysis-on-the-model"><i class="fa fa-check"></i>A partial least square analysis on the model</a></li>
@@ -166,7 +163,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Comparison of Multivariate Estimation Methods</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Comparison of Multivariate Prediction Methods</a>
           </h1>
         </div>
 
@@ -176,36 +173,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="exploration" class="section level1">
 <h1>Exploration</h1>
-<p>Before performing any statistical analysis, this section tries to explore some observed relationship between prediction error, simulation parameters and the prediction methods. Lets us start with visualizing the principal components of prediction errors together with some of these factors. Figure <a href="exploration.html#fig:pca-scatter">5</a> plots first and second principal components of minimum prediciton prediction error for every replicates of all design.</p>
-<p>HIGHLIGHTS:</p>
-<div id="plot-pca-scatter-figure-reffigpca-scatter" class="section level2">
-<h2>PLOT: pca-scatter (Figure <a href="exploration.html#fig:pca-scatter">5</a>)</h2>
+<p>The structure of final data for further analysis contains five factors including the prediction methods and prediction error computed using <a href="experimental-design.html#eq:pred-error">(7)</a> corresponding to four responses using 0 to 10 predictor components for all 50 replications. Thus there are 32 (design) <span class="math inline">\(\times\)</span> 5 (methods) <span class="math inline">\(\times\)</span> 11 (number of components) <span class="math inline">\(\times\)</span> 50 (replications), i.e. 88000 observations. Here the variables <code>Y1</code> to <code>Y4</code> corresponds to prediction error of response variables.</p>
+<p>Before performing any statistical analysis, this section tries to explore some observed relationship between the prediction error, the simulation parameters and the prediction methods. In the analysis onward for each factor combination and replication, we will use two datasets:</p>
 <ul>
-<li>Clear indication of effect of position of relevant components on the methods. The effect seems more in case of low multicollinearity than in the case of high multicollinerity.</li>
-<li>Envelope methods (<code>senv</code> and <code>xenv</code>) are less affected by the <code>relpos</code> factor.</li>
+<li>One with minimum prediction error that a method can give using arbitrary number of components (<em>Error Dataset</em>)</li>
+<li>Another with the number of components that the method has used to give that minimum prediction error (<em>Component Dataset</em>)</li>
 </ul>
-</div>
-<div id="plot-pca-density-figure-reffigpca-density" class="section level2">
-<h2>PLOT: pca-density (Figure <a href="exploration.html#fig:pca-density">6</a>)</h2>
+<p>Figure <a href="#fig:pred-pca-hist-mthd-gamma-relpos"><strong>??</strong></a> plots first two principal components of <em>error dataset</em> using columns from <code>Y1</code> to <code>Y4</code>. Since higher prediction error results in high scores the plot shows that the PCR, PLS1 and PLS2 methods are influenced by two levels of position of relevant predictor components. When the position of relevant predictors are at positon 5, 6, 7, 8, the eigenvalues corresponding to them becomes smaller making those designs difficult to model. However, the envelope methods have less influence of <code>relpos</code> in this regard. In addition, the effect of <code>gamma</code>, the level of multicollinearity, has less effect of all cases. This indicates that the methods are somewhat reobust to handle collinear predictors.</p>
+<p><img src="main_files/figure-html/pred-pca-hist-mthd-gamma-relpos-1.svg" width="100%" /></p>
 <ul>
 <li>A similar interpretation as the previous plot can be made in the score density. In addition, higher correlation in response (controlled by <code>eta</code> parameter) yields in higher variation in the score of prediction error.</li>
 <li>The plot in the right shows that the envelope methods are able to leverage the effect of correlation between the response while in case of others, the effect is similar in low and high correlation between the responses.</li>
 </ul>
-<div class="figure"><span id="fig:pca-scatter"></span>
-<img src="main_files/figure-html/pca-scatter-1.svg" alt="Exploration of Principal Components of Prediction Errors." width="100%" />
-<p class="caption">
-Figure 5: Exploration of Principal Components of Prediction Errors.
-</p>
-</div>
-<div class="figure"><span id="fig:pca-density"></span>
-<img src="main_files/figure-html/pca-density-1.svg" alt="Density of Principal Components of Prediction Errors." width="100%" />
-<p class="caption">
-Figure 6: Density of Principal Components of Prediction Errors.
-</p>
-</div>
-<!-- NEED SOME EXPLORATION for NUMBER OF COMPONENTS -->
+<p><img src="main_files/figure-html/comp-pca-hist-mthd-gamma-relpos-1.svg" width="100%" /></p>
 
-</div>
 </div>
             </section>
 

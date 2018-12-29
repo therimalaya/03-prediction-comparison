@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Comparison of Multivariate Estimation Methods</title>
-  <meta name="description" content="Comparison of Multivariate Estimation Methods">
+  <title>Comparison of Multivariate Prediction Methods</title>
+  <meta name="description" content="Comparison of Multivariate Prediction Methods">
   <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="Comparison of Multivariate Estimation Methods" />
+  <meta property="og:title" content="Comparison of Multivariate Prediction Methods" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="http://therimalaya.github.io/multivariate-comparison" />
   
@@ -17,14 +17,14 @@
   <meta name="github-repo" content="therimalaya/multivariate-comparison" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Comparison of Multivariate Estimation Methods" />
+  <meta name="twitter:title" content="Comparison of Multivariate Prediction Methods" />
   
   
   
 
 
 
-<meta name="date" content="2018-12-17">
+<meta name="date" content="2018-12-29">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -76,7 +76,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -145,10 +145,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="experimental-design.html"><a href="experimental-design.html"><i class="fa fa-check"></i>Experimental Design</a><ul>
 <li class="chapter" data-level="" data-path="experimental-design.html"><a href="experimental-design.html#basis-of-comparison"><i class="fa fa-check"></i>Basis of comparison</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="exploration.html"><a href="exploration.html"><i class="fa fa-check"></i>Exploration</a><ul>
-<li class="chapter" data-level="" data-path="exploration.html"><a href="exploration.html#plot-pca-scatter-figure-reffigpca-scatter"><i class="fa fa-check"></i>PLOT: pca-scatter (Figure @ref(fig:pca-scatter))</a></li>
-<li class="chapter" data-level="" data-path="exploration.html"><a href="exploration.html#plot-pca-density-figure-reffigpca-density"><i class="fa fa-check"></i>PLOT: pca-density (Figure @ref(fig:pca-density))</a></li>
-</ul></li>
+<li class="chapter" data-level="" data-path="exploration.html"><a href="exploration.html"><i class="fa fa-check"></i>Exploration</a></li>
 <li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html"><i class="fa fa-check"></i>Statistical Analysis</a><ul>
 <li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html#effect-analysis"><i class="fa fa-check"></i>Effect Analysis</a></li>
 <li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html#a-partial-least-square-analysis-on-the-model"><i class="fa fa-check"></i>A partial least square analysis on the model</a></li>
@@ -166,7 +163,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Comparison of Multivariate Estimation Methods</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Comparison of Multivariate Prediction Methods</a>
           </h1>
         </div>
 
@@ -180,7 +177,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><span class="math display" id="eq:model-1">\[\begin{equation}
   \begin{bmatrix}
     \mathbf{y} \\ \mathbf{x}
-  \end{bmatrix} \sim \mathbf{N}
+  \end{bmatrix} \sim \mathcal{N}
   \left(
     \begin{bmatrix}
       \boldsymbol{\mu}_y \\
@@ -195,28 +192,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 \end{equation}\]</span></p>
 <p>where, <span class="math inline">\(\boldsymbol{\Sigma}_{yy}\)</span> and <span class="math inline">\(\boldsymbol{\Sigma}_{xx}\)</span> are the variance-covariance matrices of <span class="math inline">\(\mathbf{y}\)</span> and <span class="math inline">\(\mathbf{x}\)</span>, respectively, <span class="math inline">\(\boldsymbol{\Sigma}_{xy}\)</span> is the covariance between <span class="math inline">\(\mathbf{x}\)</span> and <span class="math inline">\(\mathbf{y}\)</span> and <span class="math inline">\(\boldsymbol{\mu}_y\)</span> and <span class="math inline">\(\boldsymbol{\mu}_x\)</span> are mean vectors of <span class="math inline">\(\mathbf{x}\)</span> and <span class="math inline">\(\mathbf{y}\)</span>, respectively. A linear model based on <a href="simulation-model.html#eq:model-1">(1)</a> is,</p>
 <p><span class="math display" id="eq:reg-model-1">\[\begin{equation}
-\mathbf{y} = \mu_y + \boldsymbol{\beta}^t(\mathbf{x} - \mu_x) + \epsilon
+\mathbf{y} = \boldsymbol{\mu}_y + 
+  \boldsymbol{\beta}^t(\mathbf{x} - \boldsymbol{\mu_x}) + 
+  \boldsymbol{\epsilon}
 \tag{2}
 \end{equation}\]</span>
-where, <span class="math inline">\(\underset{m\times p}{\boldsymbol{\beta}^t}\)</span> is a matrix of regression coefficients and <span class="math inline">\(\epsilon\)</span> is an error term such that <span class="math inline">\(\epsilon \sim N(0, \Sigma_{y|x})\)</span></p>
-<p>In a casual relationship model like <a href="simulation-model.html#eq:reg-model-1">(2)</a>, we assume that the variation in response <span class="math inline">\(\mathbf{y}\)</span> is caused by the predictor <span class="math inline">\(\mathbf{x}\)</span>. However, in many situations, only a subspace of the predictor space is relevant for the variation in the response
-<span class="math inline">\(\mathbf{y}\)</span>. This space can be referred to as the relevant space of <span class="math inline">\(\mathbf{x}\)</span> and the rest as irrelevant space. In the similar manner, we can assume that a subset of the response space contains the information that the predictors can explain for a given model (Figure-<a href="simulation-model.html#fig:relevant-space">1</a>). <span class="citation">Cook, Li, and Chiaromonte (<a href="references.html#ref-cook2010envelope">2010</a>)</span> and <span class="citation">Cook and Zhang (<a href="references.html#ref-cook2015simultaneous">2015</a>)</span> have referred to the relevant space as material space, and the irrelevant space as immaterial space.</p>
+where, <span class="math inline">\(\underset{m\times p}{\boldsymbol{\beta}^t}\)</span> is a matrix of regression
+coefficients and <span class="math inline">\(\boldsymbol{\epsilon}\)</span> is an error term such that
+<span class="math inline">\(\boldsymbol{\epsilon} \sim \mathcal{N}(0, \boldsymbol{\Sigma}_{y|x})\)</span></p>
+<p>In a model like <a href="simulation-model.html#eq:reg-model-1">(2)</a>, we assume that the variation in response <span class="math inline">\(\mathbf{y}\)</span> is partly explained by the predictor <span class="math inline">\(\mathbf{x}\)</span>. However, in many situations, only a subspace of the predictor space is relevant for the variation in the response <span class="math inline">\(\mathbf{y}\)</span>. This space can be referred to as the relevant space of <span class="math inline">\(\mathbf{x}\)</span> and the rest as irrelevant space. In the similar manner, we can assume that a subset of the response space contains the information that the predictors can explain for a given model (Figure-<a href="simulation-model.html#fig:relevant-space">1</a>). <span class="citation">Cook, Li, and Chiaromonte (<a href="references.html#ref-cook2010envelope">2010</a>)</span> and <span class="citation">Cook and Zhang (<a href="references.html#ref-cook2015simultaneous">2015</a>)</span> have referred to the relevant space as material space, and the irrelevant space as immaterial space.</p>
 <div class="figure" style="text-align: center"><span id="fig:relevant-space"></span>
 <img src="main_files/figure-html/relevant-space-1.svg" alt="Relevant space in a regression model" width="80%" />
 <p class="caption">
 Figure 1: Relevant space in a regression model
 </p>
 </div>
-<p>With an orthogonal transformation of <span class="math inline">\(\mathbf{y}\)</span> and <span class="math inline">\(\mathbf{x}\)</span> to latent variables <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(\mathbf{z}\)</span>, respectively, by <span class="math inline">\(\mathbf{w=Qy}\)</span> and <span class="math inline">\(\mathbf{z = Rx}\)</span>, where <span class="math inline">\(\mathbf{Q}\)</span> and <span class="math inline">\(\mathbf{R}\)</span> being orthogonal rotation matrices, an equivalent model to <a href="simulation-model.html#eq:reg-model-1">(2)</a> in terms of the latent variables can be written as,</p>
+<p>With an orthogonal transformation of <span class="math inline">\(\mathbf{y}\)</span> and <span class="math inline">\(\mathbf{x}\)</span> to latent variables <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(\mathbf{z}\)</span>, respectively, by <span class="math inline">\(\mathbf{w=Qy}\)</span> and <span class="math inline">\(\mathbf{z = Rx}\)</span>, where <span class="math inline">\(\mathbf{Q}\)</span> and <span class="math inline">\(\mathbf{R}\)</span> are orthogonal rotation matrices, an equivalent model to <a href="simulation-model.html#eq:reg-model-1">(2)</a> in terms of the latent variables can be written as,</p>
 <p><span class="math display" id="eq:reg-model-2">\[\begin{equation}
-\mathbf{w} = \mu_w + \boldsymbol{\alpha}^t(\mathbf{z} - \mu_z) + \tau
+\mathbf{w} = \boldsymbol{\mu}_w + \boldsymbol{\alpha}^t(\mathbf{z} - \boldsymbol{\mu_z}) + \boldsymbol{\tau}
 \tag{3}
 \end{equation}\]</span>
-where, <span class="math inline">\(\underset{m\times p}{\boldsymbol{\alpha}^t}\)</span> is a matrix of regression coefficients and <span class="math inline">\(\tau\)</span> is an error term such that <span class="math inline">\(\epsilon \sim N(0, \Sigma_{w|z})\)</span>. Model <a href="simulation-model.html#eq:reg-model-2">(3)</a> follows the distribution,</p>
+where, <span class="math inline">\(\underset{m\times p}{\boldsymbol{\alpha}^t}\)</span> is a matrix of regression coefficients and <span class="math inline">\(\boldsymbol{\tau}\)</span> is an error term such that <span class="math inline">\(\boldsymbol{\tau} \sim \mathcal{N}(0, \boldsymbol{\Sigma}_{w|z})\)</span>. Model <a href="simulation-model.html#eq:reg-model-2">(3)</a> follows the distribution,</p>
 <p><span class="math display" id="eq:model-2">\[\begin{equation}
   \begin{bmatrix}
     \mathbf{w} \\ \mathbf{z}
-  \end{bmatrix} \sim \mathbf{N}
+  \end{bmatrix} \sim \mathcal{N}
   \left(
     \begin{bmatrix}
       \boldsymbol{\mu}_w \\
@@ -230,9 +230,9 @@ where, <span class="math inline">\(\underset{m\times p}{\boldsymbol{\alpha}^t}\)
   \tag{4}
 \end{equation}\]</span></p>
 <p>where, <span class="math inline">\(\boldsymbol{\Sigma}_{ww}\)</span> and <span class="math inline">\(\boldsymbol{\Sigma}_{zz}\)</span> are the variance-covariance matrices of <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(\mathbf{z}\)</span>, respectively. <span class="math inline">\(\boldsymbol{\Sigma}_{zw}\)</span> is the covariance between <span class="math inline">\(\mathbf{z}\)</span> and <span class="math inline">\(\mathbf{w}\)</span>. <span class="math inline">\(\boldsymbol{\mu}_w\)</span> and <span class="math inline">\(\boldsymbol{\mu}_z\)</span> are mean vector of <span class="math inline">\(\mathbf{z}\)</span> and <span class="math inline">\(\mathbf{w}\)</span> respectively.</p>
-<p>Here, the elements of <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(\mathbf{z}\)</span> are the principal components of responses and predictors which will respectively be referred as “response components” and “predictor components”. The column vectors of respective rotation matrices <span class="math inline">\(\mathbf{Q}\)</span> and <span class="math inline">\(\mathbf{R}\)</span> are the eigenvectors corresponding to these principal components.</p>
-<p>Following the concept of relevant space, a subset of predictor components can be imagined to span the predictor space. These components can be regarded as relevant predictor components. <span class="citation">Naes and Martens (<a href="references.html#ref-Naes1985">1985</a>)</span> introduced the concept of relevant components which was explored further by <span class="citation">Helland (<a href="references.html#ref-helland1990partial">1990</a>)</span>, <span class="citation">Næs and Helland (<a href="references.html#ref-naes1993relevant">1993</a>)</span>, <span class="citation">Helland and Almøy (<a href="references.html#ref-Helland1994b">1994</a>)</span> and <span class="citation">Helland (<a href="references.html#ref-Helland2000">2000</a>)</span>. The corresponding eigenvectors were referred to as relevant eigenvectors. A similar logic is introduced by <span class="citation">Cook, Li, and Chiaromonte (<a href="references.html#ref-cook2010envelope">2010</a>)</span> and later by <span class="citation">Cook, Helland, and Su (<a href="references.html#ref-cook2013envelopes">2013</a>)</span> as an envelope which is the span of the relevant eigenvectors <span class="citation">(Cook <a href="references.html#ref-cook2018envelope">2018</a>, 101)</span>.</p>
-<p>In addition, various simulation studies have been performed with the model based on the concept of relevant subspace. A simulation study by <span class="citation">Almøy (<a href="references.html#ref-Alm_y_1996">1996</a>)</span> has used a single response simulation model based on reduced regression and has compared some contemporary multivariate estimators. In the recent years <span class="citation">Helland, Saebø, and Tjelmeland (<a href="references.html#ref-helland2012near">2012</a>)</span>, <span class="citation">Sæbø, Almøy, and Helland (<a href="references.html#ref-saebo2015simrel">2015</a>)</span>, <span class="citation">Helland et al. (<a href="references.html#ref-helland2016algorithms">2018</a>)</span> and <span class="citation">Rimal, Almøy, and Sæbø (<a href="references.html#ref-Rimal2018">2018</a>)</span> implemented similar simulation examples as we are discussing in this study. This paper, however, presents an extensive simulation study based on multi-response data simulated with experimental design and compares relatively new methods such as simultaneous envelopes with well established methods such as partial least squares and principal components regression. <span class="citation">Rimal, Almøy, and Sæbø (<a href="references.html#ref-Rimal2018">2018</a>)</span> has a detail discussion about the simulation model that we have opted here. Following section discusses about estimators under comparison in details.</p>
+<p>Here, the elements of <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(\mathbf{z}\)</span> are the principal components of responses and predictors, which will respectively be referred as “response components” and “predictor components”. The column vectors of respective rotation matrices <span class="math inline">\(\mathbf{Q}\)</span> and <span class="math inline">\(\mathbf{R}\)</span> are the eigenvectors corresponding to these principal components.</p>
+<p>Following the concept of relevant space, a subset of predictor components can be imagined to span the predictor space. These components can be regarded as relevant predictor components. <span class="citation">Naes and Martens (<a href="references.html#ref-Naes1985">1985</a>)</span> introduced the concept of relevant components which was explored further by <span class="citation">Helland (<a href="references.html#ref-helland1990partial">1990</a>)</span>, <span class="citation">Næs and Helland (<a href="references.html#ref-naes1993relevant">1993</a>)</span>, <span class="citation">Helland and Almøy (<a href="references.html#ref-Helland1994b">1994</a>)</span> and <span class="citation">Helland (<a href="references.html#ref-Helland2000">2000</a>)</span>. The corresponding eigenvectors were referred to as relevant eigenvectors. A similar logic is introduced by <span class="citation">Cook, Li, and Chiaromonte (<a href="references.html#ref-cook2010envelope">2010</a>)</span> and later by <span class="citation">Cook, Helland, and Su (<a href="references.html#ref-cook2013envelopes">2013</a>)</span> as an envelope which is the space spanned by the relevant eigenvectors <span class="citation">(Cook <a href="references.html#ref-cook2018envelope">2018</a>, 101)</span>.</p>
+<p>In addition, various simulation studies have been performed with the model based on the concept of relevant subspace. A simulation study by <span class="citation">Almøy (<a href="references.html#ref-Alm_y_1996">1996</a>)</span> has used a single response simulation model based on reduced regression and has compared some contemporary multivariate estimators. In the recent years <span class="citation">Helland, Saebø, and Tjelmeland (<a href="references.html#ref-helland2012near">2012</a>)</span>, <span class="citation">Sæbø, Almøy, and Helland (<a href="references.html#ref-saebo2015simrel">2015</a>)</span>, <span class="citation">Helland et al. (<a href="references.html#ref-helland2016algorithms">2018</a>)</span> and <span class="citation">Rimal, Almøy, and Sæbø (<a href="references.html#ref-Rimal2018">2018</a>)</span> implemented similar simulation examples as we are discussing in this study. This paper, however, presents an extensive simulation study based on multi-response data simulated with experimental design and compares relatively new methods such as simultaneous envelopes with well established methods such as partial least squares and principal components regression. <span class="citation">Rimal, Almøy, and Sæbø (<a href="references.html#ref-Rimal2018">2018</a>)</span> has a detail discussion about the simulation model that we have opted here. The following section presents the estimators under comparison in more detail.</p>
 </div>
             </section>
 

@@ -88,3 +88,6 @@ blockquote > p:first-child {
 #header address:nth-of-type(3){
   grid-area: affil-3;
 }
+.red{
+    color: 'red';
+}
