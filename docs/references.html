@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Comparison of Multivariate Prediction Methods</title>
-  <meta name="description" content="Comparison of Multivariate Prediction Methods">
+  <title>References | Comparison of Multivariate Prediction Methods</title>
+  <meta name="description" content="References | Comparison of Multivariate Prediction Methods">
   <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="Comparison of Multivariate Prediction Methods" />
+  <meta property="og:title" content="References | Comparison of Multivariate Prediction Methods" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="http://therimalaya.github.io/multivariate-comparison" />
   
@@ -17,14 +17,14 @@
   <meta name="github-repo" content="therimalaya/multivariate-comparison" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Comparison of Multivariate Prediction Methods" />
+  <meta name="twitter:title" content="References | Comparison of Multivariate Prediction Methods" />
   
   
   
 
 
 
-<meta name="date" content="2018-12-29">
+<meta name="date" content="2019-01-01">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -45,6 +45,7 @@ div.abstract{
 </style>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -59,67 +60,41 @@ div.abstract{
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -148,7 +123,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="exploration.html"><a href="exploration.html"><i class="fa fa-check"></i>Exploration</a></li>
 <li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html"><i class="fa fa-check"></i>Statistical Analysis</a><ul>
 <li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html#effect-analysis"><i class="fa fa-check"></i>Effect Analysis</a></li>
-<li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html#a-partial-least-square-analysis-on-the-model"><i class="fa fa-check"></i>A partial least square analysis on the model</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="appendix"><span><b>Appendix A</b></span></li>
@@ -176,58 +150,58 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- # References {-} -->
 <div id="refs">
 <div id="ref-Alm_y_1996">
-<p>Almøy, Trygve. 1996. “A simulation study on comparison of prediction methods when only a few components are relevant.” <em>Computational Statistics &amp; Data Analysis</em> 21 (1). Elsevier {BV}: 87–107. <a href="https://doi.org/10.1016/0167-9473(95)00006-2">https://doi.org/10.1016/0167-9473(95)00006-2</a>.</p>
-</div>
-<div id="ref-cook2018envelope">
-<p>Cook, R. Dennis. 2018. <em>An introduction to envelopes : dimension reduction for efficient estimation in multivariate statistics</em>. 1st ed. Hoboken, NJ : John Wiley &amp; Sons, 2018.</p>
+<p>Almøy, Trygve. 1996. “A simulation study on comparison of prediction methods when only a few components are relevant.” <em>Computational Statistics &amp; Data Analysis</em> 21 (1). Elsevier {BV}: 87–107. doi:<a href="https://doi.org/10.1016/0167-9473(95)00006-2">10.1016/0167-9473(95)00006-2</a>.</p>
 </div>
 <div id="ref-cook2010envelope">
 <p>Cook, R Dennis, Bing Li, and Francesca Chiaromonte. 2010. “Envelope Models for Parsimonious and Efficient Multivariate Linear Regression.” <em>Statistica Sinica</em> 20 (3). JSTOR: 927–1010.</p>
 </div>
-<div id="ref-Cook2007a">
-<p>Cook, R. Dennis, Bing Li, and Francesca Chiaromonte. 2007. “Dimension reduction in regression without matrix inversion.” <em>Biometrika</em> 94 (3): 569–84. <a href="https://doi.org/10.1093/biomet/asm038">https://doi.org/10.1093/biomet/asm038</a>.</p>
+<div id="ref-cook2013envelopes">
+<p>Cook, R. D., I. S. Helland, and Z. Su. 2013. “Envelopes and partial least squares regression.” <em>Journal of the Royal Statistical Society. Series B: Statistical Methodology</em> 75 (5). Wiley Online Library: 851–77. doi:<a href="https://doi.org/10.1111/rssb.12018">10.1111/rssb.12018</a>.</p>
+</div>
+<div id="ref-cook2018envelope">
+<p>Cook, R. Dennis. 2018. <em>An introduction to envelopes : dimension reduction for efficient estimation in multivariate statistics</em>. 1st ed. Hoboken, NJ : John Wiley &amp; Sons, 2018.</p>
 </div>
 <div id="ref-cook2015simultaneous">
-<p>Cook, R. Dennis, and Xin Zhang. 2015. “Simultaneous envelopes for multivariate linear regression.” <em>Technometrics</em> 57 (1). Taylor &amp; Francis: 11–25. <a href="https://doi.org/10.1080/00401706.2013.872700">https://doi.org/10.1080/00401706.2013.872700</a>.</p>
+<p>Cook, R. Dennis, and Xin Zhang. 2015. “Simultaneous envelopes for multivariate linear regression.” <em>Technometrics</em> 57 (1). Taylor &amp; Francis: 11–25. doi:<a href="https://doi.org/10.1080/00401706.2013.872700">10.1080/00401706.2013.872700</a>.</p>
 </div>
 <div id="ref-cook2016algorithms">
-<p>———. 2016. “Algorithms for Envelope Estimation.” <em>Journal of Computational and Graphical Statistics</em> 25 (1). Taylor &amp; Francis: 284–300. <a href="https://doi.org/10.1080/10618600.2015.1029577">https://doi.org/10.1080/10618600.2015.1029577</a>.</p>
+<p>———. 2016. “Algorithms for Envelope Estimation.” <em>Journal of Computational and Graphical Statistics</em> 25 (1). Taylor &amp; Francis: 284–300. doi:<a href="https://doi.org/10.1080/10618600.2015.1029577">10.1080/10618600.2015.1029577</a>.</p>
 </div>
-<div id="ref-cook2013envelopes">
-<p>Cook, R. D., I. S. Helland, and Z. Su. 2013. “Envelopes and partial least squares regression.” <em>Journal of the Royal Statistical Society. Series B: Statistical Methodology</em> 75 (5). Wiley Online Library: 851–77. <a href="https://doi.org/10.1111/rssb.12018">https://doi.org/10.1111/rssb.12018</a>.</p>
+<div id="ref-Cook2007a">
+<p>Cook, R. Dennis, Bing Li, and Francesca Chiaromonte. 2007. “Dimension reduction in regression without matrix inversion.” <em>Biometrika</em> 94 (3): 569–84. doi:<a href="https://doi.org/10.1093/biomet/asm038">10.1093/biomet/asm038</a>.</p>
 </div>
 <div id="ref-helland1990partial">
-<p>Helland, Inge S. 1990. “Partial least squares regression and statistical models.” <em>Scandinavian Journal of Statistics</em> 17 (2). JSTOR: 97–114. <a href="https://doi.org/10.2307/4616159">https://doi.org/10.2307/4616159</a>.</p>
+<p>Helland, Inge S. 1990. “Partial least squares regression and statistical models.” <em>Scandinavian Journal of Statistics</em> 17 (2). JSTOR: 97–114. doi:<a href="https://doi.org/10.2307/4616159">10.2307/4616159</a>.</p>
 </div>
 <div id="ref-Helland2000">
-<p>———. 2000. “Model Reduction for Prediction in Regression Models.” <em>Scandinavian Journal of Statistics</em> 27 (1). Wiley-Blackwell: 1–20. <a href="https://doi.org/10.1111/1467-9469.00174">https://doi.org/10.1111/1467-9469.00174</a>.</p>
+<p>———. 2000. “Model Reduction for Prediction in Regression Models.” <em>Scandinavian Journal of Statistics</em> 27 (1). Wiley-Blackwell: 1–20. doi:<a href="https://doi.org/10.1111/1467-9469.00174">10.1111/1467-9469.00174</a>.</p>
 </div>
 <div id="ref-Helland1994b">
-<p>Helland, Inge S., and Trygve Almøy. 1994. “Comparison of prediction methods when only a few components are relevant.” <em>Journal of the American Statistical Association</em> 89 (426): 583–91. <a href="https://doi.org/10.1080/01621459.1994.10476783">https://doi.org/10.1080/01621459.1994.10476783</a>.</p>
+<p>Helland, Inge S., and Trygve Almøy. 1994. “Comparison of prediction methods when only a few components are relevant.” <em>Journal of the American Statistical Association</em> 89 (426): 583–91. doi:<a href="https://doi.org/10.1080/01621459.1994.10476783">10.1080/01621459.1994.10476783</a>.</p>
 </div>
 <div id="ref-helland2012near">
-<p>Helland, Inge S., Solve Saebø, and Ha Kon Tjelmeland. 2012. “Near Optimal Prediction from Relevant Components.” <em>Scandinavian Journal of Statistics</em> 39 (4). Wiley Online Library: 695–713. <a href="https://doi.org/10.1111/j.1467-9469.2011.00770.x">https://doi.org/10.1111/j.1467-9469.2011.00770.x</a>.</p>
+<p>Helland, Inge S., Solve Saebø, and Ha Kon Tjelmeland. 2012. “Near Optimal Prediction from Relevant Components.” <em>Scandinavian Journal of Statistics</em> 39 (4). Wiley Online Library: 695–713. doi:<a href="https://doi.org/10.1111/j.1467-9469.2011.00770.x">10.1111/j.1467-9469.2011.00770.x</a>.</p>
 </div>
 <div id="ref-helland2016algorithms">
-<p>Helland, Inge Svein, Solve Saebø, Trygve Almøy, Raju Rimal, Solve Sæbø, Trygve Almøy, and Raju Rimal. 2018. “Model and estimators for partial least squares regression.” <em>Journal of Chemometrics</em> 32 (9). Wiley Online Library: e3044. <a href="https://doi.org/10.1002/cem.3044">https://doi.org/10.1002/cem.3044</a>.</p>
+<p>Helland, Inge Svein, Solve Saebø, Trygve Almøy, Raju Rimal, Solve Sæbø, Trygve Almøy, and Raju Rimal. 2018. “Model and estimators for partial least squares regression.” <em>Journal of Chemometrics</em> 32 (9). Wiley Online Library: e3044. doi:<a href="https://doi.org/10.1002/cem.3044">10.1002/cem.3044</a>.</p>
 </div>
 <div id="ref-Jolliffe2002">
-<p>Jolliffe, I T. 2002. <em>Principal Component Analysis, Second Edition</em>. <a href="https://doi.org/10.2307/1270093">https://doi.org/10.2307/1270093</a>.</p>
+<p>Jolliffe, I T. 2002. <em>Principal Component Analysis, Second Edition</em>. doi:<a href="https://doi.org/10.2307/1270093">10.2307/1270093</a>.</p>
 </div>
 <div id="ref-DeJong1993">
-<p>Jong, Sijmen de. 1993. “SIMPLS: An alternative approach to partial least squares regression.” <em>Chemometrics and Intelligent Laboratory Systems</em> 18 (3): 251–63. <a href="https://doi.org/10.1016/0169-7439(93)85002-X">https://doi.org/10.1016/0169-7439(93)85002-X</a>.</p>
+<p>Jong, Sijmen de. 1993. “SIMPLS: An alternative approach to partial least squares regression.” <em>Chemometrics and Intelligent Laboratory Systems</em> 18 (3): 251–63. doi:<a href="https://doi.org/10.1016/0169-7439(93)85002-X">10.1016/0169-7439(93)85002-X</a>.</p>
 </div>
 <div id="ref-Naes1985">
-<p>Naes, Tormod, and Harald Martens. 1985. “Comparison of prediction methods for multicollinear data.” <em>Communications in Statistics - Simulation and Computation</em> 14 (3): 545–76. <a href="https://doi.org/10.1080/03610918508812458">https://doi.org/10.1080/03610918508812458</a>.</p>
+<p>Naes, Tormod, and Harald Martens. 1985. “Comparison of prediction methods for multicollinear data.” <em>Communications in Statistics - Simulation and Computation</em> 14 (3): 545–76. doi:<a href="https://doi.org/10.1080/03610918508812458">10.1080/03610918508812458</a>.</p>
 </div>
 <div id="ref-naes1993relevant">
 <p>Næs, Tormod, and Inge S Helland. 1993. “Relevant components in regression.” <em>Scandinavian Journal of Statistics</em> 20 (3). JSTOR: 239–50.</p>
 </div>
 <div id="ref-Rimal2018">
-<p>Rimal, Raju, Trygve Almøy, and Solve Sæbø. 2018. “A tool for simulating multi-response linear model data.” <em>Chemometrics and Intelligent Laboratory Systems</em> 176 (May). Elsevier: 1–10. <a href="https://doi.org/10.1016/j.chemolab.2018.02.009">https://doi.org/10.1016/j.chemolab.2018.02.009</a>.</p>
+<p>Rimal, Raju, Trygve Almøy, and Solve Sæbø. 2018. “A tool for simulating multi-response linear model data.” <em>Chemometrics and Intelligent Laboratory Systems</em> 176 (May). Elsevier: 1–10. doi:<a href="https://doi.org/10.1016/j.chemolab.2018.02.009">10.1016/j.chemolab.2018.02.009</a>.</p>
 </div>
 <div id="ref-saebo2015simrel">
-<p>Sæbø, Solve, Trygve Almøy, and Inge S. Helland. 2015. “Simrel - A versatile tool for linear model data simulation based on the concept of a relevant subspace and relevant predictors.” <em>Chemometrics and Intelligent Laboratory Systems</em> 146. Elsevier B.V.: 128–35. <a href="https://doi.org/10.1016/j.chemolab.2015.05.012">https://doi.org/10.1016/j.chemolab.2015.05.012</a>.</p>
+<p>Sæbø, Solve, Trygve Almøy, and Inge S. Helland. 2015. “Simrel - A versatile tool for linear model data simulation based on the concept of a relevant subspace and relevant predictors.” <em>Chemometrics and Intelligent Laboratory Systems</em> 146. Elsevier B.V.: 128–35. doi:<a href="https://doi.org/10.1016/j.chemolab.2015.05.012">10.1016/j.chemolab.2015.05.012</a>.</p>
 </div>
 </div>
 
@@ -263,7 +237,7 @@ gitbook.start({
 "google": true,
 "linkedin": false,
 "weibo": false,
-"instapper": false,
+"instapaper": false,
 "vk": false,
 "all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
@@ -275,6 +249,10 @@ gitbook.start({
 "edit": {
 "link": "https://github.com/therimalaya/multivariate-comparison/edit/master/Includes/07-References.Rmd",
 "text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
 },
 "download": ["main.epub", "main.pdf"],
 "toc": {
@@ -289,8 +267,8 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(src))
       src = src.replace(/^https?:/, '');
     script.src = src;

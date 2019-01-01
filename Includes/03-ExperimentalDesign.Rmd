@@ -1,8 +1,3 @@
----
-output: html_document
-editor_options: 
-  chunk_output_type: console
----
 # Experimental Design #
 
 This study compares prediction methods based on their prediction ability. Data with specific properties are simulated, some of which are easier to predict than others. These data are simulated using the R-package `simrel`, which is discussed in @saebo2015simrel and @Rimal2018. Here we will use four different factors to vary the property of the data: a) Number of predictors (`p`), b) Multicollinearity in predictor variables (`gamma`), c) Correlation in response variables (`eta`) and d) position of predictor components relevant for the response (`relpos`). Using two levels of `p`, `gamma` and `relpos` and four levels of `eta`, `r nrow(design)` set of distinct properties are designed for the simulation.
@@ -16,7 +11,7 @@ __Multicollinearity in predictor variables:__
     \begin{equation}
       \lambda_i = e^{-\gamma(i - 1)}, \gamma > 0 \text{ and } i = 1, 2, \ldots, p
       (\#eq:gamma)
-      \end{equation}
+    \end{equation}
 
   Here, $\lambda_i, i = 1, 2, \ldots p$ are eigenvalues of the predictor variables. Here we have used `r catvec(opts$gamma)` as different levels of `gamma`. The higher the value of gamma, the higher will be the correlation between predictors and vice versa.
 
@@ -50,6 +45,7 @@ design_chr %>%
     theme(text=element_text(family="mono")) +
     coord_fixed(ratio=0.5)
 ```
+
 
 __Common parameters:__
 : Each dataset was simulated with $n = `r unique(opts$n)`$ number of observation and $m = `r unique(opts$m)`$ response variables. Further, the coefficient of determination corresponding to each response components in all the designs is set to `r catvec(unique(opts$R2))`. In addition, we have assumed that there is only `r num_vec[length(unique(design$ypos)[[1]])]` informative response component. Hence, the informative response component is rotated orthogonally together with `r num_vec[unique(opts$m) - length(unique(design$ypos)[[1]])]` uninformative response components to generate `r num_vec[unique(opts$m)]` response variables. This spread out the information in all simulated response variables. For further details on the simulation tool see [@Rimal2018].
@@ -91,6 +87,7 @@ plt <- gridExtra::arrangeGrob(plt1, plt2, nrow = 1)
 grid::grid.newpage()
 grid::grid.draw(plt)
 ```
+
 
 Figure \@ref(fig:cov-plot-1) shows the covariance structure of the data simulated with this design. The figure shows that the predictor components at position `r catvec(unlist(sobj$relpos))` are relevant for the first response component. After the rotation with orthogonal rotation matrix, all predictors are somewhat relevant for all response variables, fulfilling other desired properties like multicollinearity and coefficient of determination. For this same design, Figure \@ref(fig:est-cov-plot)(top left) shows that the predictor components `r catvec(unlist(sobj$relpos))` are relevant for the first response component. All other predictor components are irrelevant and all other response components are uninformative. However, due to orthogonal rotation of the informative response component together with uninformative response components, all response variables in the population have similar covariance with the relevant predictor components (Figure \@ref(fig:est-cov-plot)(top right)). The sample covariances between the predictors components and predictor variables with response variables are in Figure \@ref(fig:est-cov-plot) (bottom left) and (bottom right) respectively.
 
@@ -142,6 +139,7 @@ grid::grid.newpage()
 grid::grid.draw(plt)
 ```
 
+
 The discussion here is made on the first design. A similar discussion can be made on all 32 designs where each of the design holds the properties of the data they simulate. These data are used by the prediction methods discussed in previous section. Each prediction methods are given independent dataset simulated in order to give them equal opportunity to understand the dynamics in the data.
 
 ## Basis of comparison
@@ -149,7 +147,8 @@ The discussion here is made on the first design. A similar discussion can be mad
 This study focuses mainly on the prediction performance of the methods and emphasis specifically on the interaction between the properties of the data, controlled by the simulation parameters, and the prediction methods. The prediction performance is measured by the prediction error for each response as in \@ref(eq:pred-error). The prediction is the theoretically computed expected prediction when the model is applied to unseen observations corresponding to each response variable.
 
 \begin{equation}
-\text{prediction error}_j = \frac{1}{\sigma_{y_j|x}}\left[\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)^t\boldsymbol{\Sigma}_{xx}\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)\right] + 1
+\text{prediction error}_j = \frac{1}{\sigma_{y_j|x}^2}\left[\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)^t\boldsymbol{\Sigma}_{xx}\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)\right] + 1
 (\#eq:pred-error)
 \end{equation}
 where, $\boldsymbol{\Sigma}_{xx}$ is the true covariance matrix of predictor and $\sigma_{y_j\mid x}$ is the true model error obtained from simulation of response $j = 1, \ldots m$. \highlight{Here prediction error is scaled by the true model error to remove its effect on prediction error.} (\alert{Need better reason.}) The prediction error in \@ref(eq:pred-error) is computed for all replications of `r nrow(design)` designs.
+

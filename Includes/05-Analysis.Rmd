@@ -1,4 +1,4 @@
-# Statistical Analysis 
+# Statistical Analysis
 
 ```{r knitr_setup}
 options(knitr.kable.NA = '')
@@ -15,7 +15,8 @@ print_manova <- function(tbl, format = docs_format, level = 0.05, ...){
 }
 ```
 
-In order to carry out a proper statistical comparison, a multivariate analysis of variance (MANOVA) is used with minimum prediction error corresponding to each response variables for all design and their replicates. The third order interaction of simulation parameters (`p`, `gamma`, `eta` and `relpos`) and `Methods` is used as independent factors as \@ref(eq:expanded-model).
+
+The datasets discussed in previous section a) _error dataset_ and b) _component dataset_ are used on a multivariate analysis of variance. Let us call them _error model_ and _component model_ respectively. The models are fitted with the third order interaction of simulation parameters (`p`, `gamma`, `eta` and `relpos`) and `Methods` as in \@ref(eq:expanded-model).
 
 \begin{equation}
 \mathbf{y}_{abcdef} = \boldsymbol{\mu} + (\texttt{p}_a + \texttt{gamma}_b + \texttt{eta}_c + \texttt{relpos}_d + \texttt{Methods}_e)^3 + \boldsymbol{\varepsilon}_{abcdef}
@@ -30,17 +31,8 @@ where, $\mathbf{y}_{abcdef}$ is a vector of prediction error for factors,
 - $\texttt{relpos}_d=$ `r catvec(opts$relpos)`
 - $\texttt{Methods}_e=$ `r catvec(map_chr(mthds, ~paste0("\\texttt{", .x, "}")))`
 
-In concise vector form, we can write as \@ref(eq:full-model).
 
-\begin{equation}
-\mathbf{y} = \boldsymbol{\mu} + (\texttt{p} + \texttt{gamma} + \texttt{eta} + \texttt{relpos} + \texttt{Methods})^3 + \boldsymbol{\varepsilon}
-(\#eq:full-model)
-\end{equation}
-where, $\mathbf{y}$ is the vector of prediction error corresponding to response $y_j, j = 1, \ldots 4$.
-
-Prediction methods also varies on number of components they use to get the minimum prediction error. A similar model as \@ref(eq:expanded-model) is used with $\mathbf{y}_{abcdef}$ as the number of components used to get the minimum prediction error. Here Pellai's trace is used for evaluating these model.
-
-```{r prediction-model}
+```{r manova-model}
 ## Full Prediction Model
 pred_mdl <- lm(
   formula = cbind(Y1, Y2, Y3, Y4) ~ (p + gamma + eta + relpos + Method) ^ 3,
@@ -68,7 +60,9 @@ aov_df <- bind_rows(list(Pred = pred_aov, Comp = comp_aov), .id = "Type")
 ```
 
 
-```{r prediction-model-plot, fig.width=9, out.width='100%', fig.asp=0.5, fig.cap="Pillai Statistic and F-value for the MANOVA model. The bar represents the F-value and the text labels are Pillai Statistic for corresponding factor."}
+(ref:manova-plot) Pillai Statistic and F-value for the MANOVA model. The bar represents the F-value and the text labels are Pillai Statistic for corresponding factor.
+
+```{r manova-plot, fig.width=8, out.width='100%', fig.asp=0.5, fig.cap="(ref:manova-plot)"}
 model_labels <- c(
   Comp = "Model: Number of Components",
   Pred = "Model: Prediction Error"
@@ -90,20 +84,20 @@ aov_df %>%
   scale_y_continuous(trans = "log1p", breaks = scales::pretty_breaks(n=6))
 ```
 
-SOME OBSERVATIONS:
 
-- All main effects except `p` are significant and has large effect on both minimum number of components and prediction error.
-- Position of relevant components have largest effect on prediction error. In case of minimum number of components, multicollineary also have largest effect in addition to the position of relevant components.
-- However based on pillai trace statistic, Method has the lastest effect on both of the model.
-- The interactions `p:gamma` and `eta:relpos:Method` is significant in prediction error model but not in minim number of components model. However, all of these interactions have small pillai statistic.
-- In case of Number of components model interaction effects `gamma:eta:Method`, `p:Method` and `gamma:eta:relpos` are significant but not in the case of prediciton error model. Similar to previous point, they too have small pillai statistic.
+Figure \@ref(fig:manova-plot) (left) shows the result from _component model_ and the figure \@ref(fig:manova-plot) (right) shows the result from _error model_. The figure shows that all main effects except `p` are significant and has large effect on _component model_ as well as _error model_.
+
+In addition, the position of relevant components have largest effect on _error model_. In case of _component model_, multicollinearity also have large effect in addition to the position of relevant components. However based on Pillai trace statistic, `Method` has the largest effect on both of the models. Further, the interactions `p:gamma` and `eta:relpos:Method` has significant effect on the _error model_ but not in the _component model_. However, all of these interactions have small pillai statistic. 
+
+Further, in the case of _component model_ interaction effects `gamma:eta:Method`, `p:Method` and `gamma:eta:relpos` are significant but not in the case of _error model_. Similar to previous point, they too have small pillai statistic. In the case of _error model_, the interaction effect of `eta:relpos:Method` which is particularly interesting to see that the methods performed differently for different cases of collinearity in response and collinearity in predictors.
+
+Following section will continue on identifying the effect of different levels of factors in the case of these interactions.
 
 ## Effect Analysis
 
-ON PREDICTION ERROR MODEL:
+_Error Model_:
 
-- It would be desirable to observe effect of these interactions. Figure \@ref(fig:pred-eff-plots) (left) shows clear difference of `eta` for a given `relpos`. The plot also shows a clear difference in effect of methods on prediction error.
-- Figure \@ref(fig:pred-eff-plots) (right) shows effect of `gamma` for a given `method` and `eta`. It shows that these methods gives low prediction error is high multicollinear situations. 
+Figure \@ref(fig:pred-eff-plots) (left) shows clear difference of `eta` for a given `relpos`. The plot also shows a clear difference in effect of methods on prediction error. Figure \@ref(fig:pred-eff-plots) (right) shows effect of `gamma` for a given `method` and `eta`. It shows that these methods gives low prediction error is high multicollinear situations. 
 
 ```{r pred-eff-plots, fig.width=7, out.width='100%', fig.cap='Effect plot of some interactions of the multivariate linear model', fig.asp = 0.6}
 thm <- theme(plot.title = element_blank(),
@@ -125,11 +119,12 @@ grid::grid.newpage()
 grid::grid.draw(plt)
 ```
 
-ON MINIMUM NUMBER OF COMPONENTS MODEL:
 
-- Figure \@ref(fig:comp-eff-plots) (left) shows that `xenv` has used minimum number of components followed by `senv` methods than others in order to get their minimum prediction error.
-- The same figure also suggest that the minimum number of components used by `PLS1`, `PLS2` and `PCR` vary and has high effect of `eta`. The `senv` model which consider both X and Y correlation structure while estimating regression coefficients has smallest variation of number of components used for different `eta` parameters.
-- Figure \@ref(fig:comp-eff-plots) (right) shows that in case of low multicollinearity in the model `PLS` methods are used less number of components than `PCR`. This is expected since, `PLS` methods consider the covariance structure of predictor and response which `PCR` does not.
+_Component Model_:
+
+Figure \@ref(fig:comp-eff-plots) (left) shows that `xenv` has used minimum number of components followed by `senv` methods than others in order to get their minimum prediction error. The same figure also suggest that the minimum number of components used by `PLS1`, `PLS2` and `PCR` vary and has high effect of `eta`. The `senv` model which consider both X and Y correlation structure while estimating regression coefficients has smallest variation of number of components used for different `eta` parameters.
+
+Figure \@ref(fig:comp-eff-plots) (right) shows that in case of low multicollinearity in the model `PLS` methods are used less number of components than `PCR`. This is expected since, `PLS` methods consider the covariance structure of predictor and response which `PCR` does not.
 
 
 ```{r comp-eff-plots, fig.width=7, out.width='100%', fig.cap='Effect plot of some interactions of the multivariate linear model', fig.asp = 0.6}
@@ -153,74 +148,3 @@ grid::grid.draw(plt)
 ```
 
 
-ADDITIONAL OBSERVATIONS:
-
-- Place for variable selection
-- A PLS model is used to cross-validate the effects of these factors. The loading plot for the same model but only with second order interaction is in figure \@ref(fig:pls-loadings).
-
-## A partial least square analysis on the model
-
-<!-- Analysis using PLS model -->
-
-```{r pls-model}
-pred_pls_mdl <- plsr(
-  formula = cbind(Y1, Y2, Y3, Y4) ~ (p + gamma + eta + relpos + Method) ^ 2, 
-  data = pred_min, validation = "CV", segments = 10, scale = TRUE)
-comp_pls_mdl <- plsr(
-  formula = cbind(Y1, Y2, Y3, Y4) ~ (p + gamma + eta + relpos + Method) ^ 2, 
-  data = comp_min, validation = "CV", segments = 10, scale = TRUE)
-```
-
-```{r, fig.asp=1, fig.width=8}
-ncomp <- c(1)
-pred_pls_loadings <- as.data.frame(loadings(pred_pls_mdl)[]) %>% 
-    rownames_to_column("Factor") %>% 
-    as_tibble() %>% 
-    select_at(c(1, ncomp + 1))
-comp_pls_loadings <- as.data.frame(loadings(comp_pls_mdl)[]) %>% 
-    rownames_to_column("Factor") %>% 
-    as_tibble() %>% 
-    select_at(c(1, ncomp + 1))
-pls_loadings <- bind_rows(
-  list(Pred = pred_pls_loadings, 
-       Comp = comp_pls_loadings), 
-  .id = "Type")
-```
-
-```{r pls-loadings, warning=FALSE, message=FALSE, fig.width=9, out.width='100%', fig.cap='PLS Loadings (Component 1)', fig.asp = 0.6}
-pls_loadings %>% 
-  gather(Components, Loadings, -c(1:2)) %>% 
-  mutate(Factor_ = str_remove_all(Factor, "[0-9, .]+")) %>% 
-  mutate(Factor_ = str_remove_all(Factor_, "PLS|PCR|Xenv|Senv")) %>% 
-  ggplot(aes(Factor, Loadings, color = Type)) +
-  geom_hline(yintercept = 0, color = "darkgrey", linetype = 2) +
-  geom_line(aes(group = Type)) +
-  geom_point(shape = 21, size = 0.5) +
-  facet_grid(Components ~ Factor_, labeller = labeller(
-    # Type = gsub(": ", ":\n", model_labels),
-    Factor_ = function(x) gsub(":", "\n", x),
-    .multi_line = TRUE), scales = 'free_x', 
-    space = 'free_x', drop = TRUE) +
-  theme_grey(base_family = "mono") +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5),
-        strip.text.x = element_text(angle = 90),
-        legend.position = "top") +
-  scale_color_brewer(palette = "Set1") +
-  labs(x = NULL)
-
-```
-
-
-SOME OBSERVATIONS:
-```{r}
-pred_expl_var <- explvar(pred_pls_mdl)
-comp_expl_var <- explvar(comp_pls_mdl)
-```
-
-- The loadings for first components plotted in Figure-\@ref(fig:pls-loadings) has clearly separated the envelope models from the rest by giving positive loading for them and negative for the rest.
-- This components has only explained `r pred_expl_var[1]` in prediction error model and `r comp_expl_var[1]` in minimum components model.
-
-
-CONFUSION:
-
-- The explained variation by each of these components is not in decending order as each successive components of PLS model is supposed to explain the maximum covarinace between predictor and response.

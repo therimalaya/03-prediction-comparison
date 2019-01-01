@@ -872,6 +872,62 @@ plot_relspace <- function(rect_height = c(0.6, 0.6), rect_width = c(0.2, 0.6), r
               vjust = -0.25)
 }
 
+## ---- Data Exploration Plot ------
+plot_data_transform <- function() {
+  library(grid)
+  grid.newpage()
+
+  fctr_rect <- rectGrob(x = 0.1, y = 0.5, height = 0.8, width = 0.15)
+  fctr_label <- textGrob(x = 0.1, y = 0.5, label = "Factors")
+  fctr_grob <- gList(fctr_rect, fctr_label)
+
+  n_rect <- function(start = 0.2, step = 0.025, n = 4, label = paste0("Y", 1:n)) {
+    seq_ <- seq(start, by = step, length.out = n)
+    out <- lapply(seq_along(seq_), function(x){
+      rect <- rectGrob(x = seq_[x], y = 0.5, height = 0.8, width = step)
+      txt <- textGrob(x = seq_[x], y = 0.5 + 0.25,
+                      label = label[x], hjust = 1.15,
+                      rot = 90,
+                      gp = gpar(fontsize = 10))
+      gList(rect, txt)
+    })
+    do.call(gList, out)
+  }
+  pred_grob <- n_rect(0.2, 0.035, 4, label = paste0("PE", 1:4))
+  pc_grob <- n_rect(0.4, 0.035, 4, label = paste0("PC", 1:4))
+  dta_grob <- gList(fctr_grob, pred_grob, pc_grob)
+
+  plt_dta <- data.frame(x = rnorm(1000))
+  plt <- ggplot(plt_dta, aes(x)) +
+    geom_histogram(bins = 30, color = "grey",
+                   aes(y = ..density..), fill = NA) +
+    stat_density(geom = "line") +
+    labs(x = "PC1", y = "Density")
+  plt_grob <- ggplotGrob(plt)
+
+  arr1_grob <- linesGrob(c(0.33, 0.375), y = c(0.5, 0.5), gp = gpar(lwd = 2),
+                         arrow = arrow(length = unit(2, "mm")))
+  arr2 <- xsplineGrob(
+      x = c(0.4, 0.475, 0.6, 0.7),
+      y = c(0.85, 0.8, 1, 0.85),
+      shape = 0.75, gp = gpar(lwd = 2),
+      arrow = arrow(length = unit(2, 'mm')))
+  arr2_dot <- circleGrob(0.4, y = 0.85, r = 0.01, gp = gpar(fill = "black"))
+  arr2_grob <- gList(arr2, arr2_dot)
+  
+  vp1 <- viewport(x = 0, y = 0.5, height = 0.8, width = 1, just = "left")
+  pushViewport(vp1)
+  grid.draw(dta_grob)
+
+  vp2 <- viewport(x = 0.6, y = 0.5, height = 0.8, width = 0.4, just = "left")
+  pushViewport(vp2)
+  grid.draw(plt_grob)
+  upViewport()
+
+  grid.draw(arr1_grob)
+  grid.draw(arr2_grob)
+}
+
 ## ---- Very IMPURE Functions ----
 # ## Coefficient Plot ----
 # get_coef <- function(design, method) {
@@ -895,10 +951,10 @@ plot_relspace <- function(rect_height = c(0.6, 0.6), rect_width = c(0.2, 0.6), r
 #     dgn <- as.character(design)
 #     coef <- get_coef(dgn, method) %>%
 #         mutate_at(vars(Predictor, Response), ~as.integer(get_integer(.x)))
-# 
+#
 #     is_shrinkage <- method %in% c("Ridge", "Lasso")
 #     group_vars <- c("Design", "Predictor", "Response", "Est_type")
-# 
+#
 #     if (is_shrinkage) {
 #         err_dta_chr <- switch(error_type, prediction = "pred_error", estimation = "est_error")
 #         if (!exists(err_dta_chr)) stop("Load prediction and estimation error data frame first!")
@@ -918,12 +974,12 @@ plot_relspace <- function(rect_height = c(0.6, 0.6), rect_width = c(0.2, 0.6), r
 #         dta <- coef %>%
 #             filter(Tuning_Param %in% ncomp)
 #     }
-# 
+#
 #     dta <- dta %>%
 #         gather(Est_type, Est_value, True, Coef) %>%
 #         group_by_at(group_vars) %>%
 #         rename(Component = Tuning_Param)
-# 
+#
 #     dta_avg <- dta %>%
 #         summarize_at("Est_value", mean) %>%
 #         ungroup() %>%
@@ -931,7 +987,7 @@ plot_relspace <- function(rect_height = c(0.6, 0.6), rect_width = c(0.2, 0.6), r
 #             Est_type == "True" ~ "True",
 #             Est_type == "Coef" ~ "Estimated")
 #         )
-# 
+#
 #     facet_form <- if (!is_shrinkage) {
 #         as.formula(Response ~ Component)
 #     } else {
@@ -941,7 +997,7 @@ plot_relspace <- function(rect_height = c(0.6, 0.6), rect_width = c(0.2, 0.6), r
 #         paste0("p: ", p, ", relpos: ", relpos,
 #                ", gamma: ", gamma, ", eta: ", eta, ", R2: ", R2)
 #     })
-# 
+#
 #     plt <- dta_avg %>%
 #         ggplot(aes(Predictor, Est_value, color = Est_type, group = Est_type)) +
 #         geom_line() + geom_point(shape = 21, size = 0.7) +
