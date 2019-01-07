@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro:300,400&subset=latin-ext');
+p.caption {
+  color: #777;
+  margin-top: 10px;
+}
+code {
+  font-family: 'Source Code Pro', monospace!important;
+}
+p code {
+  font-family: 'Source Code Pro', monospace!important;
+  white-space: inherit;
+}
+pre {
+  font-family: 'Source Code Pro', monospace!important;
+  word-break: normal;
+  word-wrap: normal;
+}
+pre code {
+  font-family: 'Source Code Pro', monospace!important;
+  white-space: inherit;
+}
+p.flushright {
+  text-align: right;
+}
+.toc-footer {
+  position:absolute;
+  bottom:0;
+}
+.author {
+    line-height: 1;
+    display: inline-block;
+    min-width: 25%;
+}
+.title {
+    line-height: 1.2em;
+}
+.book .font-family-0 {
+    font-family: "Source Serif Pro", Palatino, serif;
+}
+.lead {
+  font-size: 1.7rem;
+  text-align: center;
+  font-weight: 300;
+}
+.abstract {
+    grid-area: abstract
+}
+blockquote > p:last-child {
+    text-align: right;
+}
+blockquote > p:first-child {
+    text-align: inherit;
+}
+
+/* Header Related Styles */
+#header{
+    text-align: center;
+    font-family: "Source Sans Pro", 'Helvetica Neue', sans-serif;
+    display:grid;
+    grid-template-areas:
+    "title title title"
+        "author-1 author-2 author-3"
+        "affil-1 affil-2 affil-3"
+        "date date date"
+        "abstract abstract abstract";
+}
+#header > .title{
+  grid-area: title;
+}
+#header > .date{
+  grid-area: date;
+}
+#header h4:nth-of-type(1){
+  grid-area: author-1;
+}
+#header h4:nth-of-type(2){
+  grid-area: author-2;
+}
+#header h4:nth-of-type(3){
+  grid-area: author-3;
+}
+#header address:nth-of-type(1){
+  grid-area: affil-1;
+}
+#header address:nth-of-type(2){
+  grid-area: affil-2;
+}
+#header address:nth-of-type(3){
+  grid-area: affil-3;
+}
+.red{
+    color: 'red';
+}
