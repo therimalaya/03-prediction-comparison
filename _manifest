@@ -1,0 +1,7 @@
+app.R
+app/coefficients.R
+app/custom.css 
+app/error.R 
+app/experimental-design.R 
+scripts/00-function.r
+scripts/robj

@@ -28,17 +28,17 @@ coef_panel <- function(input, output, session, design, design_chr) {
     `Simulteneous Envelope` = "Senv"
   )
   output$design_table <- DT::renderDataTable({
-    design_chr %>% 
-      mutate(Design = row_number()) %>% 
-      select(Design, p, relpos, eta, gamma) %>% 
-      slice(as.numeric(input$design)) %>% 
+    design_chr %>%
+      mutate(Design = row_number()) %>%
+      select(Design, p, relpos, eta, gamma) %>%
+      slice(as.numeric(input$design)) %>%
       DT::datatable(
         class = 'compact',
         rownames = FALSE,
         selection = list(target = 'row', mode = 'single'),
         options = list(
           dom = 't',
-          pageLength = 32)) %>% 
+          pageLength = 32)) %>%
       formatStyle(1:ncol(design_chr), fontFamily='monospace')
   })
   output$mthd_select <- renderUI({
@@ -56,7 +56,7 @@ coef_panel <- function(input, output, session, design, design_chr) {
   observeEvent(input$design_table_row_last_clicked, {
     out$design_selected <- input$design[input$design_table_row_last_clicked]
   })
-  
+
   observe({
     out$index <-  input$design
     out$method <- input$method
@@ -120,7 +120,7 @@ coef_plot_server <- function(input, output, session, dgn, mthd_name) {
         plt_id <- paste(gsub("Design", "dgn", dgn), mdl, sep = "-")
         tabPanel(title = dgn, value = dgn_txt[dgn], plotOutput(ns(plt_id)))
       })
-      tabPanel(title = toupper(mdl), value = mdl, 
+      tabPanel(title = toupper(mdl), value = mdl,
                fluidRow(do.call(tabBox, append(dgn_tab_box_args, dgn_tabs))))
     })
     do.call(tabsetPanel, append(mdl_tab_panel_args, mdl_tabs))

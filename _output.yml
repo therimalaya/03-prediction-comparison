@@ -9,8 +9,8 @@ bookdown::gitbook:
   config:
     toc:
       collapse: section
-      before: '<li><a href="./index.html">Multivariate Comparison</a></li>'
-      after: '<li class="toc-footer"><a href="https://bookdown.org" target="blank">Published with BookDown</a></li>'
+      before: '<li><a href="./index.html"><strong>Multivariate Comparison</strong></a></li>'
+      after: '<li class="toc-footer"><a href="https://bookdown.org" target="blank">Published with <em>BookDown</em></a></li>'
     download: ['epub', 'pdf']
     sharing: 
       github: yes

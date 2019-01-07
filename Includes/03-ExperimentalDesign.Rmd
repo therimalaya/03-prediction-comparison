@@ -1,3 +1,7 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
 # Experimental Design #
 
 This study compares prediction methods based on their prediction ability. Data with specific properties are simulated, some of which are easier to predict than others. These data are simulated using the R-package `simrel`, which is discussed in @saebo2015simrel and @Rimal2018. Here we will use four different factors to vary the property of the data: a) Number of predictors (`p`), b) Multicollinearity in predictor variables (`gamma`), c) Correlation in response variables (`eta`) and d) position of predictor components relevant for the response (`relpos`). Using two levels of `p`, `gamma` and `relpos` and four levels of `eta`, `r nrow(design)` set of distinct properties are designed for the simulation.
@@ -117,7 +121,6 @@ plt2 <- ggsimrelplot(sobj, which = 3, use_population = TRUE) +
   thm_common + guid_common + labs_common +
   title_common("Between predictor components and response variables.") +
   scale_x_continuous(breaks = breakx)
-
 plt3 <- ggsimrelplot(sobj, which = 3, use_population = FALSE) +
   title_common("Between predictor components and response variables.") +
   scale_x_continuous(breaks = breakx) +
@@ -126,7 +129,6 @@ plt4 <- ggsimrelplot(sobj, which = 4, use_population = FALSE) +
   title_common("Between predictor variables and response variables.") +
   scale_x_continuous(breaks = breakx) +
   thm_common + guid_common + labs_common
-
 plt12 <- gridExtra::arrangeGrob(
   plt1, plt2, ncol = 2,
   top = "Scaled absolute population covariance")
@@ -144,11 +146,64 @@ The discussion here is made on the first design. A similar discussion can be mad
 
 ## Basis of comparison
 
-This study focuses mainly on the prediction performance of the methods and emphasis specifically on the interaction between the properties of the data, controlled by the simulation parameters, and the prediction methods. The prediction performance is measured by the prediction error for each response as in \@ref(eq:pred-error). The prediction is the theoretically computed expected prediction when the model is applied to unseen observations corresponding to each response variable.
+This study focuses mainly on the prediction performance of the methods and emphasis specifically on the interaction between the properties of the data, controlled by the simulation parameters, and the prediction methods. The prediction performance is measured by the average of prediction error that a method can give using arbitrary number of components and number of components used to give the minimum prediction error. Let us define, 
 
 \begin{equation}
-\text{prediction error}_j = \frac{1}{\sigma_{y_j|x}^2}\left[\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)^t\boldsymbol{\Sigma}_{xx}\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)\right] + 1
+\mathcal{PE}_j = \frac{1}{\sigma_{y_j|x}^2}\left[\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)^t\boldsymbol{\Sigma}_{xx}\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)\right] + 1
 (\#eq:pred-error)
 \end{equation}
-where, $\boldsymbol{\Sigma}_{xx}$ is the true covariance matrix of predictor and $\sigma_{y_j\mid x}$ is the true model error obtained from simulation of response $j = 1, \ldots m$. \highlight{Here prediction error is scaled by the true model error to remove its effect on prediction error.} (\alert{Need better reason.}) The prediction error in \@ref(eq:pred-error) is computed for all replications of `r nrow(design)` designs.
+as a prediction error for a given design, method, replication and number of components, where, $\boldsymbol{\Sigma}_{xx}$ is the true covariance matrix of predictor and $\sigma_{y_j\mid x}$ is the true model error obtained from simulation of response $j = 1, \ldots m$. \highlight{Here prediction error is scaled by the true model error to remove its effect on prediction error.} (\alert{Need better and smart reason (sentence).}).
 
+A dataset using \@ref(eq:pred-error) is obtained which contains five factors for simulation parameters, prediction methods, number of components, replications and prediction error for `r num_vec[unique(opts$m)]` responses. The prediction error is computed using 0 to 10 predictor components for each 50 replicates using \@ref(eq:pred-error). Thus there are `r nrow(design)` (design) $\times$ `r length(mthds)` (methods) $\times$ 11 (number of components) $\times$ 50 (replications), i.e. `r nrow(design) * length(mthds) * 11 * 50` observations. Here the variables `Y1` to `Y4` corresponds to prediction error of respective response variables.
+
+```{r data-prep}
+pred_dta <- design_chr %>%
+  select_if(function(x) n_distinct(x) > 1) %>%
+  mutate(Design = as.character(1:n())) %>%
+  mutate_at(vars(p, gamma, relpos, eta), as.factor) %>%
+  right_join(pred_error, by = "Design") %>%
+  mutate_if(is.character, as.factor) %>%
+  mutate_at("p", as.factor) %>%
+  mutate(Response = paste0("Y", Response))
+pred_spread_df <- pred_dta %>%
+  as.data.frame() %>%
+  select(-Design, -q) %>%
+  spread(Response, Pred_Error)
+min_comp_stk <- pred_dta %>%
+  group_by(p, relpos, eta, gamma, Method, Tuning_Param, Response) %>%
+  summarize(Pred_Error = mean(Pred_Error)) %>%
+  group_by(p, relpos, eta, gamma, Method, Response) %>%
+  summarize(Tuning_Param = Tuning_Param[which.min(Pred_Error)])
+pred_min <- pred_dta %>% 
+  select(-Design, -q) %>% 
+  semi_join(min_comp_stk, by = c(
+    "p", "relpos", "eta", "gamma", "Method", 
+    "Tuning_Param", "Response"
+  )) %>% select(-Tuning_Param) %>% 
+  spread(Response, Pred_Error)
+comp_min <- pred_dta %>% 
+  group_by(p, relpos, eta, gamma, Method, Replication, Response) %>% 
+  summarize(Tuning_Param = Tuning_Param[which.min(Pred_Error)]) %>% 
+  spread(Response, Tuning_Param)
+```
+
+
+Since we will focus our discussion on the minimum prediction error that a method can obtain and the number of components they use to get minimum prediciton error in each replicate, the dataset discussed above is summarized to construct following two smaller datasets. Let us call them _Error Dataset_ and _Component Dataset_.
+
+_Error Dataset_:
+: For each prediction method, design and response, an average prediction error is computed over all replicates for each components. Next, a component that results in the minumum of this average prediction error is selected, i.e.,
+  \begin{equation}
+  nc_\circ = \operatorname*{argmin}_{nc}\left[\frac{1}{50}\sum_{i=1}^{50}{\mathcal{PE}_{ij}}\right]
+  (\#eq:min-pred)
+  \end{equation}
+: where, $nc$ is the number of components and $\mathcal{PE}_{ij}$ is prediction error computed using \@ref(eq:pred-error) for response $j$ and replication $i$.
+
+: Using the component $nc_\circ$, the prediction error for all 50 replicates are used to construct the _Error Dataset_.
+
+_Component Dataset_: 
+: Components that gives the minimum prediction error in each replication is used as _Component Dataset_, i.e.,
+  \begin{equation}
+  nc_j = \operatorname*{argmin}_{nc}\left[\mathcal{PE}_{j}\right]
+  (\#eq:min-comp)
+  \end{equation}
+  Here $nc_i$ is the number of component that gives minimum prediction error for $j^\text{th}$ response for each replication.

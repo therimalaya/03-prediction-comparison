@@ -131,6 +131,10 @@
 \newcommand{\note}[1]{\marginpar{\scriptsize\tt{\color{RoyalBlue}#1}}}
 \newcommand{\edit}[1]{{\color{OrangeRed} #1}}
 
+%% Declare Operators
+\newcommand{\argmin}{\operatornamewithlimits{arg\,min}}
+\newcommand{\argmax}{\operatornamewithlimits{arg\,max}}
+
 % set some lengths
 \setlength{\parindent}{0pt}
 % \setlength{\parskip}{6pt plus 2pt minus 1pt}
@@ -650,50 +654,71 @@ equal opportunity to understand the dynamics in the data.
 This study focuses mainly on the prediction performance of the methods
 and emphasis specifically on the interaction between the properties of
 the data, controlled by the simulation parameters, and the prediction
-methods. The prediction performance is measured by the prediction error
-for each response as in \eqref{eq:pred-error}. The prediction is the
-theoretically computed expected prediction when the model is applied to
-unseen observations corresponding to each response variable.
+methods. The prediction performance is measured by the average of
+prediction error that a method can give using arbitrary number of
+components and number of components used to give the minimum prediction
+error. Let us define,
 
 \begin{equation}
-\text{prediction error}_j = \frac{1}{\sigma_{y_j|x}^2}\left[\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)^t\boldsymbol{\Sigma}_{xx}\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)\right] + 1
+\mathcal{PE}_j = \frac{1}{\sigma_{y_j|x}^2}\left[\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)^t\boldsymbol{\Sigma}_{xx}\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)\right] + 1
 \label{eq:pred-error}
 \end{equation}
 
-where, \(\boldsymbol{\Sigma}_{xx}\) is the true covariance matrix of
-predictor and \(\sigma_{y_j\mid x}\) is the true model error obtained
-from simulation of response \(j = 1, \ldots m\).
+as a prediction error for a given design, method, replication and number
+of components, where, \(\boldsymbol{\Sigma}_{xx}\) is the true
+covariance matrix of predictor and \(\sigma_{y_j\mid x}\) is the true
+model error obtained from simulation of response \(j = 1, \ldots m\).
 \highlight{Here prediction error is scaled by the true model error to remove its effect on prediction error.}
-(\alert{Need better reason.}) The prediction error in
-\eqref{eq:pred-error} is computed for all replications of 32 designs.
+(\alert{Need better and smart reason (sentence).}).
+
+A dataset using \eqref{eq:pred-error} is obtained which contains five
+factors for simulation parameters, prediction methods, number of
+components, replications and prediction error for four responses. The
+prediction error is computed using 0 to 10 predictor components for each
+50 replicates using \eqref{eq:pred-error}. Thus there are 32 (design)
+\(\times\) 5 (methods) \(\times\) 11 (number of components) \(\times\)
+50 (replications), i.e.~88000 observations. Here the variables
+\texttt{Y1} to \texttt{Y4} corresponds to prediction error of respective
+response variables.
+
+Since we will focus our discussion on the minimum prediction error that
+a method can obtain and the number of components they use to get minimum
+prediciton error in each replicate, the dataset discussed above is
+summarized to construct following two smaller datasets. Let us call them
+\emph{Error Dataset} and \emph{Component Dataset}.
+
+\begin{description}
+\item[\emph{Error Dataset}:]
+For each prediction method, design and response, an average prediction
+error is computed over all replicates for each components. Next, a
+component that results in the minumum of this average prediction error
+is selected, i.e.,
+
+\begin{equation}
+  nc_\circ = \operatorname*{argmin}_{nc}\left[\frac{1}{50}\sum_{i=1}^{50}{\mathcal{PE}_{ij}}\right]
+  \label{eq:min-pred}
+  \end{equation}
+
+where, \(nc\) is the number of components and \(\mathcal{PE}_{ij}\) is
+prediction error computed using \eqref{eq:pred-error} for response \(j\)
+and replication \(i\).
+
+Using the component \(nc_\circ\), the prediction error for all 50
+replicates are used to construct the \emph{Error Dataset}.
+\item[\emph{Component Dataset}:]
+Components that gives the minimum prediction error in each replication
+is used as \emph{Component Dataset}, i.e.,
+
+\begin{equation}
+  nc_j = \operatorname*{argmin}_{nc}\left[\mathcal{PE}_{j}\right]
+  \label{eq:min-comp}
+  \end{equation}
+
+Here \(nc_i\) is the number of component that gives minimum prediction
+error for \(j^\text{th}\) response for each replication.
+\end{description}
 
 \section{Exploration}\label{exploration}
-
-The structure of final data for further analysis contains five factors,
-prediction methods, number of components, replications and prediction
-error for four responses. The prediction error is computed for four
-responses using 0 to 10 predictor components for each 50 replicates
-using \eqref{eq:pred-error}. Thus there are 32 (design) \(\times\) 5
-(methods) \(\times\) 11 (number of components) \(\times\) 50
-(replications), i.e.~88000 observations. Here the variables \texttt{Y1}
-to \texttt{Y4} corresponds to prediction error of respective response
-variables.
-
-Here we will not only focus on the minimum prediction error that a
-method can obtain but also the number of components they use to get that
-error. So, the dataset discussed above is summarized to construct
-following two smaller datasets. Let us call them \emph{Error Dataset}
-and \emph{Component Dataset}.
-
-\begin{itemize}
-\tightlist
-\item
-  \emph{Error Dataset}: One with minimum prediction error that a method
-  can give using arbitrary number of components
-\item
-  \emph{Component Dataset}: Another with the number of components that
-  the method has used to give that minimum prediction error
-\end{itemize}
 
 The \protect\hyperlink{statistical-analysis}{Statistical Analysis}
 section will perform multivariate analysis using MANOVA on these
@@ -704,21 +729,12 @@ parameters and prediction methods through plots.
 Here we have a) four vectors of minimum prediction error and b) four
 vectors of corresponding number of components. The following exploration
 is based on the scores of principal components of these two matrices.
-The analysis will progress as in the Figure
-\ref{fig:data-transform-plot} in the case of both datasets.
+The analysis further in this section will progress using the first
+principal components and its density based on different methods and the
+properties of data.
 
 
 
-
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{main_files/figure-latex/data-transform-plot-1} 
-
-}
-
-\caption{Analysis of density of principal components of
-prediction erorr ror each response.}\label{fig:data-transform-plot}
-\end{figure}
 
 
 
@@ -738,9 +754,12 @@ smaller making those designs difficult to model. However, the envelope
 methods have less influence of \texttt{relpos} in this regard.
 
 In addition, the plot also shows that the effect of \texttt{gamma}, the
-level of multicollinearity, has smaller effect in all cases. This
-indicates that the methods are somewhat robust to handle collinear
-predictors.
+level of multicollinearity, has smaller effect when the relevant
+predictors are at position 1, 2, 3, 4. This indicates that the methods
+are somewhat robust to handle collinear predictors. Although, when the
+relevant predictors are at position 5, 6, 7, 8 high multicollinearity
+results in small variance of these relevant components and consequently
+giving poor prediction.
 
 Further, the density curve for PCR, PLS1 and PLS2 for different levels
 of \texttt{eta}, the factor controlling the correlation between
@@ -749,8 +768,13 @@ The envelope methods have shown to have significant interaction between
 position of relevant components and \texttt{eta}. Here higher levels of
 \texttt{eta} is giving larger scores and clear separation between two
 level of \texttt{relpos}. This behavior is expected in the simultaneous
-envelope as the method has claimed to model relevant response (material)
-response space.
+envelope as the method has claimed to model relevant (material) response
+space.
+
+However, in the case of envelope methods and high multicollinearity,
+some large outlier prediction exists. This suggests that in the case of
+multicollinearity, the methods can give unexpected prediction.
+
 
 
 
@@ -759,16 +783,17 @@ response space.
 \begin{figure}[!htb]
 \includegraphics[width=1\linewidth]{main_files/figure-latex/comp-pca-hist-mthd-gamma-relpos-1} \caption{Density of first principal component of the matrix of
 number of principal components used to give minimum prediction error
-subdivided by methods, gamma and eta and grouped by relpos.}\label{fig:comp-pca-hist-mthd-gamma-relpos}
+subdivided by \texttt{methods}, \texttt{gamma} and \texttt{eta} and
+grouped by \texttt{relpos}.}\label{fig:comp-pca-hist-mthd-gamma-relpos}
 \end{figure}
 
 Figure \ref{fig:comp-pca-hist-mthd-gamma-relpos} plots the score density
-from first principal component of matrix with number of components used
-to get minimum prediction error. Here, the higher scores suggest the use
-of more components to give minimum prediction error. The plot shows that
-the relevant predictor components at 5, 6, 7, 8 gives larger prediction
-error than that are at the position 1, 2, 3, 4. The pattern is more
-distinct in large multicollinearity case and PCR and PLS methods.
+from first principal component of \emph{components dataset}. Here, the
+higher scores suggest the Methods have used more number of components to
+give minimum prediction error. The plot shows that the relevant
+predictor components at 5, 6, 7, 8 gives larger prediction error than
+those which are at the position 1, 2, 3, 4. The pattern is more distinct
+in large multicollinearity case and PCR and PLS methods.
 
 The plot also shows noticeable results in the case of envelope methods.
 The methods have shown equally better performance at both levels of
@@ -789,8 +814,9 @@ simulation parameters (\texttt{p}, \texttt{gamma}, \texttt{eta} and
 \label{eq:expanded-model}
 \end{equation}
 
-where, \(\mathbf{y}_{abcdef}\) is a vector of prediction error for
-factors,
+where, \(\mathbf{y}_{abcdef}\) is a vector of prediction errors in
+\emph{error model} and a vector of number of components used for minimum
+prediction error in \emph{component model}.
 
 \begin{itemize}
 \tightlist
@@ -813,73 +839,89 @@ factors,
 
 \begin{figure}
 \includegraphics[width=1\linewidth]{main_files/figure-latex/manova-plot-1} \caption{Pillai Statistic and F-value for the MANOVA model. The
-bar represents the F-value and the text labels are Pillai Statistic for
+bar represents the Pillai Statistic and the text labels are F-value for
 corresponding factor.}\label{fig:manova-plot}
 \end{figure}
 
-Figure \ref{fig:manova-plot} (left) shows the result from
-\emph{component model} and the figure \ref{fig:manova-plot} (right)
-shows the result from \emph{error model}. The figure shows that all main
-effects except \texttt{p} are significant and has large effect on
-\emph{component model} as well as \emph{error model}.
+\begin{description}
+\tightlist
+\item[\emph{Error Model}:]
+Figure \ref{fig:manova-plot} (left) shows the Pillai trace statistic for
+factors of the \emph{effect model}. The main effects of Method has
+largest effect on the model followed by \texttt{relpos}, \texttt{eta}
+and \texttt{gamma}. It is interesting to see the interactions between
+Methods with \texttt{eta}, \texttt{relpos} and \texttt{gamma} having
+large sigificant effect. This clearly shows that methods perform
+differently for different levels of these properties. Further, the
+significant third order interaction between Method, \texttt{eta} and
+\texttt{gamma} suggests that the collinearity in predictors and response
+affect the methods differently. Since, the only some methods consider
+modeling predictor and response together, the prediction is affected by
+the correlation between the response (\texttt{eta}). This results in the
+significant interaction between Method, \texttt{eta}and \texttt{relpos}.
+\item[\emph{Component Model}:]
+Figure \ref{fig:manova-plot} (right) shows the Pillai trace statistic
+for factors of the \emph{component model}. As in \emph{error model}, the
+main effects of the Method, \texttt{relpos}, \texttt{gamma} and
+\texttt{eta} have significantly large effect on number of components
+that a method has used to get minimum prediction error. The effect of
+Method and interactions of parameters with method are significantly
+larger in this case. This shows that the Methods and these interactions
+have larger effect on the use of number of component than the prediction
+error itself. In addition, a similar high third order interaction as in
+\emph{error model} is also observed in this model.
+\end{description}
 
-In addition, the position of relevant components have largest effect on
-\emph{error model}. In case of \emph{component model}, multicollinearity
-also have large effect in addition to the position of relevant
-components. However based on Pillai trace statistic, \texttt{Method} has
-the largest effect on both of the models. Further, the interactions
-\texttt{p:gamma} and \texttt{eta:relpos:Method} has significant effect
-on the \emph{error model} but not in the \emph{component model}.
-However, all of these interactions have small pillai statistic.
-
-Further, in the case of \emph{component model} interaction effects
-\texttt{gamma:eta:Method}, \texttt{p:Method} and
-\texttt{gamma:eta:relpos} are significant but not in the case of
-\emph{error model}. Similar to previous point, they too have small
-pillai statistic. In the case of \emph{error model}, the interaction
-effect of \texttt{eta:relpos:Method} which is particularly interesting
-to see that the methods performed differently for different cases of
-collinearity in response and collinearity in predictors.
-
-Following section will continue on identifying the effect of different
-levels of factors in the case of these interactions.
+Following section will continue demystifying the effect of different
+levels of the factors in the case of these interactions.
 
 \subsection{Effect Analysis}\label{effect-analysis}
 
-\emph{Error Model}:
+Figure \ref{fig:pred-eff-plots} (left) shows clear difference between
+levels of \texttt{eta} for all methods. The difference is smaller when
+the relevant components are at position 1, 2, 3, 4. This change is small
+in the case of \texttt{PLS2} method. Figure \ref{fig:pred-eff-plots}
+(right) shows the effect of multicollinearity on prediction error which
+is higher in the case of \texttt{PCR} and \texttt{PLS1}. The effect is
+larger when relevant components are at position 5, 6, 7, 8. This large
+effect is less distinct in the case of envelope methods.
 
-Figure \ref{fig:pred-eff-plots} (left) shows clear difference of
-\texttt{eta} for a given \texttt{relpos}. The plot also shows a clear
-difference in effect of methods on prediction error. Figure
-\ref{fig:pred-eff-plots} (right) shows effect of \texttt{gamma} for a
-given \texttt{method} and \texttt{eta}. It shows that these methods
-gives low prediction error is high multicollinear situations.
+Envelope methods managed to keep their prediction lower than others even
+by using fewer number of components (Figure \ref{fig:comp-eff-plots})
+mainly in the case of \texttt{Xenv}. \texttt{PLS1} has used moderate
+number of components however the prediction error is large compared to
+other. The two levels of multicollinearity have noticeable effect on use
+of components between two cases of position of relevant predictors.
+Here, when the position of relevant components are at position 5, 6, 7,
+8 the difference in the use of components is large mostly for
+\texttt{PLS} methods. In this case, \texttt{PLS} methods are able to
+capture the variation in predictor when multicollinearity is low (0.2
+level of \texttt{gamma}). Since, the variation in this case spread over
+larger number of components so that eigenvalues corresponding to the
+relevant components are larger than in the case of high
+multicollinearity which is difficult to capture.
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{main_files/figure-latex/pred-eff-plots-1} \caption{Effect plot of some interactions of the multivariate linear model}\label{fig:pred-eff-plots}
-\end{figure}
 
-\emph{Component Model}:
 
-Figure \ref{fig:comp-eff-plots} (left) shows that \texttt{xenv} has used
-minimum number of components followed by \texttt{senv} methods than
-others in order to get their minimum prediction error. The same figure
-also suggest that the minimum number of components used by
-\texttt{PLS1}, \texttt{PLS2} and \texttt{PCR} vary and has high effect
-of \texttt{eta}. The \texttt{senv} model which consider both X and Y
-correlation structure while estimating regression coefficients has
-smallest variation of number of components used for different
-\texttt{eta} parameters.
-
-Figure \ref{fig:comp-eff-plots} (right) shows that in case of low
-multicollinearity in the model \texttt{PLS} methods are used less number
-of components than \texttt{PCR}. This is expected since, \texttt{PLS}
-methods consider the covariance structure of predictor and response
-which \texttt{PCR} does not.
 
 \begin{figure}
-\includegraphics[width=1\linewidth]{main_files/figure-latex/comp-eff-plots-1} \caption{Effect plot of some interactions of the multivariate linear model}\label{fig:comp-eff-plots}
+\includegraphics[width=1\linewidth]{main_files/figure-latex/pred-eff-plots-1} \caption{Effect plot of some interactions of the multivariate
+linear model of prediction error}\label{fig:pred-eff-plots}
 \end{figure}
+
+
+
+
+\begin{figure}
+\includegraphics[width=1\linewidth]{main_files/figure-latex/comp-eff-plots-1} \caption{Effect plot of some interactions of the multivariate
+linear model of number of components to get minimum prediction error}\label{fig:comp-eff-plots}
+\end{figure}
+
+In the case of \texttt{PCR}, the prediction relies heavily on the
+relevant components, the number of components used by the method is as
+expected in both the levels of \texttt{relpos}. This reinforce the
+results from the density plot (Figure
+\ref{fig:comp-pca-hist-mthd-gamma-relpos}) in previous section.
 
 \hypertarget{refs}{}
 

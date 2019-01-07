@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2019-01-01">
+<meta name="date" content="2019-01-07">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -110,7 +110,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./index.html">Multivariate Comparison</a></li>
+<li><a href="./index.html"><strong>Multivariate Comparison</strong></a></li>
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
 <li class="chapter" data-level="" data-path="simulation-model.html"><a href="simulation-model.html"><i class="fa fa-check"></i>Simulation Model</a></li>
@@ -126,8 +126,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="appendix"><span><b>Appendix A</b></span></li>
+<li class="chapter" data-level="" data-path="shiny-application.html"><a href="shiny-application.html"><i class="fa fa-check"></i>Shiny Application</a></li>
+<li class="chapter" data-level="" data-path="reproduce.html"><a href="reproduce.html"><i class="fa fa-check"></i>Reproduce</a></li>
 <li class="divider"></li>
-<li class="toc-footer"><a href="https://bookdown.org" target="blank">Published with BookDown</a></li>
+<li class="toc-footer"><a href="https://bookdown.org" target="blank">Published with <em>BookDown</em></a></li>
 </ul>
 
       </nav>
@@ -218,12 +220,35 @@ Figure 4: Expected Scaled absolute covariance between predictor components and r
 <p>The discussion here is made on the first design. A similar discussion can be made on all 32 designs where each of the design holds the properties of the data they simulate. These data are used by the prediction methods discussed in previous section. Each prediction methods are given independent dataset simulated in order to give them equal opportunity to understand the dynamics in the data.</p>
 <div id="basis-of-comparison" class="section level2">
 <h2>Basis of comparison</h2>
-<p>This study focuses mainly on the prediction performance of the methods and emphasis specifically on the interaction between the properties of the data, controlled by the simulation parameters, and the prediction methods. The prediction performance is measured by the prediction error for each response as in <a href="experimental-design.html#eq:pred-error">(7)</a>. The prediction is the theoretically computed expected prediction when the model is applied to unseen observations corresponding to each response variable.</p>
+<p>This study focuses mainly on the prediction performance of the methods and emphasis specifically on the interaction between the properties of the data, controlled by the simulation parameters, and the prediction methods. The prediction performance is measured by the average of prediction error that a method can give using arbitrary number of components and number of components used to give the minimum prediction error. Let us define,</p>
 <span class="math display" id="eq:pred-error">\[\begin{equation}
-\text{prediction error}_j = \frac{1}{\sigma_{y_j|x}^2}\left[\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)^t\boldsymbol{\Sigma}_{xx}\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)\right] + 1
+\mathcal{PE}_j = \frac{1}{\sigma_{y_j|x}^2}\left[\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)^t\boldsymbol{\Sigma}_{xx}\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)\right] + 1
 \tag{7}
 \end{equation}\]</span>
-<p>where, <span class="math inline">\(\boldsymbol{\Sigma}_{xx}\)</span> is the true covariance matrix of predictor and <span class="math inline">\(\sigma_{y_j\mid x}\)</span> is the true model error obtained from simulation of response <span class="math inline">\(j = 1, \ldots m\)</span>.  () The prediction error in <a href="experimental-design.html#eq:pred-error">(7)</a> is computed for all replications of 32 designs.</p>
+<p>as a prediction error for a given design, method, replication and number of components, where, <span class="math inline">\(\boldsymbol{\Sigma}_{xx}\)</span> is the true covariance matrix of predictor and <span class="math inline">\(\sigma_{y_j\mid x}\)</span> is the true model error obtained from simulation of response <span class="math inline">\(j = 1, \ldots m\)</span>.  ().</p>
+<p>A dataset using <a href="experimental-design.html#eq:pred-error">(7)</a> is obtained which contains five factors for simulation parameters, prediction methods, number of components, replications and prediction error for four responses. The prediction error is computed using 0 to 10 predictor components for each 50 replicates using <a href="experimental-design.html#eq:pred-error">(7)</a>. Thus there are 32 (design) <span class="math inline">\(\times\)</span> 5 (methods) <span class="math inline">\(\times\)</span> 11 (number of components) <span class="math inline">\(\times\)</span> 50 (replications), i.e. 88000 observations. Here the variables <code>Y1</code> to <code>Y4</code> corresponds to prediction error of respective response variables.</p>
+<p>Since we will focus our discussion on the minimum prediction error that a method can obtain and the number of components they use to get minimum prediciton error in each replicate, the dataset discussed above is summarized to construct following two smaller datasets. Let us call them <em>Error Dataset</em> and <em>Component Dataset</em>.</p>
+<dl>
+<dt><em>Error Dataset</em>:</dt>
+<dd>For each prediction method, design and response, an average prediction error is computed over all replicates for each components. Next, a component that results in the minumum of this average prediction error is selected, i.e.,
+<span class="math display" id="eq:min-pred">\[\begin{equation}
+  nc_\circ = \operatorname*{argmin}_{nc}\left[\frac{1}{50}\sum_{i=1}^{50}{\mathcal{PE}_{ij}}\right]
+  \tag{8}
+  \end{equation}\]</span>
+</dd>
+<dd>where, <span class="math inline">\(nc\)</span> is the number of components and <span class="math inline">\(\mathcal{PE}_{ij}\)</span> is prediction error computed using <a href="experimental-design.html#eq:pred-error">(7)</a> for response <span class="math inline">\(j\)</span> and replication <span class="math inline">\(i\)</span>.
+</dd>
+<dd><p>Using the component <span class="math inline">\(nc_\circ\)</span>, the prediction error for all 50 replicates are used to construct the <em>Error Dataset</em>.</p>
+</dd>
+<dt><em>Component Dataset</em>:</dt>
+<dd>Components that gives the minimum prediction error in each replication is used as <em>Component Dataset</em>, i.e.,
+<span class="math display" id="eq:min-comp">\[\begin{equation}
+  nc_j = \operatorname*{argmin}_{nc}\left[\mathcal{PE}_{j}\right]
+  \tag{9}
+  \end{equation}\]</span>
+Here <span class="math inline">\(nc_i\)</span> is the number of component that gives minimum prediction error for <span class="math inline">\(j^\text{th}\)</span> response for each replication.
+</dd>
+</dl>
 
 </div>
 </div>

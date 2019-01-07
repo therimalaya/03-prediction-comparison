@@ -1,3 +1,7 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
 # Statistical Analysis
 
 ```{r knitr_setup}
@@ -15,7 +19,6 @@ print_manova <- function(tbl, format = docs_format, level = 0.05, ...){
 }
 ```
 
-
 The datasets discussed in previous section a) _error dataset_ and b) _component dataset_ are used on a multivariate analysis of variance. Let us call them _error model_ and _component model_ respectively. The models are fitted with the third order interaction of simulation parameters (`p`, `gamma`, `eta` and `relpos`) and `Methods` as in \@ref(eq:expanded-model).
 
 \begin{equation}
@@ -23,13 +26,13 @@ The datasets discussed in previous section a) _error dataset_ and b) _component 
 (\#eq:expanded-model)
 \end{equation}
 
-where, $\mathbf{y}_{abcdef}$ is a vector of prediction error for factors,
+where, $\mathbf{y}_{abcdef}$ is a vector of prediction errors in _error model_ and a vector of number of components used for minimum prediction error in _component model_.
 
 - $\texttt{p}_a =$ `r catvec(opts$p)`
 - $\texttt{gamma}_b=$ `r catvec(opts$gamma)`
 - $\texttt{eta}_c=$ `r catvec(opts$eta)`
 - $\texttt{relpos}_d=$ `r catvec(opts$relpos)`
-- $\texttt{Methods}_e=$ `r catvec(map_chr(mthds, ~paste0("\\texttt{", .x, "}")))`
+- $\texttt{Methods}_e=$ `r if (knitr::is_html_output()) catvec(mthds) else catvec(map_chr(mthds, ~paste0("\\texttt{", .x, "}")))`
 
 
 ```{r manova-model}
@@ -37,30 +40,51 @@ where, $\mathbf{y}_{abcdef}$ is a vector of prediction error for factors,
 pred_mdl <- lm(
   formula = cbind(Y1, Y2, Y3, Y4) ~ (p + gamma + eta + relpos + Method) ^ 3,
   data = pred_min)
-
 ## Full Component Model
 comp_mdl <- lm(
   formula = cbind(Y1, Y2, Y3, Y4) ~ (p + gamma + eta + relpos + Method) ^ 3,
   data = comp_min)
-
 ## Anova for Full Prediction Model
 pred_aov <- anova(pred_mdl) %>%
   as.data.frame() %>%
   rownames_to_column('Factors') %>%
   as_tibble()
-
 ## Anova for Full Component Model
 comp_aov <- anova(comp_mdl) %>%
   as.data.frame() %>%
   rownames_to_column('Factors') %>%
   as_tibble()
-
 ## Joining both tables
 aov_df <- bind_rows(list(Pred = pred_aov, Comp = comp_aov), .id = "Type")
 ```
 
+(ref:manova-plot) Pillai Statistic and F-value for the MANOVA model. The bar represents the Pillai Statistic and the text labels are F-value for corresponding factor.
 
-(ref:manova-plot) Pillai Statistic and F-value for the MANOVA model. The bar represents the F-value and the text labels are Pillai Statistic for corresponding factor.
+```{r manova-plot-old, fig.width=8, out.width='100%', fig.asp=0.5, fig.cap="(ref:manova-plot)", eval=FALSE}
+model_labels <- c(
+  Comp = "Model: Number of Components",
+  Pred = "Model: Prediction Error"
+)
+aov_df %>%
+  filter(!(Factors %in% c('Residuals', '(Intercept)'))) %>%
+  select(Model = Type, Factors, Pillai, 
+         Fvalue = `approx F`, Pvalue = `Pr(>F)`) %>%
+  mutate(Model = factor(Model, levels = c("Pred", "Comp"))) %>% 
+  mutate(Pvalue = ifelse(Pvalue < 0.05, "<0.05", ">=0.05")) %>%
+  ggplot(aes(reorder(Factors, log1p(Fvalue)), 
+             log1p(Fvalue), fill = Pvalue)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = round(Pillai, 2)), family = 'mono', 
+            angle = 90, hjust = "inward") +
+  facet_grid(cols = vars(Model), scales = 'free_y',
+             labeller = labeller(Model = model_labels)) +
+  theme_grey(base_family = "mono") +
+  theme(legend.position = c(0.2, 0.9),
+        legend.direction = 'horizontal',
+        axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+  labs(x = NULL, y = "log1p(Fvalue)") +
+  scale_y_continuous(trans = "log1p", breaks = scales::pretty_breaks(n=6))
+```
 
 ```{r manova-plot, fig.width=8, out.width='100%', fig.asp=0.5, fig.cap="(ref:manova-plot)"}
 model_labels <- c(
@@ -68,51 +92,62 @@ model_labels <- c(
   Pred = "Model: Prediction Error"
 )
 aov_df %>%
-  filter(!(Factors %in% c('Residuals', '(Intercept)'))) %>%
-  select(Model = Type, Factors, Pillai, Fvalue = `approx F`, Pvalue = `Pr(>F)`) %>%
-  mutate(Pvalue = ifelse(Pvalue < 0.05, "<0.05", ">=0.05")) %>% 
-  ggplot(aes(reorder(Factors, log1p(Fvalue)), log1p(Fvalue), fill = Pvalue)) +
-  geom_bar(stat = "identity") +
-  geom_text(aes(label = round(Pillai, 2)), family = 'mono', angle = 90, hjust = "inward") +
-  facet_grid(cols = vars(Model), scales = 'free_y', 
-             labeller = labeller(Model = model_labels)) +
-  theme_grey(base_family = "mono") +
-  theme(legend.position = c(0.2, 0.9),
-        legend.direction = 'horizontal',
-        axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
-  labs(x = NULL, y = "log1p(Value)") +
-  scale_y_continuous(trans = "log1p", breaks = scales::pretty_breaks(n=6))
+    filter(!(Factors %in% c('Residuals', '(Intercept)'))) %>%
+    select(Model = Type, Factors, Pillai, 
+           Fvalue = `approx F`, Pvalue = `Pr(>F)`) %>%
+    mutate(Model = factor(Model, levels = c("Pred", "Comp"))) %>% 
+    mutate(Pvalue = ifelse(Pvalue < 0.05, "<0.05", ">=0.05")) %>%
+    ggplot(aes(reorder(Factors, Pillai), Pillai, fill = Pvalue)) +
+    geom_bar(stat = "identity") +
+    geom_text(aes(label = round(Fvalue, 2)), family = 'mono', 
+              angle = 0, hjust = "inward", size = 3) +
+    facet_grid(cols = vars(Model), scales = 'free_y',
+               labeller = labeller(Model = model_labels)) +
+    theme_grey(base_family = "mono") +
+    theme(legend.position = c(0.85, 0.1),
+          legend.direction = 'horizontal',
+          axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+    guides(fill = guide_legend(title.position = "top",
+                               title.hjust = 0.5)) +
+    labs(x = NULL, y = "Pillai Statistic") +
+    coord_flip()
 ```
 
+_Error Model_:
+: Figure \@ref(fig:manova-plot) (left) shows the Pillai trace statistic for factors of the _effect model_. The main effects of Method has largest effect on the model followed by `relpos`, `eta` and `gamma`. It is interesting to see the interactions between Methods with `eta`, `relpos` and `gamma` having large sigificant effect. This clearly shows that methods perform differently for different levels of these properties. Further, the significant third order interaction between Method, `eta` and `gamma` suggests that the collinearity in predictors and response affect the methods differently. Since, the only some methods consider modeling predictor and response together, the prediction is affected by the correlation between the response (`eta`). This results in the significant interaction between Method, `eta`and `relpos`.
 
-Figure \@ref(fig:manova-plot) (left) shows the result from _component model_ and the figure \@ref(fig:manova-plot) (right) shows the result from _error model_. The figure shows that all main effects except `p` are significant and has large effect on _component model_ as well as _error model_.
+_Component Model_:
+: Figure \@ref(fig:manova-plot) (right) shows the Pillai trace statistic for factors of the _component model_. As in _error model_, the main effects of the Method, `relpos`, `gamma` and `eta` have significantly large effect on number of components that a method has used to get minimum prediction error. The effect of Method and interactions of parameters with method are significantly larger in this case. This shows that the Methods and these interactions have larger effect on the use of number of component than the prediction error itself. In addition, a similar high third order interaction as in _error model_ is also observed in this model.
 
-In addition, the position of relevant components have largest effect on _error model_. In case of _component model_, multicollinearity also have large effect in addition to the position of relevant components. However based on Pillai trace statistic, `Method` has the largest effect on both of the models. Further, the interactions `p:gamma` and `eta:relpos:Method` has significant effect on the _error model_ but not in the _component model_. However, all of these interactions have small pillai statistic. 
-
-Further, in the case of _component model_ interaction effects `gamma:eta:Method`, `p:Method` and `gamma:eta:relpos` are significant but not in the case of _error model_. Similar to previous point, they too have small pillai statistic. In the case of _error model_, the interaction effect of `eta:relpos:Method` which is particularly interesting to see that the methods performed differently for different cases of collinearity in response and collinearity in predictors.
-
-Following section will continue on identifying the effect of different levels of factors in the case of these interactions.
+Following section will continue demystifying the effect of different levels of the factors in the case of these interactions.
 
 ## Effect Analysis
 
-_Error Model_:
+Figure \@ref(fig:pred-eff-plots) (left) shows clear difference between levels of `eta` for all methods. The difference is smaller when the relevant components are at position `r unique(opts$relpos)[1]`. This change is small in the case of `PLS2` method. Figure \@ref(fig:pred-eff-plots) (right) shows the effect of multicollinearity on prediction error which is higher in the case of `PCR` and `PLS1`. The effect is larger when relevant components are at position `r unique(opts$relpos)[2]`. This large effect is less distinct in the case of envelope methods.
 
-Figure \@ref(fig:pred-eff-plots) (left) shows clear difference of `eta` for a given `relpos`. The plot also shows a clear difference in effect of methods on prediction error. Figure \@ref(fig:pred-eff-plots) (right) shows effect of `gamma` for a given `method` and `eta`. It shows that these methods gives low prediction error is high multicollinear situations. 
+Envelope methods managed to keep their prediction lower than others even by using fewer number of components (Figure \@ref(fig:comp-eff-plots)) mainly in the case of `Xenv`. `PLS1` has used moderate number of components however the prediction error is large compared to other. The two levels of multicollinearity have noticeable effect on use of components between two cases of position of relevant predictors. Here, when the position of relevant components are at position `r unique(opts$relpos)[2]` the difference in the use of components is large mostly for `PLS` methods. In this case, `PLS` methods are able to capture the variation in predictor when multicollinearity is low (0.2 level of `gamma`). Since, the variation in this case spread over larger number of components so that eigenvalues corresponding to the relevant components are larger than in the case of high multicollinearity which is difficult to capture.
 
-```{r pred-eff-plots, fig.width=7, out.width='100%', fig.cap='Effect plot of some interactions of the multivariate linear model', fig.asp = 0.6}
+(ref:pred-eff-plot) Effect plot of some interactions of the multivariate linear model of prediction error
+
+```{r pred-eff-plots, fig.width=7, out.width='100%', fig.cap='(ref:pred-eff-plot)', fig.asp = 0.6}
 thm <- theme(plot.title = element_blank(),
              plot.subtitle = element_blank(),
              legend.position = "bottom",
+             ## axis.text.x = element_text(angle = 45, hjust = 1),
              axis.title = element_blank())
-plt1 <- eff_df("eta:relpos:Method", pred_mdl) %>% 
+plt1 <- eff_df("eta:relpos:Method", pred_mdl) %>%
   eff_plot3(reorder = TRUE, labeller = label_both) +
   theme_grey(base_family = "mono") +
   thm
-plt2 <- eff_df("gamma:eta:Method", pred_mdl) %>% 
+## plt2 <- eff_df("gamma:eta:Method", pred_mdl) %>%
+##   eff_plot3(reorder = TRUE, labeller = label_both) +
+##   theme_grey(base_family = "mono") +
+##   thm
+plt3 <- eff_df("gamma:relpos:Method", pred_mdl) %>%
   eff_plot3(reorder = TRUE, labeller = label_both) +
   theme_grey(base_family = "mono") +
   thm
-plt <- gridExtra::arrangeGrob(plt1, plt2, ncol = 2, 
+plt <- gridExtra::arrangeGrob(plt1, plt3, ncol = 2,
                        bottom="Method", padding = unit(0.04, 'npc'),
                        left = "Fitted Prediction Error")
 grid::grid.newpage()
@@ -120,31 +155,32 @@ grid::grid.draw(plt)
 ```
 
 
-_Component Model_:
+(ref:comp-eff-plot) Effect plot of some interactions of the multivariate linear model of number of components to get minimum prediction error
 
-Figure \@ref(fig:comp-eff-plots) (left) shows that `xenv` has used minimum number of components followed by `senv` methods than others in order to get their minimum prediction error. The same figure also suggest that the minimum number of components used by `PLS1`, `PLS2` and `PCR` vary and has high effect of `eta`. The `senv` model which consider both X and Y correlation structure while estimating regression coefficients has smallest variation of number of components used for different `eta` parameters.
-
-Figure \@ref(fig:comp-eff-plots) (right) shows that in case of low multicollinearity in the model `PLS` methods are used less number of components than `PCR`. This is expected since, `PLS` methods consider the covariance structure of predictor and response which `PCR` does not.
-
-
-```{r comp-eff-plots, fig.width=7, out.width='100%', fig.cap='Effect plot of some interactions of the multivariate linear model', fig.asp = 0.6}
+```{r comp-eff-plots, fig.width=7, out.width='100%', fig.cap='(ref:comp-eff-plot)', fig.asp = 0.6}
 thm <- theme(plot.title = element_blank(),
              plot.subtitle = element_blank(),
              legend.position = "bottom",
+             ## axis.text.x = element_text(angle = 45, hjust = 1),
              axis.title = element_blank())
-plt1 <- eff_df("eta:relpos:Method", comp_mdl) %>% 
+plt1 <- eff_df("eta:relpos:Method", comp_mdl) %>%
   eff_plot3(reorder = TRUE, labeller = label_both) +
   theme_grey(base_family = "mono") +
   thm
-plt2 <- eff_df("gamma:eta:Method", comp_mdl) %>% 
+## plt2 <- eff_df("gamma:eta:Method", comp_mdl) %>%
+##   eff_plot3(reorder = TRUE, labeller = label_both) +
+##   theme_grey(base_family = "mono") +
+##   thm
+plt3 <- eff_df("gamma:relpos:Method", comp_mdl) %>%
   eff_plot3(reorder = TRUE, labeller = label_both) +
   theme_grey(base_family = "mono") +
   thm
-plt <- gridExtra::arrangeGrob(plt1, plt2, ncol = 2, 
+plt <- gridExtra::arrangeGrob(plt1, plt3, ncol = 2,
                        bottom="Method", padding = unit(0.04, 'npc'),
-                       left = "Fitted Prediction Error")
+                       left = "Fitted Number of Components")
 grid::grid.newpage()
 grid::grid.draw(plt)
 ```
 
 
+In the case of `PCR`, the prediction relies heavily on the relevant components, the number of components used by the method is as expected in both the levels of `relpos`. This reinforce the results from the density plot (Figure \@ref(fig:comp-pca-hist-mthd-gamma-relpos)) in previous section.

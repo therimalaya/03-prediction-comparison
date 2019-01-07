@@ -1,4 +1,10 @@
 base
+methods
+datasets
+utils
+grDevices
+graphics
+stats
 pls
 Renvlp
 simrel
@@ -19,6 +25,7 @@ Matrix
 foreach
 glmnet
 iterators
+parallel
 doParallel
 gridExtra
 ggridges

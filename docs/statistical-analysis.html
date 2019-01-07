@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2019-01-01">
+<meta name="date" content="2019-01-07">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -110,7 +110,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./index.html">Multivariate Comparison</a></li>
+<li><a href="./index.html"><strong>Multivariate Comparison</strong></a></li>
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
 <li class="chapter" data-level="" data-path="simulation-model.html"><a href="simulation-model.html"><i class="fa fa-check"></i>Simulation Model</a></li>
@@ -126,8 +126,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="appendix"><span><b>Appendix A</b></span></li>
+<li class="chapter" data-level="" data-path="shiny-application.html"><a href="shiny-application.html"><i class="fa fa-check"></i>Shiny Application</a></li>
+<li class="chapter" data-level="" data-path="reproduce.html"><a href="reproduce.html"><i class="fa fa-check"></i>Reproduce</a></li>
 <li class="divider"></li>
-<li class="toc-footer"><a href="https://bookdown.org" target="blank">Published with BookDown</a></li>
+<li class="toc-footer"><a href="https://bookdown.org" target="blank">Published with <em>BookDown</em></a></li>
 </ul>
 
       </nav>
@@ -147,49 +149,54 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="statistical-analysis" class="section level1">
 <h1>Statistical Analysis</h1>
-<p>The datasets discussed in previous section a) <em>error dataset</em> and b) <em>component dataset</em> are used on a multivariate analysis of variance. Let us call them <em>error model</em> and <em>component model</em> respectively. The models are fitted with the third order interaction of simulation parameters (<code>p</code>, <code>gamma</code>, <code>eta</code> and <code>relpos</code>) and <code>Methods</code> as in <a href="statistical-analysis.html#eq:expanded-model">(8)</a>.</p>
+<p>The datasets discussed in previous section a) <em>error dataset</em> and b) <em>component dataset</em> are used on a multivariate analysis of variance. Let us call them <em>error model</em> and <em>component model</em> respectively. The models are fitted with the third order interaction of simulation parameters (<code>p</code>, <code>gamma</code>, <code>eta</code> and <code>relpos</code>) and <code>Methods</code> as in <a href="statistical-analysis.html#eq:expanded-model">(10)</a>.</p>
 <span class="math display" id="eq:expanded-model">\[\begin{equation}
 \mathbf{y}_{abcdef} = \boldsymbol{\mu} + (\texttt{p}_a + \texttt{gamma}_b + \texttt{eta}_c + \texttt{relpos}_d + \texttt{Methods}_e)^3 + \boldsymbol{\varepsilon}_{abcdef}
-\tag{8}
+\tag{10}
 \end{equation}\]</span>
-<p>where, <span class="math inline">\(\mathbf{y}_{abcdef}\)</span> is a vector of prediction error for factors,</p>
+<p>where, <span class="math inline">\(\mathbf{y}_{abcdef}\)</span> is a vector of prediction errors in <em>error model</em> and a vector of number of components used for minimum prediction error in <em>component model</em>.</p>
 <ul>
 <li><span class="math inline">\(\texttt{p}_a =\)</span> 20 and 250</li>
 <li><span class="math inline">\(\texttt{gamma}_b=\)</span> 0.2 and 0.9</li>
 <li><span class="math inline">\(\texttt{eta}_c=\)</span> 0, 0.4, 0.8 and 1.2</li>
 <li><span class="math inline">\(\texttt{relpos}_d=\)</span> 1, 2, 3, 4 and 5, 6, 7, 8</li>
-<li><span class="math inline">\(\texttt{Methods}_e=\)</span> , , ,  and </li>
+<li><span class="math inline">\(\texttt{Methods}_e=\)</span> PCR, PLS1, PLS2, Xenv and Senv</li>
 </ul>
 
 <div class="figure"><span id="fig:manova-plot"></span>
-<img src="main_files/figure-html/manova-plot-1.svg" alt="Pillai Statistic and F-value for the MANOVA model. The bar represents the F-value and the text labels are Pillai Statistic for corresponding factor." width="100%" />
+<img src="main_files/figure-html/manova-plot-1.svg" alt="Pillai Statistic and F-value for the MANOVA model. The bar represents the Pillai Statistic and the text labels are F-value for corresponding factor." width="100%" />
 <p class="caption">
-Figure 8: Pillai Statistic and F-value for the MANOVA model. The bar represents the F-value and the text labels are Pillai Statistic for corresponding factor.
+Figure 7: Pillai Statistic and F-value for the MANOVA model. The bar represents the Pillai Statistic and the text labels are F-value for corresponding factor.
 </p>
 </div>
-<p>Figure <a href="statistical-analysis.html#fig:manova-plot">8</a> (left) shows the result from <em>component model</em> and the figure <a href="statistical-analysis.html#fig:manova-plot">8</a> (right) shows the result from <em>error model</em>. The figure shows that all main effects except <code>p</code> are significant and has large effect on <em>component model</em> as well as <em>error model</em>.</p>
-<p>In addition, the position of relevant components have largest effect on <em>error model</em>. In case of <em>component model</em>, multicollinearity also have large effect in addition to the position of relevant components. However based on Pillai trace statistic, <code>Method</code> has the largest effect on both of the models. Further, the interactions <code>p:gamma</code> and <code>eta:relpos:Method</code> has significant effect on the <em>error model</em> but not in the <em>component model</em>. However, all of these interactions have small pillai statistic.</p>
-<p>Further, in the case of <em>component model</em> interaction effects <code>gamma:eta:Method</code>, <code>p:Method</code> and <code>gamma:eta:relpos</code> are significant but not in the case of <em>error model</em>. Similar to previous point, they too have small pillai statistic. In the case of <em>error model</em>, the interaction effect of <code>eta:relpos:Method</code> which is particularly interesting to see that the methods performed differently for different cases of collinearity in response and collinearity in predictors.</p>
-<p>Following section will continue on identifying the effect of different levels of factors in the case of these interactions.</p>
+<dl>
+<dt><em>Error Model</em>:</dt>
+<dd>Figure <a href="statistical-analysis.html#fig:manova-plot">7</a> (left) shows the Pillai trace statistic for factors of the <em>effect model</em>. The main effects of Method has largest effect on the model followed by <code>relpos</code>, <code>eta</code> and <code>gamma</code>. It is interesting to see the interactions between Methods with <code>eta</code>, <code>relpos</code> and <code>gamma</code> having large sigificant effect. This clearly shows that methods perform differently for different levels of these properties. Further, the significant third order interaction between Method, <code>eta</code> and <code>gamma</code> suggests that the collinearity in predictors and response affect the methods differently. Since, the only some methods consider modeling predictor and response together, the prediction is affected by the correlation between the response (<code>eta</code>). This results in the significant interaction between Method, <code>eta</code>and <code>relpos</code>.
+</dd>
+<dt><em>Component Model</em>:</dt>
+<dd>Figure <a href="statistical-analysis.html#fig:manova-plot">7</a> (right) shows the Pillai trace statistic for factors of the <em>component model</em>. As in <em>error model</em>, the main effects of the Method, <code>relpos</code>, <code>gamma</code> and <code>eta</code> have significantly large effect on number of components that a method has used to get minimum prediction error. The effect of Method and interactions of parameters with method are significantly larger in this case. This shows that the Methods and these interactions have larger effect on the use of number of component than the prediction error itself. In addition, a similar high third order interaction as in <em>error model</em> is also observed in this model.
+</dd>
+</dl>
+<p>Following section will continue demystifying the effect of different levels of the factors in the case of these interactions.</p>
 <div id="effect-analysis" class="section level2">
 <h2>Effect Analysis</h2>
-<p><em>Error Model</em>:</p>
-<p>Figure <a href="statistical-analysis.html#fig:pred-eff-plots">9</a> (left) shows clear difference of <code>eta</code> for a given <code>relpos</code>. The plot also shows a clear difference in effect of methods on prediction error. Figure <a href="statistical-analysis.html#fig:pred-eff-plots">9</a> (right) shows effect of <code>gamma</code> for a given <code>method</code> and <code>eta</code>. It shows that these methods gives low prediction error is high multicollinear situations.</p>
+<p>Figure <a href="statistical-analysis.html#fig:pred-eff-plots">8</a> (left) shows clear difference between levels of <code>eta</code> for all methods. The difference is smaller when the relevant components are at position 1, 2, 3, 4. This change is small in the case of <code>PLS2</code> method. Figure <a href="statistical-analysis.html#fig:pred-eff-plots">8</a> (right) shows the effect of multicollinearity on prediction error which is higher in the case of <code>PCR</code> and <code>PLS1</code>. The effect is larger when relevant components are at position 5, 6, 7, 8. This large effect is less distinct in the case of envelope methods.</p>
+<p>Envelope methods managed to keep their prediction lower than others even by using fewer number of components (Figure <a href="statistical-analysis.html#fig:comp-eff-plots">9</a>) mainly in the case of <code>Xenv</code>. <code>PLS1</code> has used moderate number of components however the prediction error is large compared to other. The two levels of multicollinearity have noticeable effect on use of components between two cases of position of relevant predictors. Here, when the position of relevant components are at position 5, 6, 7, 8 the difference in the use of components is large mostly for <code>PLS</code> methods. In this case, <code>PLS</code> methods are able to capture the variation in predictor when multicollinearity is low (0.2 level of <code>gamma</code>). Since, the variation in this case spread over larger number of components so that eigenvalues corresponding to the relevant components are larger than in the case of high multicollinearity which is difficult to capture.</p>
+
 <div class="figure"><span id="fig:pred-eff-plots"></span>
-<img src="main_files/figure-html/pred-eff-plots-1.svg" alt="Effect plot of some interactions of the multivariate linear model" width="100%" />
+<img src="main_files/figure-html/pred-eff-plots-1.svg" alt="Effect plot of some interactions of the multivariate linear model of prediction error" width="100%" />
 <p class="caption">
-Figure 9: Effect plot of some interactions of the multivariate linear model
+Figure 8: Effect plot of some interactions of the multivariate linear model of prediction error
 </p>
 </div>
-<p><em>Component Model</em>:</p>
-<p>Figure <a href="statistical-analysis.html#fig:comp-eff-plots">10</a> (left) shows that <code>xenv</code> has used minimum number of components followed by <code>senv</code> methods than others in order to get their minimum prediction error. The same figure also suggest that the minimum number of components used by <code>PLS1</code>, <code>PLS2</code> and <code>PCR</code> vary and has high effect of <code>eta</code>. The <code>senv</code> model which consider both X and Y correlation structure while estimating regression coefficients has smallest variation of number of components used for different <code>eta</code> parameters.</p>
-<p>Figure <a href="statistical-analysis.html#fig:comp-eff-plots">10</a> (right) shows that in case of low multicollinearity in the model <code>PLS</code> methods are used less number of components than <code>PCR</code>. This is expected since, <code>PLS</code> methods consider the covariance structure of predictor and response which <code>PCR</code> does not.</p>
+
 <div class="figure"><span id="fig:comp-eff-plots"></span>
-<img src="main_files/figure-html/comp-eff-plots-1.svg" alt="Effect plot of some interactions of the multivariate linear model" width="100%" />
+<img src="main_files/figure-html/comp-eff-plots-1.svg" alt="Effect plot of some interactions of the multivariate linear model of number of components to get minimum prediction error" width="100%" />
 <p class="caption">
-Figure 10: Effect plot of some interactions of the multivariate linear model
+Figure 9: Effect plot of some interactions of the multivariate linear model of number of components to get minimum prediction error
 </p>
 </div>
+<p>In the case of <code>PCR</code>, the prediction relies heavily on the relevant components, the number of components used by the method is as expected in both the levels of <code>relpos</code>. This reinforce the results from the density plot (Figure <a href="exploration.html#fig:comp-pca-hist-mthd-gamma-relpos">6</a>) in previous section.</p>
 
 </div>
 </div>

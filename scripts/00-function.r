@@ -584,6 +584,48 @@ eff_df <- function(term, model) {
     class(eff_df) <- append(class(eff_df), "effects.df")
     return(eff_df)
 }
+get_eff_plot <- function(effect_df, term, reorder = FALSE, show_errorbar = FALSE, ...) {
+  trms <- rev(unlist(strsplit(term, ":")))
+  effect_df <- effect_df %>% 
+    select_at(vars(!!!trms, everything()))
+  if (length(trms) <= 2) {
+    facet_formula <- NULL
+  } else {
+    trms_sub <- trms[-c(1:2)]
+    facet_formula <- paste(trms_sub[1], paste(trms_sub[-1], collapse = " + "), sep = " ~ ")
+    if (length(trms_sub) == 1) facet_formula <- paste0(facet_formula, ".")
+  }
+  if (reorder) {
+    plt <- effect_df %>%
+      ggplot(aes(reorder(get(trms[1]), fit), fit))
+  } else {
+    plt <- effect_df %>% ggplot(aes(get(trms[1]), fit))
+  }
+  if (length(trms) == 1) {
+    plt <- plt +
+      stat_summary(fun.y = mean, geom = "line", group = 1) +
+      stat_summary(fun.y = mean, geom = "point")
+  } else {
+    plt <- plt +
+      stat_summary(fun.y = mean, geom = "line",
+                   aes(color = get(trms[2]), group = get(trms[2]))) +
+      stat_summary(fun.y = mean, geom = "point", size = 0.8,
+                   aes(color = get(trms[2]), group = get(trms[2]))) +
+      labs(color = trms[2])
+  }
+  plt <- plt + theme(legend.position = "bottom",
+                     plot.subtitle = element_text(family = "mono")) +
+    labs(x = trms[1], y = "Effect")
+  if (!is.null(facet_formula))
+    plt <- plt + facet_grid(as.formula(facet_formula), ...)
+  if (show_errorbar & length(trms) > 1)
+    plt <- plt + stat_summary(fun.data = mean_se,
+                              geom = "errorbar", width = 0.1,
+                              aes(color = get(trms[2])))
+  if (show_errorbar & length(trms) <= 1)
+    plt <- plt + stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.1)
+  return(plt)
+}
 eff_plot <- function(effect_df, reorder = FALSE,
                      show_errorbar = FALSE, ...) {
     dfn <- names(effect_df)
