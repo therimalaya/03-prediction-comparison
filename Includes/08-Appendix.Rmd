@@ -4,7 +4,7 @@
 
 `r if (knitr::is_html_output()) '# Shiny Application' `
 
-<embed src="http://cloudrimalaya.ddns.net:3838" height="900px" width="100%">
+<embed src="http://compare.cloudrimalaya.com" height="900px" width="100%">
 
 <script>
   $("document").ready(function(){
