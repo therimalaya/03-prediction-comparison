@@ -577,7 +577,7 @@ eff_df <- function(term, model) {
     trms <- strsplit(term, ":")[[1]]
     eff_df <- map_df(suppressMessages(eff_mlm(term, model)),
                      as.data.frame, .id = "Response") %>%
-        as.tibble()
+        as_tibble()
     attr(eff_df, "model") <- deparse(substitute(model))
     attr(eff_df, "terms") <- deparse(model$terms)
     attr(eff_df, "term_arg") <- term_arg
@@ -751,7 +751,7 @@ eff_plot2 <- function(term, model, show_errorbar = FALSE,
     term <- possible_terms[possible_terms %in% term_labels]
     eff_df <- map_df(suppressMessages(eff_mlm(term, model)),
                      as.data.frame, .id = "Response") %>%
-        as.tibble()
+        as_tibble()
     if ("Method" %in% trms) {
         mthd_idx <- which(trms %in% "Method")
         trms <- c(trms[mthd_idx], trms[-mthd_idx])
