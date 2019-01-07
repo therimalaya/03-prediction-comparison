@@ -3,9 +3,9 @@ bookdown::gitbook:
   number_sections: no
   css: style.css
   citation_package: natbib
-  github-repo: "therimalaya/multivariate-comparison"
-  description: "Comparison of Multivariate Estimation Methods"
-  url: "http://therimalaya.github.io/multivariate-comparison/"
+  github-repo: "therimalaya/03-prediction-comparison"
+  description: "Comparison of Multivariate Prediction Methods"
+  url: "http://therimalaya.github.io/03-prediction-comparison/"
   config:
     toc:
       collapse: section

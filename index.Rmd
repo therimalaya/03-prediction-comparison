@@ -30,9 +30,9 @@ bibliography: ref-db.bib
 biblio-title: References
 biblio-style: elsarticle-harv
 link-citations: true
-github-repo: therimalaya/multivariate-comparison
+github-repo: therimalaya/03-prediction-comparison
 always_allow_html: true
-url: 'http\://therimalaya.github.io/multivariate-comparison'
+url: 'http\://therimalaya.github.io/03-prediction-comparison'
 knit: 'bookdown::render_book'
 review: yes
 keywords: ['model-comparison ', 'multi-response ', 'simrel ']
