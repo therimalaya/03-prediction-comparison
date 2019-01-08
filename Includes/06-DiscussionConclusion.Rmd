@@ -1,2 +1,13 @@
 # Discussions and Conclusion
 
+On one hand, the envelope methods have shows better prediction performance with fewer number of components. However, for data with high multicollinearity, the methods have shown some cases of unstable prediction. Here for the prediction error, we have used the components that gives the miniumum average prediciton error for all replicates. This hints that for some replicates, the methos has used non-optimal number of components and consequently resulting in high prediction error.
+
+On the other hand, PLS1, PLS2 and PCR methods have smaller prediction error in the model with high multicollinearity which suggest their robustness in the particular case. However, they are poor in modelling information at relevant predictors with small variance. These methods have used larger number of components, in general, than envelopes. Although resulting high prediction error than envelope in most situation, these methods are more stable especially in the cases of high multicollinearity.
+
+Further, we have fixed the coefficient of determination ($R^2$) constant throughtout all the design. Since low $R^2$ affected all the methods in similar manner and the MANOVA is hightly dominated by $R^2$. Keeping the value of $R^2$ fixed have allowed us to analyze other factors properly.
+
+In addition, since using principal components or actual variables as predictors in envelope methods have shown similar results, we have used principal components that have explained 97.5% of the variation as mentioned previously in the cases of envelope methods. As the envelope methods are based on MLE and this can be an alternative way of using the methods in data with wide predictors. The results from this study will help researcher to understand these methods for different nature of data. We encourage researcher to use newly developed methods such as envlope based on the nature of data they are working on.
+
+Since, this study have focused entirely on prediction performance, further analysis of their estimative properties of these methods is required. A study of estimation error and the behaviour of methods on non-optimal number of components can give deeper understanding of these methods.
+
+A shiny application [@shiny] is availiable at http://therimalaya.shinyapps.io/Comparison where all the results related to this study can be visualized. In addition, a github repository at https://github.com/therimalaya/03-prediction-comparison can be used to reproduce this study.

@@ -1,7 +1,7 @@
 ## ---- Load Necessary Packages ----
 pkgs <- c("shiny", "shinythemes", "DT", "shinydashboard", "simrel",
           "tidyverse", "reshape2", "dashboardthemes", "gridExtra",
-          "shinyBS", "shinyjs")
+          "shinyBS")#, "shinyjs")
 for (pkg in pkgs) require(pkg, character.only = TRUE)
 
 ## ---- Source some functions ----
@@ -53,7 +53,7 @@ ui <- shinydashboard::dashboardPage(
   ## Dashboard Sidebar ----
   sidebar = shinydashboard::dashboardSidebar(
     width = "250px",
-    useShinyjs(),
+    # shinyjs::useShinyjs(),
     sidebarMenu(
       ## Experimental Design ----
       menuItem(

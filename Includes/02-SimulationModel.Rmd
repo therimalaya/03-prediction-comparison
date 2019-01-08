@@ -29,21 +29,15 @@ where, $\boldsymbol{\Sigma}_{yy}$ and $\boldsymbol{\Sigma}_{xx}$ are the varianc
 \end{equation}
 where, $\underset{m\times p}{\boldsymbol{\beta}^t}$ is a matrix of regression
 coefficients and $\boldsymbol{\epsilon}$ is an error term such that
-$\boldsymbol{\epsilon} \sim \mathcal{N}(0, \boldsymbol{\Sigma}_{y|x})$
+$\boldsymbol{\epsilon} \sim \mathcal{N}(0, \boldsymbol{\Sigma}_{y|x})$. Here, $\boldsymbol{\beta}^t = \mathbold{\Sigma}_{yx}\mathbold{\Sigma}_{xx}^{-1}$ and $\boldsymbol{\Sigma}_{y|x} = \boldsymbol{\Sigma}_{yy} - \boldsymbol{\Sigma}_{yx}\boldsymbol{\Sigma}_{xx}^{-1}\boldsymbol{\Sigma}_{xy}$
 
-In a model like \@ref(eq:reg-model-1), we assume that the variation in response $\mathbf{y}$ is partly explained by the predictor $\mathbf{x}$. However, in many situations, only a subspace of the predictor space is relevant for the variation in the response $\mathbf{y}$. This space can be referred to as the relevant space of $\mathbf{x}$ and the rest as irrelevant space. In the similar manner, we can assume that a subset of the response space contains the information that the predictors can explain for a given model (Figure-\@ref(fig:relevant-space)). @cook2010envelope and @cook2015simultaneous have referred to the relevant space as material space, and the irrelevant space as immaterial space.
+In a model like \@ref(eq:reg-model-1), we assume that the variation in response $\mathbf{y}$ is partly explained by the predictor $\mathbf{x}$. However, in many situations, only a subspace of the predictor space is relevant for the variation in the response $\mathbf{y}$. This space can be referred to as the relevant space of $\mathbf{x}$ and the rest as irrelevant space. In the similar way, for a certain model, we can assume that a subspace in the response space exists which contains the information that the relevant space in predictor can explain (Figure-\@ref(fig:relevant-space)). @cook2010envelope and @cook2015simultaneous have referred to the relevant space as material space, and the irrelevant space as immaterial space.
 
 ```{r relevant-space, out.width = "80%", fig.asp = 0.7, retina = 2, fig.align = 'center', message = FALSE, fig.cap = "Relevant space in a regression model"}
 plot_relspace()
 ```
 
-With an orthogonal transformation of $\mathbf{y}$ and $\mathbf{x}$ to latent variables $\mathbf{w}$ and $\mathbf{z}$, respectively, by $\mathbf{w=Qy}$ and $\mathbf{z = Rx}$, where $\mathbf{Q}$ and $\mathbf{R}$ are orthogonal rotation matrices, an equivalent model to \@ref(eq:reg-model-1) in terms of the latent variables can be written as,
-
-\begin{equation}
-\mathbf{w} = \boldsymbol{\mu}_w + \boldsymbol{\alpha}^t(\mathbf{z} - \boldsymbol{\mu_z}) + \boldsymbol{\tau}
-(\#eq:reg-model-2)
-\end{equation}
-where, $\underset{m\times p}{\boldsymbol{\alpha}^t}$ is a matrix of regression coefficients and $\boldsymbol{\tau}$ is an error term such that $\boldsymbol{\tau} \sim \mathcal{N}(0, \boldsymbol{\Sigma}_{w|z})$. Model \@ref(eq:reg-model-2) follows the distribution,
+With an orthogonal transformation of $\mathbf{y}$ and $\mathbf{x}$ to latent variables $\mathbf{w}$ and $\mathbf{z}$, respectively, by $\mathbf{w=Qy}$ and $\mathbf{z = Rx}$, where $\mathbf{Q}$ and $\mathbf{R}$ are orthogonal rotation matrices, an equivalent model to \@ref(eq:model-1) in terms of the latent variables can be written as,
 
 \begin{equation}
   \begin{bmatrix}
@@ -62,31 +56,37 @@ where, $\underset{m\times p}{\boldsymbol{\alpha}^t}$ is a matrix of regression c
   (\#eq:model-2)
 \end{equation}
 
-where, $\boldsymbol{\Sigma}_{ww}$ and $\boldsymbol{\Sigma}_{zz}$ are the variance-covariance matrices of $\mathbf{w}$ and $\mathbf{z}$, respectively. $\boldsymbol{\Sigma}_{zw}$ is the covariance between $\mathbf{z}$ and $\mathbf{w}$. $\boldsymbol{\mu}_w$ and $\boldsymbol{\mu}_z$ are mean vector of $\mathbf{z}$ and $\mathbf{w}$ respectively.
+where, $\boldsymbol{\Sigma}_{ww}$ and $\boldsymbol{\Sigma}_{zz}$ are the variance-covariance matrices of $\mathbf{w}$ and $\mathbf{z}$, respectively. $\boldsymbol{\Sigma}_{zw}$ is the covariance between $\mathbf{z}$ and $\mathbf{w}$. $\boldsymbol{\mu}_w$ and $\boldsymbol{\mu}_z$ are mean vector of $\mathbf{z}$ and $\mathbf{w}$ respectively. 
 
-Here, the elements of $\mathbf{w}$ and $\mathbf{z}$ are the principal components of responses and predictors, which will respectively be referred as "response components" and "predictor components". The column vectors of respective rotation matrices $\mathbf{Q}$ and $\mathbf{R}$ are the eigenvectors corresponding to these principal components.
+Here, the elements of $\mathbf{w}$ and $\mathbf{z}$ are the principal components of responses and predictors, which will respectively be referred as "response components" and "predictor components". The column vectors of respective rotation matrices $\mathbf{Q}$ and $\mathbf{R}$ are the eigenvectors corresponding to these principal components. We can write a linear model based on \@ref(eq:model-2) as,
+
+\begin{equation}
+\mathbf{w} = \boldsymbol{\mu}_w + \boldsymbol{\alpha}^t(\mathbf{z} - \boldsymbol{\mu_z}) + \boldsymbol{\tau}
+(\#eq:reg-model-2)
+\end{equation}
+where, $\underset{m\times p}{\boldsymbol{\alpha}^t}$ is a matrix of regression coefficients and $\boldsymbol{\tau}$ is an error term such that $\boldsymbol{\tau} \sim \mathcal{N}(0, \boldsymbol{\Sigma}_{w|z})$.
 
 Following the concept of relevant space, a subset of predictor components can be imagined to span the predictor space. These components can be regarded as relevant predictor components. @Naes1985 introduced the concept of relevant components which was explored further by @helland1990partial, @naes1993relevant, @Helland1994b and @Helland2000. The corresponding eigenvectors were referred to as relevant eigenvectors. A similar logic is introduced by @cook2010envelope and later by @cook2013envelopes as an envelope which is the space spanned by the relevant eigenvectors [@cook2018envelope, pp. 101].
 
-In addition, various simulation studies have been performed with the model based on the concept of relevant subspace. A simulation study by @Alm_y_1996 has used a single response simulation model based on reduced regression and has compared some contemporary multivariate estimators. In the recent years @helland2012near, @saebo2015simrel, @helland2016algorithms and @Rimal2018 implemented similar simulation examples as we are discussing in this study. This paper, however, presents an extensive simulation study based on multi-response data simulated with experimental design and compares relatively new methods such as simultaneous envelopes with well established methods such as partial least squares and principal components regression. @Rimal2018 has a detail discussion about the simulation model that we have opted here. The following section presents the estimators under comparison in more detail.
+In addition, various simulation studies have been performed with the model based on the concept of relevant subspace. A simulation study by @Alm_y_1996 has used a single response simulation model based on reduced regression and has compared some contemporary multivariate estimators. In the recent years @helland2012near, @saebo2015simrel, @helland2016algorithms and @Rimal2018 implemented similar simulation examples as we are discussing in this study. This paper, however, presents an elaborate comparision of the prediction using multi-response simulated linear model data. The properties of the simulated data are varied through different levels of simulation parameter based on an experimental design. @Rimal2018 has a detail discussion about the simulation model that we have opted here. The following section presents the estimators under comparison in more detail.
 
 # Prediction Methods
 
 Partial least squares regression (PLS) and Principal component regression (PCR) has been used in many disciplines such as chemometrics, econometrics, bioinformatics and machine learning, where wide predictor matrices, i.e. $p$ (number or predictors) > $n$ (number of observation) is common. These methods are popular in multivariate analysis, especially for exploratory studies and prediction. <p style='color:red;'> In recent years, a concept of envelope introduced by @Cook2007a based on reduction in regression model has been implemented for the development of envelope estimation in the subsequent papers.</div> In this study, we will follow estimation methods based on their prediction performance on data simulated with different controlled properties.
 
 _Principal Components Regression (PCR):_
-: Principal components are the linear combinations of predictor variables such that the transformation makes the new variables uncorrelated and the variation of the original dataset captured by them are ordered. In other words, each successive components captures maximum variation left by the preceding components in predictor variables [@Jolliffe2002]. Principal components regression uses these principal components to explain the variation in the response.
+: Principal components are the linear combinations of predictor variables such that the transformation makes the new variables uncorrelated. In addition the variation of the original dataset captured by the new variables are sorted in descending order. In other words, each successive components captures maximum variation left by the preceding components in predictor variables [@Jolliffe2002]. Principal components regression uses these principal components as a new predictors to explain the variation in the response.
 
 _Partial Least Squares (PLS):_
 : Two variants of PLS: PLS1 and PLS2 will be used for comparison. The first one considers individual response variables separately, i.e. each response is predicted with a single response model, while the latter considers all response variables together. In PLS regression the components are determined such as to maximize a covariance between response and predictors [@DeJong1993].
 
 _Envelopes:_
-: The envelope, introduced by @Cook2007a, was first used as a response envelope [@cook2010envelope] as a smallest subspace $\mathcal{E}$ in the response space such that the span of regression coefficients lies in that space. Since a multivariate linear regression model contains relevant (material) and irrelevant (immaterial) variation in both response and predictor, the relevant part provides information, while irrelevant part increases the estimative variation. The concept of envelope uses the relevant part for estimation while excluding the irrelevant part consequently increasing the efficiency of the model [@cook2016algorithms]. 
+: The envelope, introduced by @Cook2007a, was first used as a response envelope [@cook2010envelope] as a smallest subspace in the response space such that the span of regression coefficients lies in that space. Since a multivariate linear regression model contains relevant (material) and irrelevant (immaterial) variation in both response and predictor, the relevant part provides information, while irrelevant part increases the estimative variation. The concept of envelope uses the relevant part for estimation while excluding the irrelevant part consequently increasing the efficiency of the model [@cook2016algorithms]. 
 : The concept was later extended to the predictor space, where the predictor envelope was defined [@cook2013envelopes]. Further @cook2015simultaneous uses envelopes for joint reduction of the responses and predictors and argued to produce efficiency gains greater than using individual envelops either of the response and predictors. All the variants of envelope estimations are based on maximum likelihood estimation. Here in this study we will also use predictor envelope (Xenv) and simultaneous envelope (Senv) for the comparison.
 
 ## Modification in envelope estimation
 
 Since envelope estimators (Xenv and Senv) are based on maximum likelihood estimation (MLE), it fails to estimate in case of  wide matrices, i.e. $p > n$. In order to incorporate these methods in our comparison, we have used the principal components $(\mathbf{z})$ of the predictor variables $(\mathbf{x})$ as predictors, using the required number of components for capturing 97.5\% of the variation in $\mathbf{x}$. The new set of variables, $\mathbf{z}$, were used for envelope estimation. The regression coefficients $(\hat{\boldsymbol{\alpha}})$ corresponding to these new variables $\mathbf{z}$ were transformed back to obtain coefficients for each predictor variable as,
 
-$$\hat{\boldsymbol{\beta}} = \mathbf{e}_k\hat{\boldsymbol{\alpha}_k}$$ where, $\mathbf{e}_k$ is the eigenvectors with $k$ number of components.
+$$\hat{\boldsymbol{\beta}} = \mathbf{e}_k\hat{\boldsymbol{\alpha}_k}$$ where, $\mathbf{e}_k$ is a matrix of eigenvectors with first $k$ number of components.
 

@@ -19,7 +19,7 @@ print_manova <- function(tbl, format = docs_format, level = 0.05, ...){
 }
 ```
 
-The datasets discussed in previous section a) _error dataset_ and b) _component dataset_ are used on a multivariate analysis of variance. Let us call them _error model_ and _component model_ respectively. The models are fitted with the third order interaction of simulation parameters (`p`, `gamma`, `eta` and `relpos`) and `Methods` as in \@ref(eq:expanded-model).
+The datasets discussed in previous section a) _error dataset_ and b) _component dataset_ are used on a MANOVA model. Let us call them _error model_ and _component model_ respectively. The models are fitted with the third order interaction of simulation parameters (`p`, `gamma`, `eta` and `relpos`) and `Methods` as in \@ref(eq:expanded-model).
 
 \begin{equation}
 \mathbf{y}_{abcdef} = \boldsymbol{\mu} + (\texttt{p}_a + \texttt{gamma}_b + \texttt{eta}_c + \texttt{relpos}_d + \texttt{Methods}_e)^3 + \boldsymbol{\varepsilon}_{abcdef}
@@ -28,11 +28,11 @@ The datasets discussed in previous section a) _error dataset_ and b) _component 
 
 where, $\mathbf{y}_{abcdef}$ is a vector of prediction errors in _error model_ and a vector of number of components used for minimum prediction error in _component model_.
 
-- $\texttt{p}_a =$ `r catvec(opts$p)`
-- $\texttt{gamma}_b=$ `r catvec(opts$gamma)`
-- $\texttt{eta}_c=$ `r catvec(opts$eta)`
-- $\texttt{relpos}_d=$ `r catvec(opts$relpos)`
-- $\texttt{Methods}_e=$ `r if (knitr::is_html_output()) catvec(mthds) else catvec(map_chr(mthds, ~paste0("\\texttt{", .x, "}")))`
+<!-- - $\texttt{p}_a =$ `r catvec(opts$p)` -->
+<!-- - $\texttt{gamma}_b=$ `r catvec(opts$gamma)` -->
+<!-- - $\texttt{eta}_c=$ `r catvec(opts$eta)` -->
+<!-- - $\texttt{relpos}_d=$ `r catvec(opts$relpos)` -->
+<!-- - $\texttt{Methods}_e=$ `r if (knitr::is_html_output()) catvec(mthds) else catvec(map_chr(mthds, ~paste0("\\texttt{", .x, "}")))` -->
 
 
 ```{r manova-model}
@@ -122,18 +122,10 @@ Following section will continue demystifying the effect of different levels of t
 
 ## Effect Analysis of _Error Model_
 
-- Large difference in prediction error in envelope models and intensified when position of relevant predictor at at 5, 6, 7, 8
-- The difference in the effect of levels of eta is small in the case of PCR and PLS models.
-- Shows that envelope methods respond to the different levels of `eta` more than the rest of the methods.
+Figure \@ref(fig:pred-eff-plots) (left) shows large difference in prediction error in envelope models is observed. The difference is intensified when position of relevant predictor at at `r unique(opts$relpos)[2]`. The results also shows that the envelope methods respond to the levels of `eta` more than the rest of the methods. In the case of PCR and PLS, the difference in the effect of levels of `eta` is small.
 
-- Multicollinearity has affected all the methods however, PCR, PLS1 and PLS2 are more robust for the condition than envelopes and are rather better when high multicollinearity is present int he data.
-- Envelope methods are better in handeling the model when relevant position are at 5, 6, 7, 8 in both high and low multicollinearity cases.
-
-<!-- Figure \@ref(fig:pred-eff-plots) (left) shows clear difference between levels of `eta` for envelope methods. The difference is smaller when the relevant components are at position `r unique(opts$relpos)[1]`. This effect is  -->
-
-<!-- This change is small in the case of `PLS2` method. Figure \@ref(fig:pred-eff-plots) (right) shows the effect of multicollinearity on prediction error which is higher in the case of `PCR` and `PLS1`. The effect is larger when relevant components are at position `r unique(opts$relpos)[2]`. This large effect is less distinct in the case of envelope methods. -->
-
-<!-- Envelope methods managed to keep their prediction lower than others even by using fewer number of components (Figure \@ref(fig:comp-eff-plots)) mainly in the case of `Xenv`. `PLS1` has used moderate number of components however the prediction error is large compared to other. The two levels of multicollinearity have noticeable effect on use of components between two cases of position of relevant predictors. Here, when the position of relevant components are at position `r unique(opts$relpos)[2]` the difference in the use of components is large mostly for `PLS` methods. In this case, `PLS` methods are able to capture the variation in predictor when multicollinearity is low (0.2 level of `gamma`). Since, the variation in this case spread over larger number of components so that eigenvalues corresponding to the relevant components are larger than in the case of high multicollinearity which is difficult to capture. -->
+In the Figure \@ref(fig:pred-eff-plots) (right), we can see that the multicollinearity has affected all the methods however, PCR, PLS1 and PLS2 are more robust for the condition than envelopes. Rather these methods have shown better performance when high multicollinearity is present in the data.
+Envelope methods on the other hand are better in handeling the model when relevant position are at 5, 6, 7, 8 in both high and low multicollinearity cases.
 
 (ref:pred-eff-plot) Effect plot of some interactions of the multivariate linear model of prediction error
 
@@ -185,11 +177,10 @@ grid::grid.draw(plt)
 
 
 
-- Number of components used by the methods to give minium prediction error is less affected by the levels of `eta` unlike prediction error. However, simulteneous envelope has shown distinct response to the case when there is no correlation between the response varialbes.
-- Envelope methods are able to obtain minimum prediction error by using components ranging from 1 to 3 in both the cases of `relpos`. This value is much higher in the case of PCR as its prediction is based only on the principal components of predictors. The number of components used by this method ranges from 3 to 5 when relevant predictors are at 1, 2, 3, 4 and 5 to 8 when relevant predictors are at 5, 6, 7, 8.
-- We can also see that at `relpos` 1, 2, 3, 4, PLS1 and PLS2 has used fewer components than simulteneous envelope. However, in the case when relevant components are at position 5, 6, 7, 8, simulteneous envelope manage to get smaller prediction error using fewer number of components than that of PLS models.
-- It is interesting to see the interaction effect of `gamma`, `relpos` and `Method` for the use of number of components. Here, PCR, PLS1 and PLS2 methods have used fairly large number of components for the model with high multicollinearity and relevant predictors at position 5, 6, 7, 8.
-- The number of components used by envelope methods in both the cases of `relpos` is similar although slightly more for the models with high multicollinearity than models with low multicollinearity.
+Unlike prediciton error, Figure \@ref(fig:comp-eff-plots) (left) shows that the number of components used by the methods to give minium prediction error is less affected by the levels of `eta`. However, simulteneous envelope has shown distinct reaction when there is no correlation between the response varialbes. Envelope methods are able to obtain minimum prediction error by using components ranging from 1 to 3 in both the cases of `relpos`. This value is much higher in the case of PCR as its prediction is based only on the principal components of predictors. The number of components used by this method ranges from 3 to 5 when relevant predictors are at 1, 2, 3, 4 and 5 to 8 when relevant predictors are at 5, 6, 7, 8. 
 
+We can also see that at `relpos` 1, 2, 3, 4 for PLS1 and PLS2 have used fewer components than simulteneous envelope. However, in the case when relevant components are at position 5, 6, 7, 8, simulteneous envelope manage to get smaller prediction error using fewer number of components than that of PLS models. This is the case when eigenvalues of relevant predictors are small and are difficult to predict.
+
+In the interaction effect of `gamma`, `relpos` and `Method` (Figure \@ref(fig:comp-eff-plots) (right)), PCR, PLS1 and PLS2 methods have used fairly large number of components for the model with high multicollinearity and relevant predictors at position 5, 6, 7, 8. The number of components used by envelope methods in both the cases of `relpos` is similar although slightly more for the models with high multicollinearity than models with low multicollinearity.
 
 In the case of `PCR`, the prediction relies heavily on the relevant components, the number of components used by the method is as expected in both the levels of `relpos`. This reinforce the results from the density plot (Figure \@ref(fig:comp-pca-hist-mthd-gamma-relpos)) in previous section.
