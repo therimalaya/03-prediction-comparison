@@ -149,12 +149,14 @@ A similar discussion can be made on all 32 designs where each of the design hold
 This study focuses mainly on the prediction performance of the methods and emphasis specifically on the interaction between the properties of the data, controlled by the simulation parameters, and the prediction methods. The prediction performance is measured by the average of prediction error that a method can give using arbitrary number of components and number of components used to give the minimum prediction error. Let us define, 
 
 \begin{equation}
-\mathcal{PE}_j = \frac{1}{\sigma_{y_j|x}^2}\left[\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)^t\boldsymbol{\Sigma}_{xx}\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)\right] + 1
+\mathcal{PE}_j = \frac{1}{\sigma_{y_j|x}^2}\mathrm{E}\left[\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)^t\boldsymbol{\Sigma}_{xx}\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)\right] + 1
 (\#eq:pred-error)
 \end{equation}
-as a prediction error for a given design, method, replication and number of components, where, $\boldsymbol{\Sigma}_{xx}$ is the true covariance matrix of predictor and $\sigma_{y_j\mid x}$ is the true model error obtained from simulation of response $j = 1, \ldots m$. Here prediction error is scaled by the true model error to remove the effects of influencing residual variances from the prediction error so that a proper comparison is possible \alert{|still need some suggestion|}.
+as a prediction error for a given design, method and number of components, where, $\boldsymbol{\Sigma}_{xx}$ is the true covariance matrix of predictor and $\sigma_{y_j\mid x}$ is the true model error obtained from simulation of response $j = 1, \ldots m$. Here prediction error is scaled by the true model error to remove the effects of influencing residual variances from the prediction error so that a proper comparison is possible \alert{|Still need some suggestion how we can go from this expected prediction error expression to the dataset we have created for MANOVA which also contains replication as a column which gets averaged during the process of MANOVA itself. May be we can use the blue paragraph for the purpose|}.
 
 A dataset using \@ref(eq:pred-error) is obtained which contains five factors for simulation parameters, prediction methods, number of components, replications and prediction error for `r num_vec[unique(opts$m)]` responses. The prediction error is computed using 0 to 10 predictor components for each 50 replicates using \@ref(eq:pred-error). Thus there are `r nrow(design)` (design) $\times$ `r length(mthds)` (methods) $\times$ 11 (number of components) $\times$ 50 (replications), i.e. `r nrow(design) * length(mthds) * 11 * 50` observations. Here the variables `Y1` to `Y4` corresponds to prediction error of respective response variables.
+
+\add{The expression in 7 is estimated from the data and is used for following analysis.}
 
 ```{r data-prep}
 pred_dta <- design_chr %>%

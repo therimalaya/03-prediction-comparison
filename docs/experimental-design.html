@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2019-01-08">
+<meta name="date" content="2019-01-10">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -224,11 +224,12 @@ Figure 4: Expected Scaled absolute covariance between predictor components and r
 <h2>Basis of comparison</h2>
 <p>This study focuses mainly on the prediction performance of the methods and emphasis specifically on the interaction between the properties of the data, controlled by the simulation parameters, and the prediction methods. The prediction performance is measured by the average of prediction error that a method can give using arbitrary number of components and number of components used to give the minimum prediction error. Let us define,</p>
 <span class="math display" id="eq:pred-error">\[\begin{equation}
-\mathcal{PE}_j = \frac{1}{\sigma_{y_j|x}^2}\left[\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)^t\boldsymbol{\Sigma}_{xx}\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)\right] + 1
+\mathcal{PE}_j = \frac{1}{\sigma_{y_j|x}^2}\mathrm{E}\left[\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)^t\boldsymbol{\Sigma}_{xx}\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)\right] + 1
 \tag{7}
 \end{equation}\]</span>
-<p>as a prediction error for a given design, method, replication and number of components, where, <span class="math inline">\(\boldsymbol{\Sigma}_{xx}\)</span> is the true covariance matrix of predictor and <span class="math inline">\(\sigma_{y_j\mid x}\)</span> is the true model error obtained from simulation of response <span class="math inline">\(j = 1, \ldots m\)</span>. Here prediction error is scaled by the true model error to remove the effects of influencing residual variances from the prediction error so that a proper comparison is possible .</p>
+<p>as a prediction error for a given design, method and number of components, where, <span class="math inline">\(\boldsymbol{\Sigma}_{xx}\)</span> is the true covariance matrix of predictor and <span class="math inline">\(\sigma_{y_j\mid x}\)</span> is the true model error obtained from simulation of response <span class="math inline">\(j = 1, \ldots m\)</span>. Here prediction error is scaled by the true model error to remove the effects of influencing residual variances from the prediction error so that a proper comparison is possible .</p>
 <p>A dataset using <a href="experimental-design.html#eq:pred-error">(7)</a> is obtained which contains five factors for simulation parameters, prediction methods, number of components, replications and prediction error for four responses. The prediction error is computed using 0 to 10 predictor components for each 50 replicates using <a href="experimental-design.html#eq:pred-error">(7)</a>. Thus there are 32 (design) <span class="math inline">\(\times\)</span> 5 (methods) <span class="math inline">\(\times\)</span> 11 (number of components) <span class="math inline">\(\times\)</span> 50 (replications), i.e. 88000 observations. Here the variables <code>Y1</code> to <code>Y4</code> corresponds to prediction error of respective response variables.</p>
+
 <p>Since we will focus our discussion on the minimum prediction error that a method can obtain and the number of components they use to get minimum prediciton error in each replicate, the dataset discussed above is summarized to construct following two smaller datasets. Let us call them <em>Error Dataset</em> and <em>Component Dataset</em>.</p>
 <dl>
 <dt><em>Error Dataset</em>:</dt>
