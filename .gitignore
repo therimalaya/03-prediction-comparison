@@ -49,3 +49,7 @@ scripts/*scratch*
 templates/auto
 main.spl
 data
+
+
+# Sensetive Data
+.env
