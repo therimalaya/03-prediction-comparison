@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Experimental Design | Comparison of Multivariate Prediction Methods</title>
-  <meta name="description" content="Experimental Design | Comparison of Multivariate Prediction Methods">
+  <title>Comparison of Multivariate Prediction Methods</title>
+  <meta name="description" content="Comparison of Multivariate Prediction Methods">
   <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="Experimental Design | Comparison of Multivariate Prediction Methods" />
+  <meta property="og:title" content="Comparison of Multivariate Prediction Methods" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="http://therimalaya.github.io/03-prediction-comparison" />
   
@@ -17,14 +17,14 @@
   <meta name="github-repo" content="therimalaya/03-prediction-comparison" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Experimental Design | Comparison of Multivariate Prediction Methods" />
+  <meta name="twitter:title" content="Comparison of Multivariate Prediction Methods" />
   
   
   
 
 
 
-<meta name="date" content="2019-01-10">
+<meta name="date" content="2019-01-23">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="prediction-methods.html">
-<link rel="next" href="exploration.html">
+<link rel="next" href="basis-of-comparison.html">
 <style type="text/css">
 p.abstract{
   text-align: center;
@@ -45,7 +45,6 @@ div.abstract{
 </style>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -60,41 +59,67 @@ div.abstract{
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -117,9 +142,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="prediction-methods.html"><a href="prediction-methods.html"><i class="fa fa-check"></i>Prediction Methods</a><ul>
 <li class="chapter" data-level="" data-path="prediction-methods.html"><a href="prediction-methods.html#modification-in-envelope-estimation"><i class="fa fa-check"></i>Modification in envelope estimation</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="experimental-design.html"><a href="experimental-design.html"><i class="fa fa-check"></i>Experimental Design</a><ul>
-<li class="chapter" data-level="" data-path="experimental-design.html"><a href="experimental-design.html#basis-of-comparison"><i class="fa fa-check"></i>Basis of comparison</a></li>
-</ul></li>
+<li class="chapter" data-level="" data-path="experimental-design.html"><a href="experimental-design.html"><i class="fa fa-check"></i>Experimental Design</a></li>
+<li class="chapter" data-level="" data-path="basis-of-comparison.html"><a href="basis-of-comparison.html"><i class="fa fa-check"></i>Basis of comparison</a></li>
+<li class="chapter" data-level="" data-path="data-preparation.html"><a href="data-preparation.html"><i class="fa fa-check"></i>Data Preparation</a></li>
 <li class="chapter" data-level="" data-path="exploration.html"><a href="exploration.html"><i class="fa fa-check"></i>Exploration</a></li>
 <li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html"><i class="fa fa-check"></i>Statistical Analysis</a><ul>
 <li><a href="statistical-analysis.html#effect-analysis-of-error-model">Effect Analysis of <em>Error Model</em></a></li>
@@ -158,20 +183,20 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </dd>
 <dt><strong>Multicollinearity in predictor variables:</strong></dt>
 <dd><p>Highly collinear predictors can be explained completely by few components. The parameter <code>gamma</code> (<span class="math inline">\(\gamma\)</span>) in <code>simrel</code> controls decline in the eigenvalues of the predictor variables as <a href="experimental-design.html#eq:gamma">(5)</a>.</p>
-<span class="math display" id="eq:gamma">\[\begin{equation}
+<p><span class="math display" id="eq:gamma">\[\begin{equation}
   \lambda_i = e^{-\gamma(i - 1)}, \gamma &gt; 0 \text{ and } i = 1, 2, \ldots, p
   \tag{5}
-\end{equation}\]</span>
+\end{equation}\]</span></p>
 </dd>
 </dl>
 <p>Here, <span class="math inline">\(\lambda_i, i = 1, 2, \ldots p\)</span> are eigenvalues of the predictor variables. Here we have used 0.2 and 0.9 as different levels of <code>gamma</code>. The higher the value of gamma, the higher will be the multicollinearity and vice versa.</p>
 <dl>
 <dt><strong>Correlation in response variables:</strong></dt>
 <dd><p>Correlation among response  variables is a less explored area. Here we have tried to explore that part with 4 levels of correlation in the response variables. We have used the <code>eta</code> (<span class="math inline">\(\eta\)</span>) parameter of <code>simrel</code> for controlling the decline in eigenvalues corresponding to the response variables as <a href="experimental-design.html#eq:eta">(6)</a>.</p>
-<span class="math display" id="eq:eta">\[\begin{equation}
+<p><span class="math display" id="eq:eta">\[\begin{equation}
   \kappa_i = e^{-\eta(i - 1)}, \eta &gt; 0 \text{ and } j = 1, 2, \ldots, m
   \tag{6}
-\end{equation}\]</span>
+\end{equation}\]</span></p>
 </dd>
 </dl>
 <p>Here, <span class="math inline">\(\kappa_i, i = 1, 2, \ldots m\)</span> are the eigenvalues of the response variables and <code>m</code> is the number of response variables. Here we have used 0, 0.4, 0.8 and 1.2 as different levels of <code>eta</code>. The larger the value of eta, the larger will be the correlation between response variables and vice versa.</p>
@@ -193,18 +218,18 @@ Figure 2: Experimental Design of simulation parameters. Each point represents an
 </dd>
 </dl>
 <p>An example of simulation parameters for the first design is as follows:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">simrel</span>(
-    <span class="dt">n       =</span> <span class="dv">100</span>,                 ## Training samples
-    <span class="dt">p       =</span> <span class="dv">20</span>,                  ## Predictors
-    <span class="dt">m       =</span> <span class="dv">4</span>,                   ## Responses
-    <span class="dt">q       =</span> <span class="dv">20</span>,                  ## Relevant predictors
-    <span class="dt">relpos  =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)), ## Relevant predictor components index
-    <span class="dt">eta     =</span> <span class="dv">0</span>,                   ## Decay factor of response eigenvalues
-    <span class="dt">gamma   =</span> <span class="fl">0.2</span>,                 ## Decay factor of predictor eigenvalues
-    <span class="dt">R2      =</span> <span class="fl">0.8</span>,                 ## Coefficient of determination
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">simrel</span>(
+    <span class="dt">n       =</span> <span class="dv">100</span>,                 <span class="co">## Training samples</span>
+    <span class="dt">p       =</span> <span class="dv">20</span>,                  <span class="co">## Predictors</span>
+    <span class="dt">m       =</span> <span class="dv">4</span>,                   <span class="co">## Responses</span>
+    <span class="dt">q       =</span> <span class="dv">20</span>,                  <span class="co">## Relevant predictors</span>
+    <span class="dt">relpos  =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)), <span class="co">## Relevant predictor components index</span>
+    <span class="dt">eta     =</span> <span class="dv">0</span>,                   <span class="co">## Decay factor of response eigenvalues</span>
+    <span class="dt">gamma   =</span> <span class="fl">0.2</span>,                 <span class="co">## Decay factor of predictor eigenvalues</span>
+    <span class="dt">R2      =</span> <span class="fl">0.8</span>,                 <span class="co">## Coefficient of determination</span>
     <span class="dt">ypos    =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)),
     <span class="dt">type    =</span> <span class="st">&quot;multivariate&quot;</span>
-)</code></pre></div>
+)</code></pre>
 <div class="figure"><span id="fig:cov-plot-1"></span>
 <img src="main_files/figure-html/cov-plot-1-1.svg" alt="(left) Covariance structure of latent components. (right) Covariance structure of predictor and response" width="100%" />
 <p class="caption">
@@ -220,40 +245,6 @@ Figure 4: Expected Scaled absolute covariance between predictor components and r
 </p>
 </div>
 <p>A similar discussion can be made on all 32 designs where each of the design holds the properties of the data they simulate. These data are used by the prediction methods discussed in previous section. Each prediction methods are given independent dataset simulated in order to give them equal opportunity to understand the dynamics in the data.</p>
-<div id="basis-of-comparison" class="section level2">
-<h2>Basis of comparison</h2>
-<p>This study focuses mainly on the prediction performance of the methods and emphasis specifically on the interaction between the properties of the data, controlled by the simulation parameters, and the prediction methods. The prediction performance is measured by the average of prediction error that a method can give using arbitrary number of components and number of components used to give the minimum prediction error. Let us define,</p>
-<span class="math display" id="eq:pred-error">\[\begin{equation}
-\mathcal{PE}_j = \frac{1}{\sigma_{y_j|x}^2}\mathrm{E}\left[\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)^t\boldsymbol{\Sigma}_{xx}\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)\right] + 1
-\tag{7}
-\end{equation}\]</span>
-<p>as a prediction error for a given design, method and number of components, where, <span class="math inline">\(\boldsymbol{\Sigma}_{xx}\)</span> is the true covariance matrix of predictor and <span class="math inline">\(\sigma_{y_j\mid x}\)</span> is the true model error obtained from simulation of response <span class="math inline">\(j = 1, \ldots m\)</span>. Here prediction error is scaled by the true model error to remove the effects of influencing residual variances from the prediction error so that a proper comparison is possible .</p>
-<p>A dataset using <a href="experimental-design.html#eq:pred-error">(7)</a> is obtained which contains five factors for simulation parameters, prediction methods, number of components, replications and prediction error for four responses. The prediction error is computed using 0 to 10 predictor components for each 50 replicates using <a href="experimental-design.html#eq:pred-error">(7)</a>. Thus there are 32 (design) <span class="math inline">\(\times\)</span> 5 (methods) <span class="math inline">\(\times\)</span> 11 (number of components) <span class="math inline">\(\times\)</span> 50 (replications), i.e. 88000 observations. Here the variables <code>Y1</code> to <code>Y4</code> corresponds to prediction error of respective response variables.</p>
-
-<p>Since we will focus our discussion on the minimum prediction error that a method can obtain and the number of components they use to get minimum prediciton error in each replicate, the dataset discussed above is summarized to construct following two smaller datasets. Let us call them <em>Error Dataset</em> and <em>Component Dataset</em>.</p>
-<dl>
-<dt><em>Error Dataset</em>:</dt>
-<dd>For each prediction method, design and response, an average prediction error is computed over all replicates for each components. Next, a component that results in the minumum of this average prediction error is selected, i.e.,
-<span class="math display" id="eq:min-pred">\[\begin{equation}
-  nc_\circ = \operatorname*{argmin}_{nc}\left[\frac{1}{50}\sum_{i=1}^{50}{\mathcal{PE}_{ij}}\right]
-  \tag{8}
-  \end{equation}\]</span>
-</dd>
-<dd>where, <span class="math inline">\(nc\)</span> is the number of components and <span class="math inline">\(\mathcal{PE}_{ij}\)</span> is prediction error computed using <a href="experimental-design.html#eq:pred-error">(7)</a> for response <span class="math inline">\(j\)</span> and replication <span class="math inline">\(i\)</span>.
-</dd>
-<dd><p>Using the component <span class="math inline">\(nc_\circ\)</span>, the prediction error for all 50 replicates are used to construct the <em>Error Dataset</em>.</p>
-</dd>
-<dt><em>Component Dataset</em>:</dt>
-<dd>Components that gives the minimum prediction error in each replication is used as <em>Component Dataset</em>, i.e.,
-<span class="math display" id="eq:min-comp">\[\begin{equation}
-  nc_j = \operatorname*{argmin}_{nc}\left[\mathcal{PE}_{j}\right]
-  \tag{9}
-  \end{equation}\]</span>
-Here <span class="math inline">\(nc_i\)</span> is the number of component that gives minimum prediction error for <span class="math inline">\(j^\text{th}\)</span> response for each replication.
-</dd>
-</dl>
-
-</div>
 </div>
             </section>
 
@@ -261,7 +252,7 @@ Here <span class="math inline">\(nc_i\)</span> is the number of component that g
         </div>
       </div>
 <a href="prediction-methods.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="exploration.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="basis-of-comparison.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -281,7 +272,7 @@ gitbook.start({
 "google": true,
 "linkedin": false,
 "weibo": false,
-"instapaper": false,
+"instapper": false,
 "vk": false,
 "all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
@@ -293,10 +284,6 @@ gitbook.start({
 "edit": {
 "link": "https://github.com/therimalaya/03-prediction-comparison/edit/master/Includes/03-ExperimentalDesign.Rmd",
 "text": "Edit"
-},
-"history": {
-"link": null,
-"text": null
 },
 "download": ["main.epub", "main.pdf"],
 "toc": {
@@ -311,8 +298,8 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    var src = "";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(src))
       src = src.replace(/^https?:/, '');
     script.src = src;

@@ -9,7 +9,7 @@ pdf:
 all: pdf gitbook epub
 
 serve:
-	Rscript --quiet -e "servr::httd('docs', port = 5555, host = '0.0.0.0')"
+	Rscript --quiet -e "servr::httw(dir = 'docs', watch = 'docs', port = 5555, host = '0.0.0.0')"
 
 clean:
 	rm -rf $(DIR) && rm main*.* && rm -rf _bookdown_files

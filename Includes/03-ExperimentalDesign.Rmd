@@ -144,19 +144,51 @@ grid::grid.draw(plt)
 
 A similar discussion can be made on all 32 designs where each of the design holds the properties of the data they simulate. These data are used by the prediction methods discussed in previous section. Each prediction methods are given independent dataset simulated in order to give them equal opportunity to understand the dynamics in the data.
 
-## Basis of comparison
+# Basis of comparison
 
-This study focuses mainly on the prediction performance of the methods and emphasis specifically on the interaction between the properties of the data, controlled by the simulation parameters, and the prediction methods. The prediction performance is measured by the average of prediction error that a method can give using arbitrary number of components and number of components used to give the minimum prediction error. Let us define, 
+This study focuses mainly on the prediction performance of the methods and emphasis specifically on the interaction between the properties of the data controlled by the simulation parameters, and the prediction methods. The prediction performance is measured on the following basis:
+
+a) The average of prediction error that a method can give using arbitrary number of components and 
+b) The average number of components used by the method to give the minimum prediction error 
+
+Let us define, 
 
 \begin{equation}
-\mathcal{PE}_j = \frac{1}{\sigma_{y_j|x}^2}\mathrm{E}\left[\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)^t\boldsymbol{\Sigma}_{xx}\left(\boldsymbol{\beta}_j - \boldsymbol{\hat{\beta}_j}\right)\right] + 1
+\mathcal{PE}_{ijkl} = \frac{1}{\sigma_{y_{ij}|x}^2}
+  \mathsf{E}{\left[\left(\boldsymbol{\beta}_{ij} - 
+  \boldsymbol{\hat{\beta}_{ijkl}}\right)^t
+  \left(\boldsymbol{\Sigma}_{xx}\right)_i
+  \left(\boldsymbol{\beta}_{ij} - \boldsymbol{\hat{\beta}_{ijkl}}\right)\right]} + 1
 (\#eq:pred-error)
 \end{equation}
-as a prediction error for a given design, method and number of components, where, $\boldsymbol{\Sigma}_{xx}$ is the true covariance matrix of predictor and $\sigma_{y_j\mid x}$ is the true model error obtained from simulation of response $j = 1, \ldots m$. Here prediction error is scaled by the true model error to remove the effects of influencing residual variances from the prediction error so that a proper comparison is possible \alert{|Still need some suggestion how we can go from this expected prediction error expression to the dataset we have created for MANOVA which also contains replication as a column which gets averaged during the process of MANOVA itself. May be we can use the blue paragraph for the purpose|}.
+as a prediction error of response $j = 1, \ldots 4$ for a given design $i=1, 2, \ldots 32$ and method $k=1(PCR), \ldots 5(Senv)$ using $l=0, \ldots 10$ number of components. Here, $\left(\boldsymbol{\Sigma}_{xx}\right)_i$ is the true covariance matrix of predictor unique for a particular design $i$ and $\sigma_{y_j\mid x}$ for response $j = 1, \ldots m$ is the true model error. Here prediction error is scaled by the true model error to remove the effects of influencing residual variances from the prediction error. Since both the expectation and the variance of $\hat{\boldsymbol{\beta}}$ are unknown, the prediction error are estimated using data from 50 replications as follows,
 
-A dataset using \@ref(eq:pred-error) is obtained which contains five factors for simulation parameters, prediction methods, number of components, replications and prediction error for `r num_vec[unique(opts$m)]` responses. The prediction error is computed using 0 to 10 predictor components for each 50 replicates using \@ref(eq:pred-error). Thus there are `r nrow(design)` (design) $\times$ `r length(mthds)` (methods) $\times$ 11 (number of components) $\times$ 50 (replications), i.e. `r nrow(design) * length(mthds) * 11 * 50` observations. Here the variables `Y1` to `Y4` corresponds to prediction error of respective response variables.
+\begin{equation}
+\widehat{\mathcal{PE}_{ijkl}} = \frac{1}{\sigma_{y_{ij}|x}^2}
+  \sum_{r=0}^{50}{\left[\left(\boldsymbol{\beta}_{ij} - 
+  \boldsymbol{\hat{\beta}_{ijklr}}\right)^t
+  \left(\boldsymbol{\Sigma}_{xx}\right)_i
+  \left(\boldsymbol{\beta}_{ij} - \boldsymbol{\hat{\beta}_{ijklr}}\right)\right]} + 1
+(\#eq:estimated-pred-error)
+\end{equation}
+where, $\widehat{\mathcal{PE}_{ijkl}}$ is the estimated prediction error averaged over $r=50$ replicates.
 
-\add{The expression in 7 is estimated from the data and is used for following analysis.}
+Following section focuses on the data for the estimation of these prediction error that are used for the two models discussed above in a) and b) of this section.
+
+# Data Preparation
+
+A dataset for estimating \@ref(eq:pred-error) is obtained from simulation which contains five factors corresponding to simulation parameters, prediction methods, number of components, replications and prediction error for `r num_vec[unique(opts$m)]` responses. The prediction error is computed using 0 to 10 predictor components for each 50 replicates as,
+
+\begin{equation*}
+\left(\widehat{\mathcal{PE_\circ}}\right)_{ijklr} =
+  \frac{1}{\sigma_{y_{ij}\mid x}^2}\left[
+    \left(\boldsymbol{\beta}_{ij} - \hat{\boldsymbol{\beta}}_{ijklr}\right)^t
+    \left(\boldsymbol{\Sigma}_{xx}\right)_{i}
+    \left(\boldsymbol{\beta}_{ij} - \hat{\boldsymbol{\beta}}_{ijklr}\right)
+  \right] + 1
+\end{equation*}.
+
+Thus there are `r nrow(design)` (design) $\times$ `r length(mthds)` (methods) $\times$ 11 (number of components) $\times$ 50 (replications), i.e. `r nrow(design) * length(mthds) * 11 * 50` observations corresponding to the response variables from `Y1` to `Y4`.
 
 ```{r data-prep}
 pred_dta <- design_chr %>%
@@ -189,23 +221,23 @@ comp_min <- pred_dta %>%
   spread(Response, Tuning_Param)
 ```
 
-
-Since we will focus our discussion on the minimum prediction error that a method can obtain and the number of components they use to get minimum prediciton error in each replicate, the dataset discussed above is summarized to construct following two smaller datasets. Let us call them _Error Dataset_ and _Component Dataset_.
+Since we will focus our discussion on the average minimum prediction error that a method can obtain and the average number of components they use to get the minimum prediciton error in each replicates, the dataset discussed above is summarized to construct following two smaller datasets. Let us call them _Error Dataset_ and _Component Dataset_.
 
 _Error Dataset_:
-: For each prediction method, design and response, an average prediction error is computed over all replicates for each components. Next, a component that results in the minumum of this average prediction error is selected, i.e.,
+: For each prediction method, design and response, an average prediction error is computed over all replicates for each components. Next, a component that gives the minimum of this average prediction error is selected, i.e.,
   \begin{equation}
-  nc_\circ = \operatorname*{argmin}_{nc}\left[\frac{1}{50}\sum_{i=1}^{50}{\mathcal{PE}_{ij}}\right]
+  l_\circ = \operatorname*{argmin}_{l}\left[\frac{1}{50}\sum_{i=1}^{50}{\left(\mathcal{PE}_\circ\right)_{ijklr}}\right]
   (\#eq:min-pred)
   \end{equation}
-: where, $nc$ is the number of components and $\mathcal{PE}_{ij}$ is prediction error computed using \@ref(eq:pred-error) for response $j$ and replication $i$.
 
-: Using the component $nc_\circ$, the prediction error for all 50 replicates are used to construct the _Error Dataset_.
+: Using the component $l_\circ$, a dataset of
+$\left(\mathcal{PE}_\circ\right)_{ijkl_\circ r}$ is used as the _Error Dataset_.
+Let $\mathbf{u}_{(`r nrow(pred_min)` \times 4)} = (u_j)$ for $j = 1, \ldots 4$ be the outcome variables measuring the prediction error corresponding the response $j$ in the context of this dataset.
 
 _Component Dataset_: 
 : Components that gives the minimum prediction error in each replication is used as _Component Dataset_, i.e.,
   \begin{equation}
-  nc_j = \operatorname*{argmin}_{nc}\left[\mathcal{PE}_{j}\right]
+  l_{\circ} = \operatorname*{argmin}_{l}\left[\mathcal{PE}_{ijklr}\right]
   (\#eq:min-comp)
   \end{equation}
-  Here $nc_i$ is the number of component that gives minimum prediction error for $j^\text{th}$ response for each replication.
+  Here $l_\circ$ is the number of component that gives minimum prediction error $\left(\mathcal{PE}_\circ\right)_{ijklr}$ for design $i$, response $j$, method $k$ and replicate $r$. $l_\circ$ is used as the _component Dataset_. Let $\mathbf{v}_{(`r nrow(comp_min)` \times 4)} = (v_j)$ for $j = 1, \ldots 4$ be the outcome variables measuring the number of components used for minimum prediction error corresponding the response $j$ in the context of this dataset.

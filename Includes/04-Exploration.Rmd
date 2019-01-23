@@ -2,18 +2,12 @@
 editor_options: 
   chunk_output_type: console
 ---
+
 # Exploration
 
-The [Statistical Analysis] section will perform multivariate analysis of variance (MANOVA) [@johnson2018applied] on these datasets however, this section focus more on exploring the variation in the prediction error and number of components due to our design parameters and prediction methods through plots.
+This section focuses on exploring the variation in _error dataset_ and _component dataset_ for which we will use Principal Component Analysis (PCA). Let $\mathbf{t}_u$ and $\mathbf{t}_v$ be the principal component scores corresponding to the $\mathbf{u}$ and $\mathbf{v}$ respectively. Figure-\@ref(fig:pred-pca-hist-mthd-gamma-relpos) plots the scores density corresponding to first principal component of $\mathbf{u}$, i.e. first column of $\mathbf{t}_u$.
 
-Here we have a) four vectors of minimum prediction error and b) four vectors of corresponding number of components. The following exploration is based on the scores of principal components of these two matrices. The analysis further in this section will progress using the first principal components and its density based on different methods and the properties of data.
-
-(ref:data-transform) Analysis of density of principal components of prediction error for each response.
-
-```{r data-transform-plot, fig.cap="(ref:data-transform)", fig.asp=0.5, out.width='90%', fig.align='center', eval=FALSE}
-plot_data_transform()
-```
-
+Since higher prediction error results in high scores the plot shows that the PCR, PLS1 and PLS2 methods are influenced by two levels of position of relevant predictor components. When the relevant predictors are at position `r opts$relpos[2]`, the eigenvalues corresponding to them becomes smaller. This also suggest that PCR, PLS1 and PLS2 depends highly on the relevant components and the variation of these components affect their performance. However, the envelope methods have less influence of `relpos` in this regard. 
 
 ```{r pca}
 ## PCA Prediction Error
@@ -26,73 +20,51 @@ comp_expl_var <- explvar(comp_pca) %>% round(2)
 comp_dta_with_pc <- bind_cols(comp_min, as.data.frame(scores(comp_pca)[]))
 ```
 
-
-```{r pca-scatter, fig.cap="Exploration of Principal Components of Prediction Errors.", out.width="100%", fig.width=7, dpi=150, fig.asp=0.5, eval=FALSE}
-ggplot(pred_dta_with_pc, aes(PC1, PC2, color = relpos)) +
-  geom_hline(yintercept = 0, color = "darkgray", linetype = 2) +
-  geom_vline(xintercept = 0, color = "darkgray", linetype = 2) +
-  geom_point(alpha = 0.7, size = 1, shape = 21) +
-  facet_wrap(Method ~ gamma, scales = 'free', nrow = 5,
-             labeller = labeller(eta = label_both, gamma = label_both)) +
-  theme_grey(base_family = 'mono') +
-  theme(legend.position = "bottom",
-        strip.text = element_text(family = "mono")) +
-  labs(x = paste0("PC1(", expl_var[1], "%)"),
-       y = paste0("PC2(", expl_var[2], "%)")) +
-  guides(colour = guide_legend(override.aes = list(size = 3))) +
-  ggtitle("Principal Components Analysis of prediction errors") +
-  scale_x_continuous(breaks = scales::pretty_breaks(3)) +
-  scale_color_brewer(palette = "Set1")
+```{r pc-hist-plot-function}
+pc_density_plot <- function(dta, expl_var, title) {
+    dta %>% 
+        ggplot(aes(PC1, eta, fill = relpos)) +
+        geom_density_ridges(
+            scale = 0.9,
+            alpha = 0.4, size = 0.25) +
+        geom_density_ridges(
+            scale = 0.95,
+            alpha = 0.2, size = 0.25,
+            stat = "binline", bins = 30) +
+        facet_wrap(
+            . ~ interaction(Method, paste0("gamma:", gamma), sep = "|"), 
+            scales = 'free_x', ncol = 5,
+            labeller = labeller(gamma = label_both, p = label_both)) +
+        theme_grey(base_family = 'mono') +
+        theme(
+            legend.position = "bottom",
+            strip.text = element_text(family = "mono")) +
+        labs(x = paste0("PC1(", expl_var[1], "%)")) +
+        ggtitle(title) +
+        scale_x_continuous(breaks = scales::pretty_breaks(3)) +
+        scale_color_brewer(palette = "Set1") +
+        scale_fill_brewer(palette = "Set1")
+}
 ```
 
-
-(ref:pred-hist) Density of first principal component of prediction error matrix subdivided by methods, gamma and eta and grouped by relpos.
-
+(ref:pred-hist) Scores density corresponding to first principal component of _error dataset_ ($\mathbf{u}$) subdivided by `methods`, `gamma` and `eta` and grouped by `relpos`.
 
 ```{r pred-pca-hist-mthd-gamma-relpos, message=FALSE, warning=FALSE, fig.cap="(ref:pred-hist)", fig.pos="!htb"}
-pc_density_plot <- function(dta, expl_var) {
-  dta %>% 
-  ggplot(aes(PC1, eta, fill = relpos)) +
-  geom_density_ridges(
-      scale = 0.9,
-      alpha = 0.4, size = 0.25) +
-  geom_density_ridges(
-    scale = 0.95,
-    alpha = 0.2, size = 0.25,
-    stat = "binline", bins = 30) +
-  facet_wrap(
-    . ~ interaction(Method, paste0("gamma:", gamma), sep = "|"), 
-    scales = 'free_x', ncol = 5,
-    labeller = labeller(gamma = label_both, p = label_both)) +
-  theme_grey(base_family = 'mono') +
-  theme(
-    legend.position = "bottom",
-    strip.text = element_text(family = "mono")) +
-  labs(x = paste0("PC1(", expl_var[1], "%)")) +
-  ggtitle("Density of PCA scores") +
-  scale_x_continuous(breaks = scales::pretty_breaks(3)) +
-  scale_color_brewer(palette = "Set1") +
-  scale_fill_brewer(palette = "Set1")
-}
-pc_density_plot(pred_dta_with_pc, expl_var)
+pc_density_plot(pred_dta_with_pc, expl_var,
+                title = "Density of PCA scores for error model")
 ```
 
+In addition, the plot also shows that the effect of `gamma`, i.e., the level of multicollinearity, has smaller effect when the relevant predictors are at position 1, 2, 3, 4. This indicates that the methods are somewhat robust to handle collinear predictors. Although, when the relevant predictors are at position 5, 6, 7, 8 high multicollinearity results in small variance of these relevant components and consequently gives poor prediction. 
 
-Figure \@ref(fig:pred-pca-hist-mthd-gamma-relpos) plots the score density from first principal component of minimum prediction error. Since higher prediction error results in high scores the plot shows that the PCR, PLS1 and PLS2 methods are influenced by two levels of position of relevant predictor components. When the position of relevant predictors are at positon `r opts$relpos[2]`, the eigenvalues corresponding to them becomes smaller making those designs difficult to model. However, the envelope methods have less influence of `relpos` in this regard. 
+Further, the density curve for PCR, PLS1 and PLS2 are similar for different levels of `eta`, i.e., the factor controlling the correlation between responses. However, this is not true for envelope models. The envelope methods have shown to have distinct interaction between position of relevant components and `eta`. Here higher levels of `eta` is giving larger scores and clear separation between two level of `relpos`. This behavior is expected in the simultaneous envelope as the method has claimed to model relevant (material) response space.
 
-In addition, the plot also shows that the effect of `gamma`, the level of multicollinearity, has smaller effect when the relevant predictors are at position 1, 2, 3, 4. This indicates that the methods are somewhat robust to handle collinear predictors. Although, when the relevant predictors are at position 5, 6, 7, 8 high multicollinearity results in small variance of these relevant components and consequently giving poor prediction. \alert{For \texttt{gamma:relpos} interaction we can compare the height of density of two rows in Figure \@ref(fig:pred-pca-hist-mthd-gamma-relpos)}
+However in the case of high multicollinearity, envelope methods have resulted in some large outliers. This suggests that in the case of multicollinearity, the methods can give unexpected prediction.
 
-Further, the density curve for PCR, PLS1 and PLS2 for different levels of `eta`, the factor controlling the correlation between responses, are similar. However, this is not true for envelope models. The envelope methods have shown to have significant interaction between position of relevant components and `eta`. Here higher levels of `eta` is giving larger scores and clear separation between two level of `relpos`. This behavior is expected in the simultaneous envelope as the method has claimed to model relevant (material) response space.
-
-However, in the case of envelope methods and high multicollinearity, some large outlier prediction exists. This suggests that in the case of multicollinearity, the methods can give unexpected prediction.
-
-(ref:comp-hist) Density of first principal component of the matrix of number of principal components used to give minimum prediction error subdivided by `methods`, `gamma` and `eta` and grouped by `relpos`.
+(ref:comp-hist) Score density corresponding to first principal component of _component dataset_ ($\mathbf{v}$) subdivided by `methods`, `gamma` and `eta` and grouped by `relpos`.
 
 ```{r comp-pca-hist-mthd-gamma-relpos, message=FALSE, warning=FALSE, fig.cap="(ref:comp-hist)", fig.pos="!htb"}
-pc_density_plot(comp_dta_with_pc, comp_expl_var)
+pc_density_plot(comp_dta_with_pc, comp_expl_var,
+                title = "Density of PCA scores for component model")
 ```
 
-
-Figure \@ref(fig:comp-pca-hist-mthd-gamma-relpos) plots the score density from first principal component of _components dataset_. Here, the higher scores suggest the Methods have used more number of components to give minimum prediction error. The plot shows that the relevant predictor components at `r unique(opts$relpos)[2]` gives larger prediction error than those which are at the position `r unique(opts$relpos)[1]`. The pattern is more distinct in large multicollinearity case and PCR and PLS methods.
-
-The plot also shows noticeable results in the case of envelope methods. The methods have shown equally better performance at both levels of `relpos` and `gamma`.
+In the Figure \@ref(fig:comp-pca-hist-mthd-gamma-relpos), the higher scores suggest the Methods have used more number of components to give minimum prediction error. The plot also shows that the relevant predictor components at `r unique(opts$relpos)[2]` gives larger prediction error than those which are at the position `r unique(opts$relpos)[1]`. The pattern is more distinct in large multicollinearity case and PCR and PLS methods. Both the envelope methods have shown equally better performance at both levels of `relpos` and `gamma`. However in low multicollinear predictors envelope methods have used fewer number of components in average than high multicollinear predictors to give minimum prediction error.

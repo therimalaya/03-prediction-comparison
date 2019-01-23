@@ -1,0 +1,26 @@
+
+(ref:data-transform) Analysis of density of principal components of prediction error for each response.
+
+```{r data-transform-plot, fig.cap="(ref:data-transform)", fig.asp=0.5, out.width='90%', fig.align='center', eval=FALSE}
+plot_data_transform()
+```
+
+
+```{r pca-scatter, fig.cap="Exploration of Principal Components of Prediction Errors.", out.width="100%", fig.width=7, dpi=150, fig.asp=0.5, eval=FALSE}
+ggplot(pred_dta_with_pc, aes(PC1, PC2, color = relpos)) +
+  geom_hline(yintercept = 0, color = "darkgray", linetype = 2) +
+  geom_vline(xintercept = 0, color = "darkgray", linetype = 2) +
+  geom_point(alpha = 0.7, size = 1, shape = 21) +
+  facet_wrap(Method ~ gamma, scales = 'free', nrow = 5,
+             labeller = labeller(eta = label_both, gamma = label_both)) +
+  theme_grey(base_family = 'mono') +
+  theme(legend.position = "bottom",
+        strip.text = element_text(family = "mono")) +
+  labs(x = paste0("PC1(", expl_var[1], "%)"),
+       y = paste0("PC2(", expl_var[2], "%)")) +
+  guides(colour = guide_legend(override.aes = list(size = 3))) +
+  ggtitle("Principal Components Analysis of prediction errors") +
+  scale_x_continuous(breaks = scales::pretty_breaks(3)) +
+  scale_color_brewer(palette = "Set1")
+```
+
