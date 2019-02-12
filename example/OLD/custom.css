@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700');
+
+body{
+  font-size: 2em;
+}
+div#TOC {
+    float: right;
+    background-color: #efefef;
+    padding: 20px;
+    margin: 10px;
+    padding-left: 0;
+}
+div#TOC ul, 
+div#TOC ol{
+  list-style: none;
+}
+div#TOC ul:before {
+    content: "Table of Contents";
+    font-weight: bolder;
+}
+pre, code {
+  font-family: "Source Code Pro", monospace;
+  font-size: 0.8em;
+}
+div#data-details {
+  margin-bottom: 20px;
+}
+div#data-details ul {
+    list-style: none;
+    padding-left: 0;
+}

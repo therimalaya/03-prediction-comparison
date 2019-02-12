@@ -20,14 +20,14 @@ __Multicollinearity in predictor variables:__
   Here, $\lambda_i, i = 1, 2, \ldots p$ are eigenvalues of the predictor variables. Here we have used `r catvec(opts$gamma)` as different levels of `gamma`. The higher the value of gamma, the higher will be the multicollinearity and vice versa.
 
 __Correlation in response variables:__
-: Correlation among response \alert{||multicollinearity in response||} variables is a less explored area. Here we have tried to explore that part with `r length(opts$eta)` levels of correlation in the response variables. We have used the `eta` ($\eta$) parameter of `simrel` for controlling the decline in eigenvalues corresponding to the response variables as \@ref(eq:eta).
+: Correlation among response variables is a less explored area. Here we have tried to explore that part with `r length(opts$eta)` levels of correlation in the response variables. We have used the `eta` ($\eta$) parameter of `simrel` for controlling the decline in eigenvalues corresponding to the response variables as \@ref(eq:eta).
 
     \begin{equation}
-      \kappa_i = e^{-\eta(i - 1)}, \eta > 0 \text{ and } j = 1, 2, \ldots, m
+      \kappa_j = e^{-\eta(j - 1)}, \eta > 0 \text{ and } j = 1, 2, \ldots, m
       (\#eq:eta)
     \end{equation}
 
-  Here, $\kappa_i, i = 1, 2, \ldots m$ are the eigenvalues of the response variables and `m` is the number of response variables. Here we have used `r catvec(opts$eta)` as different levels of `eta`. The larger the value of eta, the larger will be the correlation between response variables and vice versa.
+  Here, $\kappa_j, i = 1, 2, \ldots m$ are the eigenvalues of the response variables and `m` is the number of response variables. Here we have used `r catvec(opts$eta)` as different levels of `eta`. The larger the value of eta, the larger will be the correlation between response variables and vice versa.
 
 __Position of predictor components relevant to the response:__
 : The principal components of the predictors are ordered. The first principal component captures most of the variation in the predictors. The second captures the most in the rest that is left by the first principal components and so on. In highly collinear predictors, the variation captured by the first few components is relatively high. However, if those components are not relevant for the response, prediction becomes difficult [@Helland1994b]. Here, two levels of the positions of these relevant components are used: `r catvec(sapply(opts$relpos, list2chr))`.
@@ -93,7 +93,7 @@ grid::grid.draw(plt)
 ```
 
 
-Figure \@ref(fig:cov-plot-1) shows the covariance structure of the data simulated with this design. The figure shows that the predictor components at position `r catvec(unlist(sobj$relpos))` are relevant for the first response component. After the rotation with orthogonal rotation matrix, all predictors are somewhat relevant for all response variables, fulfilling other desired properties like multicollinearity and coefficient of determination. For same design, Figure \@ref(fig:est-cov-plot)(top left) shows that the predictor components `r catvec(unlist(sobj$relpos))` are relevant for the first response component. All other predictor components are irrelevant and all other response components are uninformative. However, due to orthogonal rotation of the informative response component together with uninformative response components, all response variables in the population have similar covariance with the relevant predictor components (Figure \@ref(fig:est-cov-plot)(top right)). The sample covariances between the predictors components and predictor variables with response variables are in Figure \@ref(fig:est-cov-plot) (bottom left) and (bottom right) respectively.
+Figure \@ref(fig:cov-plot-1) shows the covariance structure of the data simulated with this design. The figure shows that the predictor components at position `r catvec(unlist(sobj$relpos))` are relevant for the first response component. After the rotation with orthogonal rotation matrix, all predictors are somewhat relevant for all response variables, fulfilling other desired properties like multicollinearity and coefficient of determination. For the same design, Figure \@ref(fig:est-cov-plot) (top left) shows that the predictor components `r catvec(unlist(sobj$relpos))` are relevant for the first response component. All other predictor components are irrelevant and all other response components are uninformative. However, due to orthogonal rotation of the informative response component together with uninformative response components, all response variables in the population have similar covariance with the relevant predictor components (Figure \@ref(fig:est-cov-plot)(top right)). The sample covariances between the predictors components and predictor variables with response variables are in Figure \@ref(fig:est-cov-plot) (bottom left) and (bottom right) respectively.
 
 
 (ref:simrel-plot) Expected Scaled absolute covariance between predictor components and response components (top left). Expected Scaled absolute covariance between predictor components and response variables (top right). Sample scaled absolute covariance between predictor components and response variables (bottom left). Sample scaled absolute covariance between predictor variables and response variables (bottom right). The bar in the background are eigenvalues corresponding to each components in population (top plots) and in sample (bottom plots). One can compare the top-right plot (true covariance of the population) with bottom-left (covariance in the simulated data) which shows a similar pattern for different components.
@@ -142,13 +142,13 @@ grid::grid.draw(plt)
 ```
 
 
-A similar discussion can be made on all 32 designs where each of the design holds the properties of the data they simulate. These data are used by the prediction methods discussed in previous section. Each prediction methods are given independent dataset simulated in order to give them equal opportunity to understand the dynamics in the data.
+A similar discussion can be made on all 32 designs where each of the design holds the properties of the data they simulate. These data are used by the prediction methods discussed in previous section. Each prediction method is given independent datasets simulated in order to give them equal opportunity to capture the dynamics in the data.
 
 # Basis of comparison
 
 This study focuses mainly on the prediction performance of the methods and emphasis specifically on the interaction between the properties of the data controlled by the simulation parameters, and the prediction methods. The prediction performance is measured on the following basis:
 
-a) The average of prediction error that a method can give using arbitrary number of components and 
+a) The average prediction error that a method can give using arbitrary number of components and 
 b) The average number of components used by the method to give the minimum prediction error 
 
 Let us define, 
@@ -161,7 +161,7 @@ Let us define,
   \left(\boldsymbol{\beta}_{ij} - \boldsymbol{\hat{\beta}_{ijkl}}\right)\right]} + 1
 (\#eq:pred-error)
 \end{equation}
-as a prediction error of response $j = 1, \ldots 4$ for a given design $i=1, 2, \ldots 32$ and method $k=1(PCR), \ldots 5(Senv)$ using $l=0, \ldots 10$ number of components. Here, $\left(\boldsymbol{\Sigma}_{xx}\right)_i$ is the true covariance matrix of predictor unique for a particular design $i$ and $\sigma_{y_j\mid x}$ for response $j = 1, \ldots m$ is the true model error. Here prediction error is scaled by the true model error to remove the effects of influencing residual variances from the prediction error. Since both the expectation and the variance of $\hat{\boldsymbol{\beta}}$ are unknown, the prediction error are estimated using data from 50 replications as follows,
+as a prediction error of response $j = 1, \ldots 4$ for a given design $i=1, 2, \ldots 32$ and method $k=1(PCR), \ldots 5(Senv)$ using $l=0, \ldots 10$ number of components. Here, $\left(\boldsymbol{\Sigma}_{xx}\right)_i$ is the true covariance matrix of the predictors, unique for a particular design $i$ and $\sigma_{y_j\mid x}^2$ for response $j = 1, \ldots m$ is the true model error. Here prediction error is scaled by the true model error to remove the effects of influencing residual variances. Since both the expectation and the variance of $\hat{\boldsymbol{\beta}}$ are unknown, the prediction error are estimated using data from 50 replications as follows,
 
 \begin{equation}
 \widehat{\mathcal{PE}_{ijkl}} = \frac{1}{\sigma_{y_{ij}|x}^2}
@@ -232,12 +232,12 @@ _Error Dataset_:
 
 : Using the component $l_\circ$, a dataset of
 $\left(\mathcal{PE}_\circ\right)_{ijkl_\circ r}$ is used as the _Error Dataset_.
-Let $\mathbf{u}_{(`r nrow(pred_min)` \times 4)} = (u_j)$ for $j = 1, \ldots 4$ be the outcome variables measuring the prediction error corresponding the response $j$ in the context of this dataset.
+Let $\mathbf{u}_{(`r nrow(pred_min)` \times 4)} = (u_j)$ for $j = 1, \ldots 4$ be the outcome variables measuring the prediction error corresponding to the response number $j$ in the context of this dataset.
 
 _Component Dataset_: 
-: Components that gives the minimum prediction error in each replication is used as _Component Dataset_, i.e.,
+: The component number that gives the minimum prediction error in each replication is referred to as the _Component Dataset_, i.e.,
   \begin{equation}
   l_{\circ} = \operatorname*{argmin}_{l}\left[\mathcal{PE}_{ijklr}\right]
   (\#eq:min-comp)
   \end{equation}
-  Here $l_\circ$ is the number of component that gives minimum prediction error $\left(\mathcal{PE}_\circ\right)_{ijklr}$ for design $i$, response $j$, method $k$ and replicate $r$. $l_\circ$ is used as the _component Dataset_. Let $\mathbf{v}_{(`r nrow(comp_min)` \times 4)} = (v_j)$ for $j = 1, \ldots 4$ be the outcome variables measuring the number of components used for minimum prediction error corresponding the response $j$ in the context of this dataset.
+  Here $l_\circ$ is the number of components that gives minimum prediction error $\left(\mathcal{PE}_\circ\right)_{ijklr}$ for design $i$, response $j$, method $k$ and replicate $r$. Let $\mathbf{v}_{(`r nrow(comp_min)` \times 4)} = (v_j)$ for $j = 1, \ldots 4$ be the outcome variables measuring the number of components used for minimum prediction error corresponding the response $j$ in the context of the component dataset.

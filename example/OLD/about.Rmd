@@ -1,0 +1,28 @@
+---
+title: "About Dataset"
+description: |
+  Some additional details about the website
+params:
+  dataset: 
+    label: "Dataset:"
+    value: NIR_Dough
+    input: select
+    choices: [Raman-PUFA, NIR-PUFA, NIR_Dough, majones]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+<div id = "data-details">
+- **Dataset Name:** `r params$dataset`
+- **Data provided by:** Kristian Liland
+</div>
+
+```{r, eval = params$dataset == "NIR_Dough", results='asis'}
+cat(
+  "The calibration set has $N=40$ samples of $p=700$ wavelengths (1100-2498nm in steps of 2nm). Four response variables yield _percentages of_ (a) _fat_, (b) _sucrose_, (c) _flour_ and (d) _water_ from measurements of biscuit dough. A separate test set contains 32 samples. The two sets were created and measured on different occasions. ([A twist to partial least squares regression](DOI: 10.1002/cem.904))."
+)
+
+cat("\n\nA new paragraph")
+```

@@ -1,0 +1,194 @@
+---
+title: "Prediction Comparison"
+author:
+  - name: Raju Rimal, Trygve Almøy and Solve Sæbø
+date: "`r Sys.Date()`"
+params:
+  dataset: 
+    label: "Dataset:"
+    value: NIR_Dough
+    input: select
+    choices: [Raman-PUFA, NIR-PUFA, NIR_Dough, majones]
+  ncomp: 15
+  scale: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE, 
+  comment = NA, 
+  out.width = '100%'
+)
+library(tidyverse)
+library(pls)
+library(Renvlp)
+
+NCOMP <- params$ncomp
+SCALE <- params$scale
+```
+
+# Loading the data
+
+```{r}
+source("_scripts/functions.R")
+local({
+  Dname <- load(paste0("_data/", params$dataset, ".RData"))
+  assign("Dataset", get(Dname), envir = .GlobalEnv)
+})
+Dataset <- as.list(Dataset)
+attr(Dataset, "OldName") <- names(Dataset)
+names(Dataset) <- c("X", "Y", "train")
+```
+
+The structure of dataset contains a predictor matrix $X$, a response matrix $Y$ and a vector specifying which one is the training set and which one are not. In this dataset there are `r nrow(Dataset$X)` observation in total with `r ncol(Dataset$X)` predictors and `r ncol(Dataset$Y)` responses. In the following analysis, we will use `r NCOMP` number of components. We will center the datasets but they are not scaled. Further `r sum(Dataset$train)` first observations are considered as training samples.
+
+```{r}
+str(Dataset)
+```
+
+
+# Estimating Relevant Components
+
+The relevant predictor components are estimated based on the training samples we have. It is also interesting to see weather the test samples have similar strucutre or not. The estimation of the relevant components are also obtained on the test samples. Figure \@ref(fig:relcomp-plot) shows the estimated relevant components for both test and trining datasets. The estimation is done based on following expression.
+
+$$
+\text{scaled absolute covariance} = \frac{\left|\widehat{\Sigma}_{yz}\right|}{\max\left|\widehat{\Sigma}_{yz}\right|}
+$$
+where, $Z = X\times V$ and $V$ is the eigenvectors corresponding to predictor $X$.
+
+The bar in the background of the plot are the scaled eigevalues divided by the maximum eigenvalue corresponding to covariance of the predictor matrix.
+
+```{r}
+relcomp <- list(
+  train = list(
+    X0 = with(Dataset, scale(X[train,], scale = FALSE)),
+    Y0 = with(Dataset, scale(Y[train,], scale = FALSE))
+  ),
+  test = list(
+    X0 = with(Dataset, scale(X[!train,], scale = FALSE)),
+    Y0 = with(Dataset, scale(Y[!train,], scale = FALSE))
+  )  
+)
+relcomp_df <- map_df(relcomp, ~get_abs_rel_comp(.x$X0, .x$Y0), .id = "Type")
+```
+
+```{r relcomp-plot, fig.asp=0.5, fig.width=9, fig.cap="Estimated relevant Components for training and test samples"}
+plot_relcomp(relcomp_df, ncomp = NCOMP)
+```
+
+# Eigenvalues of Response Matrix
+
+Since our simulation is based on single informative response component, it is necessary to see the estimated response latent structure. Figure-\@ref(fig:var-expl) shows the cumulative sum of the variation caputred by each additional components in response and predictors for both test and training set. Here in most of the datasets, the variation is captured by just few number of components in both predictor and response. The eigenvalues are computed based on the covariance of the dataset.
+
+```{r}
+eigen_lst <- list(
+  Train = list(
+    Response = with(Dataset, eigen(cov(Y[train,]))),
+    Predictor = with(Dataset, eigen(cov(X[train,])))
+  ),
+  Test = list(
+    Response = with(Dataset, eigen(cov(Y[!train,]))),
+    Predictor = with(Dataset, eigen(cov(X[!train,])))
+  )
+)
+eigen_df <- eigen_lst %>% 
+  map_df(~map_df(..1, make_eigen_df, .id = "xy"), 
+         .id = "test_train") %>% 
+  filter(ncomp <= NCOMP)
+```
+
+
+```{r var-expl, fig.asp = 0.6, fig.cap = "Cumulative sum of eigenvalues"}
+ggplot(eigen_df, aes(ncomp, var_explained)) +
+  geom_line() + 
+  geom_point(shape = 21, fill = "lightgrey") +
+  facet_grid(test_train ~ xy, scales = 'free_x') +
+  labs(y = "Cumulative Eigenvalues",
+       x = "Number of Components")
+```
+
+# Statistical Modeling
+
+PCR, PLS1, PLS2, Xenv and Senv are used to fit the model using the dataset _`r params$dataset`_. Here the models are fitted using 1 to `r NCOMP` number of components. Since we are testing the performace with each components, we have not performed any cross-validation. Figure-\@ref(fig:pred-plot) shows both traing and test prediction error for each response variables obtained from different prediction methods. A general observations in most of the datasets are:
+
+a) Test prediction error for all methods fluctute a lot specially when the components has small covariance with response but has large eigenvalues and vice versa.
+b) Scaling (divided by standard deviation) removed all useful relationship and impossible to determine and difference. _I could only apply Scaling for PLS and PCR as their function allow for scaling, so to apply for all methods, I need to scale them manually and descale after I get the regression coefficients. (need some suggestion)_ 
+
+```{r}
+train <- with(Dataset, {
+  prepare_data(X[train,], Y[train,], prop = 0.975, ncomp = NCOMP)
+})
+train_ <- with(Dataset, {
+  data.frame(x = I(X[train,]), y = I(Y[train,]))
+})
+test <- with(Dataset, {
+  data.frame(x = I(X[!train,]), y = I(Y[!train,]))
+})
+methods <- c("PCR", "PLS1", "PLS2", "Xenv", "Senv")
+names(methods) <- methods
+pred_error <- map_df(methods, function(mthd) {
+  ## Compute Coefficient
+  fit <- fit_model(train$data, method = mthd, ncomp = NCOMP, scale = SCALE)
+  if (mthd %in% c('Xenv', 'Senv')) {
+    coef <- fit %>%
+      get_beta_fn(tolower(mthd))(intercept = FALSE) %>% 
+      rotate_coef(train$rotation) %>% 
+      compute_intercept(train$centers$x, train$centers$y)
+  } else {
+    coef <- fit %>% 
+    get_beta_fn(tolower(mthd))(intercept = FALSE, ncomp = NCOMP) %>% 
+    compute_intercept(train$centers$x, train$centers$y)
+  }
+  
+  ## Make Prediction
+  train_pred <- get_prediction(train_$x, coef)
+  test_pred <- get_prediction(test$x, coef)
+  
+  ## Calculate Prediction Error
+  train_error <- get_error(train_pred, train_$y, type = "rmsep") %>% 
+    as_tibble(rownames = "Response") %>% 
+    gather(Component, Error, -Response) %>% 
+    mutate(Component = str_remove(Component, "Comp") %>% as.integer())
+  test_error <- get_error(test_pred, test$y, type = "rmsep") %>% 
+    as_tibble(rownames = "Response") %>% 
+    gather(Component, Error, -Response) %>% 
+    mutate(Component = str_remove(Component, "Comp") %>% as.integer())
+  
+  ## Bind both training and test prediction error
+  bind_rows(train = train_error, test = test_error, .id = "Type")
+}, .id = "Method")
+```
+
+```{r pred-plot, fig.asp=0.8, fig.width=8, fig.cap="Test and Train Prediction Error for each response using PCR, PLS1, PLS2, Xenv and Senv methods using RMSE as the measuring criteria."}
+ggplot(pred_error, aes(Component, Error, color = Type)) +
+  geom_line(aes(group = Type)) + 
+  geom_point(size = rel(0.5)) +
+  facet_grid(Response ~ Method, scales = 'free') +
+  scale_x_continuous(breaks = seq(0, NCOMP, 5)) +
+  theme(legend.position = "bottom") +
+  labs(x = "Number of Components",
+       y = "Prediction Error (RMSEP)",
+       color = NULL,
+       title = "Prediction Error",
+       subtitle = "Subdivided by each prediction methods per Response")
+```
+
+Following table shows the minimum prediction error from each of the method in Figure-\@ref(fig:pred-plot) along with the number of components they have used to get that minimum prediction error. General observation for most of the dataset is that PLS are better in most of the respect but for difficult response, Senv also somewhat robust for the purpose.
+
+```{r}
+pred_error_tbl <- pred_error %>% 
+  filter(Type == "test") %>% 
+  group_by(Method, Response) %>% 
+  summarize(Comp = Component[which.min(Error)],
+            Error = min(Error)) %>% 
+  group_by(Response) %>% 
+  mutate(Error = ifelse(
+    Error == min(Error), 
+    paste0("**", round(Error, 2), "**"),
+    round(Error, 2)))
+pred_error_tbl %>% 
+  mutate(label = paste0(Error," (", Comp, ")")) %>% 
+  select(-Comp, -Error) %>% 
+  spread(Response, label) %>% 
+  knitr::kable()
+```

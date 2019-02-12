@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Comparison of Multivariate Prediction Methods</title>
-  <meta name="description" content="Comparison of Multivariate Prediction Methods">
+  <title>Statistical Analysis | Comparison of Multi-response Prediction Methods</title>
+  <meta name="description" content="Statistical Analysis | Comparison of Multi-response Prediction Methods">
   <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="Comparison of Multivariate Prediction Methods" />
+  <meta property="og:title" content="Statistical Analysis | Comparison of Multi-response Prediction Methods" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="http://therimalaya.github.io/03-prediction-comparison" />
   
@@ -17,14 +17,14 @@
   <meta name="github-repo" content="therimalaya/03-prediction-comparison" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Comparison of Multivariate Prediction Methods" />
+  <meta name="twitter:title" content="Statistical Analysis | Comparison of Multi-response Prediction Methods" />
   
   
   
 
 
 
-<meta name="date" content="2019-01-23">
+<meta name="date" content="2019-02-12">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -45,6 +45,7 @@ div.abstract{
 </style>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -59,67 +60,41 @@ div.abstract{
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -151,6 +126,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="statistical-analysis.html#effect-analysis-of-component-model">Effect Analysis of <em>Component Model</em></a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="discussions-and-conclusion.html"><a href="discussions-and-conclusion.html"><i class="fa fa-check"></i>Discussions and Conclusion</a></li>
+<li class="chapter" data-level="" data-path="acknowledgment.html"><a href="acknowledgment.html"><i class="fa fa-check"></i>Acknowledgment</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="appendix"><span><b>Appendix A</b></span></li>
 <li class="chapter" data-level="" data-path="shiny-application.html"><a href="shiny-application.html"><i class="fa fa-check"></i>Shiny Application</a></li>
@@ -166,7 +142,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Comparison of Multivariate Prediction Methods</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Comparison of Multi-response Prediction Methods</a>
           </h1>
         </div>
 
@@ -176,7 +152,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="statistical-analysis" class="section level1">
 <h1>Statistical Analysis</h1>
-<p>Let us consider a model with third order interaction of simulation parameters (<code>p</code>, <code>gamma</code>, <code>eta</code> and <code>relpos</code>) and <code>Methods</code> as in <a href="statistical-analysis.html#eq:error-model">(11)</a> and <a href="statistical-analysis.html#eq:component-model">(12)</a> using <em>error dataset</em> <span class="math inline">\(\mathbf{u}\)</span> and <span class="math inline">\(\mathbf{v}\)</span> respectively. Let us call them <em>error model</em> and _component model** respectively.</p>
+<p>In this section we will model the <em>error data</em> and the <em>component data</em> as function of the simulation parameters in order to better understand the connection between data properties and prediction methods.</p>
+<p>Let us consider a model with third order interaction of the simulation parameters (<code>p</code>, <code>gamma</code>, <code>eta</code> and <code>relpos</code>) and <code>Methods</code> as in <a href="statistical-analysis.html#eq:error-model">(11)</a> and <a href="statistical-analysis.html#eq:component-model">(12)</a> using datasets <span class="math inline">\(\mathbf{u}\)</span> and <span class="math inline">\(\mathbf{v}\)</span>, respectively. Let us refer them as the <em>error model</em> and the <em>component model</em>.</p>
 <dl>
 <dt><strong>Error Model:</strong></dt>
 <dd><span class="math display" id="eq:error-model">\[\begin{equation}\mathbf{u}_{abcdef} = \boldsymbol{\mu}_u +
@@ -195,16 +172,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   \end{equation}\]</span>
 </dd>
 </dl>
-<p>where, <span class="math inline">\(\mathbf{u}_{abcdef}\)</span> is a vector of prediction errors in <em>error model</em> and <span class="math inline">\(\mathbf{v}_{abcdef}\)</span> is a vector of number of components used by a method to obtain minimum prediction error in <em>component model</em>.</p>
-<p>Although there are several test-statistic for MANOVA, for large sample all are essentially equivalent <span class="citation">(Johnson and Wichern <a href="references.html#ref-johnson2018applied">2018</a>)</span>. Here we will use Pillai’s trace statistic which is defined as,</p>
-<p><span class="math display" id="eq:pillai">\[\begin{equation}
+<p>where, <span class="math inline">\(\mathbf{u}_{abcdef}\)</span> is a vector of prediction errors in the <em>error model</em> and <span class="math inline">\(\mathbf{v}_{abcdef}\)</span> is a vector of number of components used by a method to obtain minimum prediction error in the <em>component model</em>.</p>
+<p>Although there are several test-statistic for MANOVA, for large samples all are essentially equivalent <span class="citation">(Johnson and Wichern <a href="references.html#ref-johnson2018applied">2018</a>)</span>. Here we will use Pillai’s trace statistic which is defined as,</p>
+<span class="math display" id="eq:pillai">\[\begin{equation}
 \text{Pillai statistic} = \text{tr}\left[
 \left(\mathbf{E} + \mathbf{H}\right)^{-1}\mathbf{H}
-\right] = \sum_{i=1}^s{\frac{\nu_i}{1 + \nu_i}}
+\right] = \sum_{i=1}^m{\frac{\nu_i}{1 + \nu_i}}
 \tag{13}
 \end{equation}\]</span>
-Here the matrix <span class="math inline">\(\mathbf{H}\)</span> has between sum of squares and sum of products for each of the predictors. The matrix <span class="math inline">\(\mathbf{E}\)</span> has a within sum of squares and sum of products for each of the predictors. <span class="math inline">\(\nu_i\)</span> represents the eigenvalues corresponding to <span class="math inline">\(\mathbf{E}^{-1}\mathbf{H}\)</span> <span class="citation">(Rencher <a href="references.html#ref-rencher2003methods">2003</a>)</span>.</p>
-<p>For both the models <a href="statistical-analysis.html#eq:error-model">(11)</a> and <a href="statistical-analysis.html#eq:component-model">(12)</a>, Pillai’s trace statistic is used for accessing the effect of each factors and F-value for the strength of their significance. Figure <a href="statistical-analysis.html#fig:manova-plot">7</a> plots the Pillai’s trace statistic as bar with corresponding F-values as text label for both models.</p>
+<p>Here the matrix <span class="math inline">\(\mathbf{H}\)</span> holds between-sum-of-squares and sum-of-products for each of the predictors. The matrix <span class="math inline">\(\mathbf{E}\)</span> has a within sum of squares and sum of products for each of the predictors. <span class="math inline">\(\nu_i\)</span> represents the eigenvalues corresponding to <span class="math inline">\(\mathbf{E}^{-1}\mathbf{H}\)</span> <span class="citation">(Rencher <a href="references.html#ref-rencher2003methods">2003</a>)</span>.</p>
+<p>For both the models <a href="statistical-analysis.html#eq:error-model">(11)</a> and <a href="statistical-analysis.html#eq:component-model">(12)</a>, Pillai’s trace statistic is used for accessing the effect of each factor and returns an F-value for the strength of their significance. Figure <a href="statistical-analysis.html#fig:manova-plot">7</a> plots the Pillai’s trace statistics as bars with corresponding F-values as text labels for both models.</p>
 
 <div class="figure"><span id="fig:manova-plot"></span>
 <img src="main_files/figure-html/manova-plot-1.svg" alt="Pillai Statistic and F-value for the MANOVA model. The bar represents the Pillai Statistic and the text labels are F-value for corresponding factor." width="100%" />
@@ -214,18 +191,17 @@ Figure 7: Pillai Statistic and F-value for the MANOVA model. The bar represents 
 </div>
 <dl>
 <dt><em>Error Model</em>:</dt>
-<dd>Figure <a href="statistical-analysis.html#fig:manova-plot">7</a> (left) shows the Pillai’s trace statistic for factors of the <em>error model</em>. The main effects of the <code>Method</code> has largest influence on the model followed by <code>relpos</code>, <code>eta</code> and <code>gamma</code>. A highly significant interaction of <code>Method</code> with <code>eta</code>, <code>relpos</code> and <code>gamma</code> clearly shows that methods perform differently for different levels of these data properties. Further, the significant third order interaction between <code>Method</code>, <code>eta</code> and <code>gamma</code> suggests that a method perform differently for a given level of multicollinearity and the correlation between the responses. Since, only some methods consider modelling predictor and response together, the prediction is affected by the level of correlation between the response (<code>eta</code>) for a given method.
+<dd>Figure <a href="statistical-analysis.html#fig:manova-plot">7</a> (left) shows the Pillai’s trace statistic for factors of the <em>error model</em>. The main effects of <code>Method</code> has largest influence on the model followed by <code>relpos</code>, <code>eta</code> and <code>gamma</code>. A highly significant two interaction of <code>Method</code> with <code>eta</code> followed by <code>relpos</code> and <code>gamma</code> clearly shows that methods perform differently for different levels of these data properties. Further, the significant third order interaction between <code>Method</code>, <code>eta</code> and <code>gamma</code> suggests that a method performs differently for a given level of multicollinearity and the correlation between the responses. Since, only some methods consider modelling predictor and response together, the prediction is affected by the level of correlation between the response (<code>eta</code>) for a given method.
 </dd>
 <dt><em>Component Model</em>:</dt>
-<dd>Figure <a href="statistical-analysis.html#fig:manova-plot">7</a> (right) shows the Pillai’s trace statistic for factors of the <em>component model</em>. As in <em>error model</em>, the main effects of the Method, <code>relpos</code>, <code>gamma</code> and <code>eta</code> have significantly large effect on number of components that a method has used to get minimum prediction error. The interaction of <code>Method</code> with simulation parameters are significantly larger in this case. This shows that the Methods and these interactions have larger effect on the use of number of component than the prediction error itself. In addition, a similar significant high third order interaction as in <em>error model</em> is also observed in this model.
+<dd>Figure <a href="statistical-analysis.html#fig:manova-plot">7</a> (right) shows the Pillai’s trace statistic for factors of the <em>component model</em>. As in the <em>error model</em>, the main effects of the Method, <code>relpos</code>, <code>gamma</code> and <code>eta</code> have significantly large effect on the number of components that a method has used to obtain minimum prediction error. The two factor interactions of <code>Method</code> with simulation parameters are larger in this case. This shows that the Methods and these interactions have larger effect on the use of number of component than the prediction error itself. In addition, a similar significant high third order interaction as in <em>error model</em> is also observed in this model.
 </dd>
 </dl>
-<p>Following section will continue demystifying the effect of different levels of the factors in the case of these interactions.</p>
+<p>The following section will continue exploring the effects of different levels of the factors in the case of these interactions.</p>
 <div id="effect-analysis-of-error-model" class="section level2">
 <h2>Effect Analysis of <em>Error Model</em></h2>
-<p>Figure <a href="statistical-analysis.html#fig:pred-eff-plots">8</a> (left) shows large difference in prediction error in envelope models is observed. The difference is intensified when position of relevant predictor at at 5, 6, 7, 8. The results also shows that the envelope methods respond to the levels of <code>eta</code> more than the rest of the methods. In the case of PCR and PLS, the difference in the effect of levels of <code>eta</code> is small.</p>
-<p>In the Figure <a href="statistical-analysis.html#fig:pred-eff-plots">8</a> (right), we can see that the multicollinearity has affected all the methods however, PCR, PLS1 and PLS2 are more robust for the condition than envelopes. Rather these methods have shown better performance when high multicollinearity is present in the data.
-Envelope methods on the other hand are better in handeling the model when relevant position are at 5, 6, 7, 8 in both high and low multicollinearity cases.</p>
+<p>Figure <a href="statistical-analysis.html#fig:pred-eff-plots">8</a> (left) shows that, for the envelope models, the differences in the prediction error is large. These differences are intensified when position of relevant predictor at at 5, 6, 7, 8. The results also shows that the envelope methods is more sensible to the levels of <code>eta</code> more than the rest of the methods. In the case of PCR and PLS, the difference in the effect of levels of <code>eta</code> is small.</p>
+<p>In Figure <a href="statistical-analysis.html#fig:pred-eff-plots">8</a> (right), we can see that the multicollinearity has affected all the methods, however, PCR, PLS1 and PLS2 are more robust for the condition than the envelope methods. Rather these methods have shown better performance when high multicollinearity is present in the data. Envelope methods on the other hand are better at handling the model when relevant positions are at 5, 6, 7, 8 in both high and low multicollinearity cases.</p>
 
 <div class="figure"><span id="fig:pred-eff-plots"></span>
 <img src="main_files/figure-html/pred-eff-plots-1.svg" alt="Effect plot of some interactions of the multivariate linear model of prediction error" width="100%" />
@@ -243,10 +219,10 @@ Figure 8: Effect plot of some interactions of the multivariate linear model of p
 Figure 9: Effect plot of some interactions of the multivariate linear model of number of components to get minimum prediction error
 </p>
 </div>
-<p>Unlike prediciton error, Figure <a href="statistical-analysis.html#fig:comp-eff-plots">9</a> (left) shows that the number of components used by the methods to give minium prediction error is less affected by the levels of <code>eta</code>. However, simulteneous envelope has shown distinct reaction when there is no correlation between the response varialbes. Envelope methods are able to obtain minimum prediction error by using components ranging from 1 to 3 in both the cases of <code>relpos</code>. This value is much higher in the case of PCR as its prediction is based only on the principal components of predictors. The number of components used by this method ranges from 3 to 5 when relevant predictors are at 1, 2, 3, 4 and 5 to 8 when relevant predictors are at 5, 6, 7, 8.</p>
-<p>We can also see that at <code>relpos</code> 1, 2, 3, 4 for PLS1 and PLS2 have used fewer components than simulteneous envelope. However, in the case when relevant components are at position 5, 6, 7, 8, simulteneous envelope manage to get smaller prediction error using fewer number of components than that of PLS models. This is the case when eigenvalues of relevant predictors are small and are difficult to predict.</p>
-<p>In the interaction effect of <code>gamma</code>, <code>relpos</code> and <code>Method</code> (Figure <a href="statistical-analysis.html#fig:comp-eff-plots">9</a> (right)), PCR, PLS1 and PLS2 methods have used fairly large number of components for the model with high multicollinearity and relevant predictors at position 5, 6, 7, 8. The number of components used by envelope methods in both the cases of <code>relpos</code> is similar although slightly more for the models with high multicollinearity than models with low multicollinearity.</p>
-<p>In the case of <code>PCR</code>, the prediction relies heavily on the relevant components, the number of components used by the method is as expected in both the levels of <code>relpos</code>. This reinforce the results from the density plot (Figure <a href="exploration.html#fig:comp-pca-hist-mthd-gamma-relpos">6</a>) in previous section.</p>
+<p>Unlike for prediction errors, Figure <a href="statistical-analysis.html#fig:comp-eff-plots">9</a> (left) shows that the number of components used by the methods to obtain minium prediction error is less affected by the levels of <code>eta</code>. However, simulteneous envelope has used slightly larger number of components when there is no correlation between the response variables than the cases with moderate correlation. This pattern is distinct within the simultaneous envelope method. Envelope methods are able to obtain minimum prediction error by using components ranging from 1 to 3 in both the cases of <code>relpos</code>. This value is much higher in the case of PCR as its prediction is based only on the principal components of predictors. The number of components used by this method ranges from 3 to 5 when relevant components are at positions 1, 2, 3, 4 and 5 to 8 when relevant components are at positions 5, 6, 7, 8.</p>
+<p>We can also see that at <code>relpos</code> 1, 2, 3, 4 for PLS1 and PLS2 have used fewer components than simulteneous envelope. However, in the case when relevant components are at position 5, 6, 7, 8, simulteneous envelope manage to obtain smaller prediction error using fewer components than that of the PLS models. This is the case when eigenvalues of relevant predictors are small and responses are relatively difficult to predict.</p>
+<p>With regard to the interaction effect between <code>gamma</code>, <code>relpos</code> and <code>Method</code> (Figure <a href="statistical-analysis.html#fig:comp-eff-plots">9</a> (right)), PCR, PLS1 and PLS2 methods have used a fairly large number of components the cases of high multicollinearity and relevant predictors at positions 5, 6, 7, 8. The number of components used by the envelope methods in both cases of <code>relpos</code> is similar, although slightly higher for the models with high multicollinearity than models with low multicollinearity.</p>
+<p>In the case of <code>PCR</code>, prediction relies heavily on the position of relevant components (<code>relpos</code>). Here the method has used 3 to 5 number of components when the relevant components are at positions 1, 2, 3, 4; and 7 to 8 number of components when the relevant components are at positions 5, 6, 7, 8. The number of components used by <code>PCR</code> is expected as in Figure <a href="statistical-analysis.html#fig:comp-eff-plots">9</a>. This reinforces the conclusion from the density plot (Figure <a href="exploration.html#fig:comp-pca-hist-mthd-gamma-relpos">6</a>) in the previous section.</p>
 
 </div>
 </div>
@@ -276,7 +252,7 @@ gitbook.start({
 "google": true,
 "linkedin": false,
 "weibo": false,
-"instapper": false,
+"instapaper": false,
 "vk": false,
 "all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
@@ -288,6 +264,10 @@ gitbook.start({
 "edit": {
 "link": "https://github.com/therimalaya/03-prediction-comparison/edit/master/Includes/05-Analysis.Rmd",
 "text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
 },
 "download": ["main.epub", "main.pdf"],
 "toc": {
@@ -302,8 +282,8 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(src))
       src = src.replace(/^https?:/, '');
     script.src = src;

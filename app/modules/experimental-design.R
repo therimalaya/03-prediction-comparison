@@ -15,7 +15,7 @@ exp_design <- function(input, output, session, design){
   selected <- reactiveValues()
   design <- design %>%
     mutate(Design_idx = row_number()) %>%
-    arrange(relpos, eta, p, gamma) %>%
+    # arrange(relpos, eta, p, gamma) %>%
     mutate(Design = row_number())
   output$design_plot <- renderPlot({
     selected_idx <- input[['design_table_rows_selected']]
@@ -25,7 +25,7 @@ exp_design <- function(input, output, session, design){
         TRUE ~ 'not-selected')) %>%
       ggplot(aes(eta, gamma, color = selected)) +
       geom_point(shape=4) +
-      geom_text(aes(label = Design), nudge_x = 0.03, nudge_y = 0.1) +
+      ggrepel::geom_text_repel(aes(label = Design), nudge_x = 0.03, nudge_y = 0.1) +
       facet_grid(p ~ relpos, labeller=label_both) +
       scale_y_reverse(breaks = unique(design$gamma)) +
       scale_x_continuous(breaks = unique(design$eta)) +

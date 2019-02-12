@@ -5,16 +5,15 @@ editor_options:
 
 # Exploration
 
-This section focuses on exploring the variation in _error dataset_ and _component dataset_ for which we will use Principal Component Analysis (PCA). Let $\mathbf{t}_u$ and $\mathbf{t}_v$ be the principal component scores corresponding to the $\mathbf{u}$ and $\mathbf{v}$ respectively. Figure-\@ref(fig:pred-pca-hist-mthd-gamma-relpos) plots the scores density corresponding to first principal component of $\mathbf{u}$, i.e. first column of $\mathbf{t}_u$.
+This section focuses on exploring the variation in the _error dataset_ and the _component dataset_ for which we will use Principal Component Analysis (PCA). Let $\mathbf{t}_u$ and $\mathbf{t}_v$ be the principal component score sets corresponding to PCA run on the $\mathbf{u}$ and $\mathbf{v}$ matrices respectively. Figure-\@ref(fig:pred-pca-hist-mthd-gamma-relpos) plots the scores density corresponding to the first principal component of $\mathbf{u}$, i.e. the first column of $\mathbf{t}_u$.
 
-Since higher prediction error results in high scores the plot shows that the PCR, PLS1 and PLS2 methods are influenced by two levels of position of relevant predictor components. When the relevant predictors are at position `r opts$relpos[2]`, the eigenvalues corresponding to them becomes smaller. This also suggest that PCR, PLS1 and PLS2 depends highly on the relevant components and the variation of these components affect their performance. However, the envelope methods have less influence of `relpos` in this regard. 
+Since higher prediction error here corresponds to high scores, the plot shows that the PCR, PLS1 and PLS2 methods are influenced by the two levels of position of relevant predictor components. When the relevant predictors are at positions `r opts$relpos[2]`, the eigenvalues corresponding to them are relatively smaller. This also suggest that PCR, PLS1 and PLS2 depends highly on the position of the relevant components and the variation of these components affect their prediction performance. However, the envelope methods appears to be less influenced by `relpos` in this regard. 
 
 ```{r pca}
-## PCA Prediction Error
 pred_pca <- with(pred_min, prcomp(cbind(Y1, Y2, Y3, Y4)))
 expl_var <- explvar(pred_pca) %>% round(2)
 pred_dta_with_pc <- bind_cols(pred_min, as.data.frame(scores(pred_pca)[]))
-## PCA Number of components
+
 comp_pca <- with(comp_min, prcomp(cbind(Y1, Y2, Y3, Y4)))
 comp_expl_var <- explvar(comp_pca) %>% round(2)
 comp_dta_with_pc <- bind_cols(comp_min, as.data.frame(scores(comp_pca)[]))
@@ -54,9 +53,9 @@ pc_density_plot(pred_dta_with_pc, expl_var,
                 title = "Density of PCA scores for error model")
 ```
 
-In addition, the plot also shows that the effect of `gamma`, i.e., the level of multicollinearity, has smaller effect when the relevant predictors are at position 1, 2, 3, 4. This indicates that the methods are somewhat robust to handle collinear predictors. Although, when the relevant predictors are at position 5, 6, 7, 8 high multicollinearity results in small variance of these relevant components and consequently gives poor prediction. 
+In addition, the plot also shows that the effect of `gamma`, i.e., the level of multicollinearity, has smaller effect when the relevant predictors are at positions 1, 2, 3, 4. This indicates that the methods are somewhat robust to handle collinear predictors. Although, when the relevant predictors are at positions 5, 6, 7, 8, high multicollinearity results in small variance of these relevant components and consequently gives poor prediction. This is in accordance with the findings by @Helland1994b.
 
-Further, the density curve for PCR, PLS1 and PLS2 are similar for different levels of `eta`, i.e., the factor controlling the correlation between responses. However, this is not true for envelope models. The envelope methods have shown to have distinct interaction between position of relevant components and `eta`. Here higher levels of `eta` is giving larger scores and clear separation between two level of `relpos`. This behavior is expected in the simultaneous envelope as the method has claimed to model relevant (material) response space.
+Further, the density curves for PCR, PLS1 and PLS2 are similar for different levels of `eta`, i.e., the factor controlling the correlation between responses. However, this is not true for the envelope models. The envelope methods have shown to have distinct interaction between position of relevant components and `eta`. Here higher levels of `eta` has given larger scores and clear separation between two level of `relpos`. 
 
 However in the case of high multicollinearity, envelope methods have resulted in some large outliers. This suggests that in the case of multicollinearity, the methods can give unexpected prediction.
 
@@ -67,4 +66,4 @@ pc_density_plot(comp_dta_with_pc, comp_expl_var,
                 title = "Density of PCA scores for component model")
 ```
 
-In the Figure \@ref(fig:comp-pca-hist-mthd-gamma-relpos), the higher scores suggest the Methods have used more number of components to give minimum prediction error. The plot also shows that the relevant predictor components at `r unique(opts$relpos)[2]` gives larger prediction error than those which are at the position `r unique(opts$relpos)[1]`. The pattern is more distinct in large multicollinearity case and PCR and PLS methods. Both the envelope methods have shown equally better performance at both levels of `relpos` and `gamma`. However in low multicollinear predictors envelope methods have used fewer number of components in average than high multicollinear predictors to give minimum prediction error.
+In the Figure \@ref(fig:comp-pca-hist-mthd-gamma-relpos), the higher scores suggest the different methods have used a large number of components to give minimum prediction error. The plot also shows that the relevant predictor components at `r unique(opts$relpos)[2]` gives larger prediction error than those which are at the position `r unique(opts$relpos)[1]`. The pattern is more distinct in large multicollinearity case and PCR and PLS methods. Both the envelope methods have shown equally better performance at both levels of `relpos` and `gamma`. However, for data with low multicollinearity ($\gamma = 0.2$), the envelope methods have used fewer number of components on average than in the high multicollinear cases to achieve minimum prediction error.

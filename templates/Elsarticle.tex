@@ -192,7 +192,7 @@ $endif$
     colorlinks = $if(colorlinks)$true$else$false$endif$,
   }
 }
-\urlstyle{same}  % don't use monospace font for urls
+% \urlstyle{same}  % don't use monospace font for urls
 %% -------------------------------------- %%
 
 %% Customizations %%
@@ -222,9 +222,9 @@ $endif$
 \providecommand{\doi}[1]{%
   \begingroup
     \let\bibinfo\@secondoftwo
-    \urlstyle{rm}%
+    \urlstyle{tt}%
     \href{http://dx.doi.org/#1}{%
-      doi:\discretionary{}{}{}%
+      \discretionary{}{}{}%
       \nolinkurl{#1}%
     }%
   \endgroup

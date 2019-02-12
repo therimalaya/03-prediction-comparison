@@ -1,0 +1,21 @@
+name: "PredEx"
+output_dir: "docs"
+navbar:
+  title: "Prediction Example"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "About Dataset"
+      href: about.html
+output:
+  bookdown::pdf_book:
+    base_format: rmarkdown::pdf_document
+    number_sections: no
+    toc: yes
+  bookdown::html_document2:
+    number_sections: no
+    css: custom.css
+    toc: yes
+    theme: cosmo
+    fig-retina: 2
+    dev: 'svg'

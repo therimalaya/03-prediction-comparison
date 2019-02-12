@@ -4,6 +4,7 @@ editor_options:
 ---
 
 # Statistical Analysis
+In this section we will model the _error data_ and the _component data_ as function of the simulation parameters in order to better understand the connection between data properties and prediction methods.
 
 ```{r knitr_setup}
 options(knitr.kable.NA = '')
@@ -20,7 +21,7 @@ print_manova <- function(tbl, format = docs_format, level = 0.05, ...){
 }
 ```
 
-Let us consider a model with third order interaction of simulation parameters (`p`, `gamma`, `eta` and `relpos`) and `Methods` as in \@ref(eq:error-model) and \@ref(eq:component-model) using _error dataset_ $\mathbf{u}$ and $\mathbf{v}$ respectively. Let us call them _error model_ and _component model** respectively.
+Let us consider a model with third order interaction of the simulation parameters (`p`, `gamma`, `eta` and `relpos`) and `Methods` as in \@ref(eq:error-model) and \@ref(eq:component-model) using datasets $\mathbf{u}$ and $\mathbf{v}$, respectively. Let us refer them as the _error model_ and the _component model_.
 
 **Error Model:**
 : \begin{equation}\mathbf{u}_{abcdef} = \boldsymbol{\mu}_u +
@@ -38,19 +39,19 @@ Let us consider a model with third order interaction of simulation parameters (`
   (\#eq:component-model)
   \end{equation}
 
-where, $\mathbf{u}_{abcdef}$ is a vector of prediction errors in _error model_ and $\mathbf{v}_{abcdef}$ is a vector of number of components used by a method to obtain minimum prediction error in _component model_.
+where, $\mathbf{u}_{abcdef}$ is a vector of prediction errors in the _error model_ and $\mathbf{v}_{abcdef}$ is a vector of number of components used by a method to obtain minimum prediction error in the _component model_.
 
-Although there are several test-statistic for MANOVA, for large sample all are essentially equivalent [@johnson2018applied]. Here we will use Pillai's trace statistic which is defined as,
+Although there are several test-statistic for MANOVA, for large samples all are essentially equivalent [@johnson2018applied]. Here we will use Pillai's trace statistic which is defined as,
 
 \begin{equation}
 \text{Pillai statistic} = \text{tr}\left[
 \left(\mathbf{E} + \mathbf{H}\right)^{-1}\mathbf{H}
-\right] = \sum_{i=1}^s{\frac{\nu_i}{1 + \nu_i}}
+\right] = \sum_{i=1}^m{\frac{\nu_i}{1 + \nu_i}}
 (\#eq:pillai)
 \end{equation}
-Here the matrix $\mathbf{H}$ has between sum of squares and sum of products for each of the predictors. The matrix $\mathbf{E}$ has a within sum of squares and sum of products for each of the predictors. $\nu_i$ represents the eigenvalues corresponding to $\mathbf{E}^{-1}\mathbf{H}$ [@rencher2003methods].
+Here the matrix $\mathbf{H}$ holds between-sum-of-squares and sum-of-products for each of the predictors. The matrix $\mathbf{E}$ has a within sum of squares and sum of products for each of the predictors. $\nu_i$ represents the eigenvalues corresponding to $\mathbf{E}^{-1}\mathbf{H}$ [@rencher2003methods].
 
-For both the models \@ref(eq:error-model) and \@ref(eq:component-model), Pillai's trace statistic is used for accessing the effect of each factors and F-value for the strength of their significance. Figure \@ref(fig:manova-plot) plots the Pillai's trace statistic as bar with corresponding F-values as text label for both models.
+For both the models \@ref(eq:error-model) and \@ref(eq:component-model), Pillai's trace statistic is used for accessing the effect of each factor and returns an F-value for the strength of their significance. Figure \@ref(fig:manova-plot) plots the Pillai's trace statistics as bars with corresponding F-values as text labels for both models.
 
 ```{r manova-model}
 pred_mdl <- lm(
@@ -125,19 +126,18 @@ aov_df %>%
 ```
 
 _Error Model_:
-: Figure \@ref(fig:manova-plot) (left) shows the Pillai's trace statistic for factors of the _error model_. The main effects of the `Method` has largest influence on the model followed by `relpos`, `eta` and `gamma`. A highly significant interaction of `Method` with `eta`, `relpos` and `gamma` clearly shows that methods perform differently for different levels of these data properties. Further, the significant third order interaction between `Method`, `eta` and `gamma` suggests that a method perform differently for a given level of multicollinearity and the correlation between the responses. Since, only some methods consider modelling predictor and response together, the prediction is affected by the level of correlation between the response (`eta`) for a given method.
+: Figure \@ref(fig:manova-plot) (left) shows the Pillai's trace statistic for factors of the _error model_. The main effects of `Method` has largest influence on the model followed by `relpos`, `eta` and `gamma`. A highly significant two interaction of `Method` with `eta` followed by `relpos` and `gamma` clearly shows that methods perform differently for different levels of these data properties. Further, the significant third order interaction between `Method`, `eta` and `gamma` suggests that a method performs differently for a given level of multicollinearity and the correlation between the responses. Since, only some methods consider modelling predictor and response together, the prediction is affected by the level of correlation between the response (`eta`) for a given method.
 
 _Component Model_:
-: Figure \@ref(fig:manova-plot) (right) shows the Pillai's trace statistic for factors of the _component model_. As in _error model_, the main effects of the Method, `relpos`, `gamma` and `eta` have significantly large effect on number of components that a method has used to get minimum prediction error. The interaction of `Method` with simulation parameters are significantly larger in this case. This shows that the Methods and these interactions have larger effect on the use of number of component than the prediction error itself. In addition, a similar significant high third order interaction as in _error model_ is also observed in this model.
+: Figure \@ref(fig:manova-plot) (right) shows the Pillai's trace statistic for factors of the _component model_. As in the _error model_, the main effects of the Method, `relpos`, `gamma` and `eta` have significantly large effect on the number of components that a method has used to obtain minimum prediction error. The two factor interactions of `Method` with simulation parameters are larger in this case. This shows that the Methods and these interactions have larger effect on the use of number of component than the prediction error itself. In addition, a similar significant high third order interaction as in _error model_ is also observed in this model.
 
-Following section will continue demystifying the effect of different levels of the factors in the case of these interactions.
+The following section will continue exploring the effects of different levels of the factors in the case of these interactions.
 
 ## Effect Analysis of _Error Model_
 
-Figure \@ref(fig:pred-eff-plots) (left) shows large difference in prediction error in envelope models is observed. The difference is intensified when position of relevant predictor at at `r unique(opts$relpos)[2]`. The results also shows that the envelope methods respond to the levels of `eta` more than the rest of the methods. In the case of PCR and PLS, the difference in the effect of levels of `eta` is small.
+Figure \@ref(fig:pred-eff-plots) (left) shows that, for the envelope models, the differences in the prediction error is large. These differences are intensified when position of relevant predictor at at `r unique(opts$relpos)[2]`. The results also shows that the envelope methods is more sensible to the levels of `eta` more than the rest of the methods. In the case of PCR and PLS, the difference in the effect of levels of `eta` is small.
 
-In the Figure \@ref(fig:pred-eff-plots) (right), we can see that the multicollinearity has affected all the methods however, PCR, PLS1 and PLS2 are more robust for the condition than envelopes. Rather these methods have shown better performance when high multicollinearity is present in the data.
-Envelope methods on the other hand are better in handeling the model when relevant position are at 5, 6, 7, 8 in both high and low multicollinearity cases.
+In Figure \@ref(fig:pred-eff-plots) (right), we can see that the multicollinearity has affected all the methods, however, PCR, PLS1 and PLS2 are more robust for the condition than the envelope methods. Rather these methods have shown better performance when high multicollinearity is present in the data. Envelope methods on the other hand are better at handling the model when relevant positions are at 5, 6, 7, 8 in both high and low multicollinearity cases.
 
 (ref:pred-eff-plot) Effect plot of some interactions of the multivariate linear model of prediction error
 
@@ -166,7 +166,7 @@ grid::grid.draw(plt)
 
 (ref:comp-eff-plot) Effect plot of some interactions of the multivariate linear model of number of components to get minimum prediction error
 
-```{r comp-eff-plots, fig.width=7, out.width='100%', fig.cap='(ref:comp-eff-plot)', fig.asp = 0.6}
+```{r comp-eff-plots, fig.width=7, out.width='100%', fig.cap='(ref:comp-eff-plot)', fig.asp = 0.6, fig.pos="!htb"}
 thm <- theme(plot.title = element_blank(),
              plot.subtitle = element_blank(),
              legend.position = "top",
@@ -188,10 +188,10 @@ grid::grid.draw(plt)
 ```
 
 
-Unlike prediciton error, Figure \@ref(fig:comp-eff-plots) (left) shows that the number of components used by the methods to give minium prediction error is less affected by the levels of `eta`. However, simulteneous envelope has shown distinct reaction when there is no correlation between the response varialbes. Envelope methods are able to obtain minimum prediction error by using components ranging from 1 to 3 in both the cases of `relpos`. This value is much higher in the case of PCR as its prediction is based only on the principal components of predictors. The number of components used by this method ranges from 3 to 5 when relevant predictors are at 1, 2, 3, 4 and 5 to 8 when relevant predictors are at 5, 6, 7, 8.
+Unlike for prediction errors, Figure \@ref(fig:comp-eff-plots) (left) shows that the number of components used by the methods to obtain minium prediction error is less affected by the levels of `eta`. However, simulteneous envelope has used slightly larger number of components when there is no correlation between the response variables than the cases with moderate correlation. This pattern is distinct within the simultaneous envelope method. Envelope methods are able to obtain minimum prediction error by using components ranging from 1 to 3 in both the cases of `relpos`. This value is much higher in the case of PCR as its prediction is based only on the principal components of predictors. The number of components used by this method ranges from 3 to 5 when relevant components are at positions 1, 2, 3, 4 and 5 to 8 when relevant components are at positions 5, 6, 7, 8.
 
-We can also see that at `relpos` 1, 2, 3, 4 for PLS1 and PLS2 have used fewer components than simulteneous envelope. However, in the case when relevant components are at position 5, 6, 7, 8, simulteneous envelope manage to get smaller prediction error using fewer number of components than that of PLS models. This is the case when eigenvalues of relevant predictors are small and are difficult to predict.
+We can also see that at `relpos` 1, 2, 3, 4 for PLS1 and PLS2 have used fewer components than simulteneous envelope. However, in the case when relevant components are at position 5, 6, 7, 8, simulteneous envelope manage to obtain smaller prediction error using fewer components than that of the PLS models. This is the case when eigenvalues of relevant predictors are small and responses are relatively difficult to predict.
 
-In the interaction effect of `gamma`, `relpos` and `Method` (Figure \@ref(fig:comp-eff-plots) (right)), PCR, PLS1 and PLS2 methods have used fairly large number of components for the model with high multicollinearity and relevant predictors at position 5, 6, 7, 8. The number of components used by envelope methods in both the cases of `relpos` is similar although slightly more for the models with high multicollinearity than models with low multicollinearity.
+With regard to the interaction effect between `gamma`, `relpos` and `Method` (Figure \@ref(fig:comp-eff-plots) (right)), PCR, PLS1 and PLS2 methods have used a fairly large number of components the cases of high multicollinearity and relevant predictors at positions 5, 6, 7, 8. The number of components used by the envelope methods in both cases of `relpos` is similar, although slightly higher for the models with high multicollinearity than models with low multicollinearity.
 
-In the case of `PCR`, the prediction relies heavily on the relevant components, the number of components used by the method is as expected in both the levels of `relpos`. This reinforce the results from the density plot (Figure \@ref(fig:comp-pca-hist-mthd-gamma-relpos)) in previous section.
+In the case of `PCR`, prediction relies heavily on the position of relevant components (`relpos`). Here the method has used 3 to 5 number of components when the relevant components are at positions 1, 2, 3, 4; and 7 to 8 number of components when the relevant components are at positions 5, 6, 7, 8. The number of components used by `PCR` is expected as in Figure \@ref(fig:comp-eff-plots). This reinforces the conclusion from the density plot (Figure \@ref(fig:comp-pca-hist-mthd-gamma-relpos)) in the previous section.
