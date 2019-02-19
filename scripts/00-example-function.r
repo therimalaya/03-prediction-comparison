@@ -174,16 +174,16 @@ ex_get_error <- function(predicted, true, type = c("msep", "rmsep", "loss")){
 ## Absolute Covariance for relevant component plots ----
 ex_get_abs_rel_comp <- function(x, y) {
   svd_x <- svd(x)
-  
+
   egn_val <- svd_x$d^2/(nrow(x) - 1)
   egn_val_std <- egn_val/max(egn_val)
-  
+
   z <- x %*% svd_x$v
   cov_yz <- cov(y, z)
   abs_cov <- t(abs(cov_yz))
   rel_comp <- abs_cov/max(abs_cov)
   rownames(rel_comp) <- 1:nrow(rel_comp)
-  
+
   abs_rel_comp <- rel_comp %>%
     as_tibble(rownames = "Components") %>%
     mutate(Eigenvalues = egn_val_std) %>%

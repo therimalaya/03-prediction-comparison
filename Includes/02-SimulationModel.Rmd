@@ -29,7 +29,7 @@ where, $\boldsymbol{\Sigma}_{yy}$ and $\boldsymbol{\Sigma}_{xx}$ are the varianc
 \end{equation}
 where, $\underset{m\times p}{\boldsymbol{\beta}^t}$ is a matrix of regression
 coefficients and $\boldsymbol{\epsilon}$ is an error term such that
-$\boldsymbol{\epsilon} \sim \mathcal{N}(0, \boldsymbol{\Sigma}_{y|x})$. Here, $\boldsymbol{\beta}^t = \mathbold{\Sigma}_{yx}\mathbold{\Sigma}_{xx}^{-1}$ and $\boldsymbol{\Sigma}_{y|x} = \boldsymbol{\Sigma}_{yy} - \boldsymbol{\Sigma}_{yx}\boldsymbol{\Sigma}_{xx}^{-1}\boldsymbol{\Sigma}_{xy}$
+$\boldsymbol{\epsilon} \sim \mathcal{N}(0, \boldsymbol{\Sigma}_{y|x})$. Here, $\boldsymbol{\beta}^t = \mathbf{\Sigma}_{yx}\mathbf{\Sigma}_{xx}^{-1}$ and $\boldsymbol{\Sigma}_{y|x} = \boldsymbol{\Sigma}_{yy} - \boldsymbol{\Sigma}_{yx}\boldsymbol{\Sigma}_{xx}^{-1}\boldsymbol{\Sigma}_{xy}$
 
 In a model like \@ref(eq:reg-model-1), we assume that the variation in response $\mathbf{y}$ is partly explained by the predictor $\mathbf{x}$. However, in many situations, only a subspace of the predictor space is relevant for the variation in the response $\mathbf{y}$. This space can be referred to as the relevant space of $\mathbf{x}$ and the rest as irrelevant space. In the similar way, for a certain model, we can assume that a subspace in the response space exists which contains the information that the relevant space in predictor can explain (Figure-\@ref(fig:relevant-space)). @cook2010envelope and @cook2015simultaneous have referred to the relevant space as material space, and the irrelevant space as immaterial space.
 

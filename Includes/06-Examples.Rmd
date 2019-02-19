@@ -1,0 +1,200 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# Examples
+
+In addition to the analysis with the simulated data, following two examples explores the prediction performance of the methods using real datasets.
+
+## Raman spectra analysis of contents of polyunsaturated fatty acids (PUFA)
+
+```{r ex1-source-script}
+commandArgs <- function(...) c("Raman-PUFA", 15, 2)
+source("scripts/06-example.r")
+```
+
+This dataset contains `r sum(Dataset$train)` training samples and `r sum(!Dataset$train)` test samples of fatty acid information expressed as: a) percent of total sample weight and b) percent of total fat content. The dataset is used from @naes2013multi where more information can be found. The samples were analysed using Raman spectroscopy from which `r ncol(Dataset$X)` variables are obtained as predictors. Raman spectroscopy provide detailed chemical information from minor components in food. The aim of this example is to compare how well the prediction methods that we have considered are able to predict the contents of PUFA using these Raman spectra.
+
+(ref:ex1-relcomp-plot) (Left) Bar represents the eigenvalues corresponding to Raman Spectra. The points and line are the covariance between response and the principal components of Raman Spectra. All the values are normalized to scale from 0 to 1. (Middle) Cumulative sum of eigenvalues corresponding to predictors. (Right) Cumulative sum of eigenvalues corresponding to responses.
+
+```{r ex1-cumulative-eigevalues, fig.asp = 0.4, fig.cap = "(ref:ex1-relcomp-plot)", fig.width=8}
+relcomp_plot <- ex_plot_relcomp(relcomp_df, ncomp = NCOMP) +
+  labs(x = NULL, title = NULL, subtitle = NULL, color = NULL)
+plt_eigen <- function(data) {
+  data %>% 
+    ggplot(aes(x = ncomp, y = var_explained)) +
+    geom_line() +
+    geom_point(shape = 21, fill = "#efefef") +
+    facet_grid(rows = vars(test_train),
+               cols = vars(xy)) +
+    labs(x = NULL, y = "Cummulative Eigenvalues") +
+    scale_x_continuous(breaks = scales::pretty_breaks(n = 4))
+}
+plts <- eigen_df %>% 
+  group_by(xy) %>% 
+  group_split(keep = TRUE) %>% 
+  map(plt_eigen)
+plts[[2]] <- plts[[2]] + labs(y = NULL)
+plts <- append(list(relcomp_plot), plts)
+plts <- append(plts, list(
+  nrow = 1,
+  widths = c(3, 3, 2),
+  bottom = "Number of Components"
+))
+plts[1:2] <- map(plts[1:2], function(p) {
+  p + theme(strip.background.y = element_blank(),
+        strip.text.y = element_blank()) +
+    expand_limits(x = 0)
+})
+plt_grobs <- do.call(gridExtra::arrangeGrob, plts)
+grid::grid.newpage()
+grid::grid.draw(plt_grobs)
+```
+
+```{r}
+ex1_design <- design_chr %>% rowid_to_column("Design") %>% 
+  filter(p == 250, 
+         relpos == "1, 2, 3, 4", 
+         gamma == 0.9, 
+         eta == 1.2) %>% 
+  pluck("Design")
+```
+
+Figure \@ref(fig:ex1-cumulative-eigevalues) (left) shows that the first few predictor components are somewhat correlated with response variables. In addition the most variation in predictors are explained by less than five components (middle). Further, the response variables are highly correlated suggesting that a single latent dimension explained most of the variation (right). This resembles with the design `r ex1_design` (Figure \@ref(fig:design-plot)) from our simulation.
+
+```{r ex1-minimum-prediction-error}
+min_pred <- pred_error %>% 
+  filter(Type == "test") %>% 
+  group_by(Response, Method, Type) %>% 
+  summarize(Component = Component[which.min(Error)],
+            Error = min(Error)) %>% 
+  mutate(label = paste0(round(Error, 2), " (", Component, ")")) %>% 
+  group_by(Response) %>% 
+  mutate(Color = ifelse(Error == min(Error), "red", "#484848"))
+```
+```{r}
+mmin_err <- min_pred %>% filter(Error == min(Error))
+```
+
+```{r ex1-prediction-error, fig.asp = 0.6, fig.cap = "Prediction Error of different prediction methods using different number of components.", fig.pos="!htb"}
+ggplot(pred_error, aes(Component, Error, color = Type)) +
+  geom_line(aes(group = Type)) +
+  geom_point(size = rel(0.5)) +
+  facet_grid(Response ~ Method, scales = 'free') +
+  scale_x_continuous(breaks = seq(0, NCOMP, 5)) +
+  theme(legend.position = "bottom") +
+  labs(x = "Number of Components",
+       y = "Prediction Error (RMSEP)",
+       color = NULL,
+       title = "Prediction Error",
+       subtitle = "Subdivided by each prediction methods per Response") +
+  scale_color_discrete(labels = stringr::str_to_title) +
+  geom_text(aes(label = paste0("Min RMSEP\n", label)), 
+            data = min_pred,
+            color = min_pred$Color,
+            x = Inf, hjust = 1, 
+            y = Inf, vjust = 1,
+            family = "mono",
+            size = rel(3))
+```
+
+Using components from 1 to `r NCOMP`, a regression model is fitted using each of the methods. The fitted models are used to predict the test observation and the root mean squared error of prediction (RMSEP) is calculated. Figure \@ref(fig:ex1-prediction-error) shows that `r mmin_err[['Method']][1]` has given minimum prediction error of `r mmin_err[['Error']][1]` using `r mmin_err[['Component']][1]` components in the case of response `r mmin_err[['Response']][1]` while `r mmin_err[['Method']][2]` has given minimum prediction error of `r mmin_err[['Error']][2]` using `r mmin_err[['Component']][2]` components in the case of response `r mmin_err[['Response']][2]`. However the figure also shows that both envelope methods have reached to almost minimum predicton error in few number of components. This pattern is also visible in the simulation results (Figure \@ref(fig:pred-eff-plots)). 
+
+## Example-2: NIR spectra of biscuit dough
+
+The dataset consists of 700 wavelengths of NIR spectra (1100–2498 nm in steps of 2 nm) which we will use as predictor variables. There are four response variables as the yield percentages of (a) fat, (b) sucrose, (c) flour and (d) water. The measurements are taken from 40 training observation of biscuit dough. A separate set with 32 samples which were created and measured on different occasions are used as test observations. The dataset is used from @indahl2005twist where further information can be obtained.
+
+```{r ex2-source-script}
+commandArgs <- function(...) c("NIR_Dough", 15, 2)
+source("scripts/06-example.r")
+```
+
+(ref:ex2-relcomp-plot) (Left) Bar represents the eigenvalues corresponding to NIR Spectra. The points and line are the covariance between response and the principal components of NIR Spectra. All the values are normalized to scale from 0 to 1. (Middle) Cumulative sum of eigenvalues corresponding to predictors. (Right) Cumulative sum of eigenvalues corresponding to responses.
+
+```{r ex2-cumulative-eigevalues, fig.asp = 0.4, fig.cap = "(ref:ex2-relcomp-plot)", fig.width=8}
+relcomp_plot <- ex_plot_relcomp(relcomp_df, ncomp = NCOMP) +
+  labs(x = NULL, title = NULL, subtitle = NULL, color = NULL) +
+  theme(legend.position = c(0.65, 0.8)) +
+  guides(color = guide_legend(nrow = 2))
+plt_eigen <- function(data) {
+  data %>% 
+    ggplot(aes(x = ncomp, y = var_explained)) +
+    geom_line() +
+    geom_point(shape = 21, fill = "#efefef") +
+    facet_grid(rows = vars(test_train),
+               cols = vars(xy)) +
+    labs(x = NULL, y = "Cummulative Eigenvalues") +
+    scale_x_continuous(breaks = scales::pretty_breaks(n = 4))
+}
+plts <- eigen_df %>% 
+  group_by(xy) %>% 
+  group_split(keep = TRUE) %>% 
+  map(plt_eigen)
+plts[[2]] <- plts[[2]] + labs(y = NULL)
+plts <- append(list(relcomp_plot), plts)
+plts <- append(plts, list(
+  nrow = 1,
+  widths = c(3, 3, 2),
+  bottom = "Number of Components"
+))
+plts[1:2] <- map(plts[1:2], function(p) {
+  p + theme(strip.background.y = element_blank(),
+        strip.text.y = element_blank()) +
+    expand_limits(x = 0)
+})
+plt_grobs <- do.call(gridExtra::arrangeGrob, plts)
+grid::grid.newpage()
+grid::grid.draw(plt_grobs)
+```
+
+```{r}
+ex2_design <- design_chr %>% rowid_to_column("Design") %>% 
+  filter(p == 250, 
+         relpos == "1, 2, 3, 4", 
+         gamma == 0.9, 
+         eta == 1.2) %>% 
+  pluck("Design")
+```
+
+Figure \@ref(fig:ex2-cumulative-eigevalues) (left) shows that the first predictor component has largest variance and also has large covariance with all response variables. The second component, however, has larger variance (middle) than the succeeding components but has small covaration with all the response which indicates that the component is less relevant for any of the responses. In addition, two response components have explained most of the variation in response variables (right). This structure is `r if(ex1_design == ex2_design) "also"` similar to Design `r ex2_design`.
+
+```{r ex2-minimum-prediction-error}
+min_pred <- pred_error %>% 
+  filter(Type == "test") %>% 
+  group_by(Response, Method, Type) %>% 
+  summarize(Component = Component[which.min(Error)],
+            Error = min(Error)) %>% 
+  mutate(label = paste0(round(Error, 2), " (", Component, ")")) %>% 
+  group_by(Response) %>% 
+  mutate(Color = ifelse(Error == min(Error), "red", "#484848"))
+```
+```{r}
+mmin_err <- min_pred %>% filter(Error == min(Error))
+```
+
+```{r ex2-prediction-error, fig.asp = 0.8, fig.cap = "Prediction Error of different prediction methods using different number of components.", fig.pos="!htb"}
+ggplot(pred_error, aes(Component, Error, color = Type)) +
+  geom_line(aes(group = Type)) +
+  geom_point(size = rel(0.5)) +
+  facet_grid(Response ~ Method, scales = 'free') +
+  scale_x_continuous(breaks = seq(0, NCOMP, 5)) +
+  theme(legend.position = "bottom") +
+  labs(x = "Number of Components",
+       y = "Prediction Error (RMSEP)",
+       color = NULL,
+       title = "Prediction Error",
+       subtitle = "Subdivided by each prediction methods per Response") +
+  scale_color_discrete(labels = stringr::str_to_title) +
+  geom_text(aes(label = paste0("Min RMSEP\n", label)), 
+            data = min_pred,
+            color = min_pred$Color,
+            x = Inf, hjust = 1, 
+            y = Inf, vjust = 1,
+            family = "mono",
+            size = rel(3))
+```
+
+Similar model is opted as in the first example and the fitted model from each of 15 components are used for prediction. Figure \@ref(fig:ex2-prediction-error) shows the root mean squared error for both test and train prediction. Here four different methods have minimum test prediction error for four responses. As the structure of the data is similar to the first example, the pattern in the prediction is also similar for all methods.
+
+The results from both of these examples also testify the simulation results in Figure \@ref(fig:pred-pca-hist-mthd-gamma-relpos) which has shown large variation in prediction error in certain cases of envelope method. However this also collaborate with Figure \@ref(fig:comp-pca-hist-mthd-gamma-relpos) which suggests that in most of the designs, envelope methods have used less number of components to achieve the minimum prediction error.

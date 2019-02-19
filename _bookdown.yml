@@ -9,9 +9,10 @@ rmd_files: [
   "Includes/03-ExperimentalDesign.Rmd",
   "Includes/04-Exploration.Rmd",
   "Includes/05-Analysis.Rmd",
-  "Includes/06-DiscussionConclusion.Rmd",
-  "Includes/07-References.Rmd",
-  "Includes/08-Appendix.Rmd",
+  "Includes/06-Examples.Rmd",
+  "Includes/07-DiscussionConclusion.Rmd",
+  "Includes/08-References.Rmd",
+  "Includes/09-Appendix.Rmd",
   ]
 language:
   label:

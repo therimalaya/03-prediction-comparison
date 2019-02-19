@@ -313,7 +313,7 @@ regression coefficients and \(\boldsymbol{\epsilon}\) is an error term
 such that
 \(\boldsymbol{\epsilon} \sim \mathcal{N}(0, \boldsymbol{\Sigma}_{y|x})\).
 Here,
-\(\boldsymbol{\beta}^t = \mathbold{\Sigma}_{yx}\mathbold{\Sigma}_{xx}^{-1}\)
+\(\boldsymbol{\beta}^t = \mathbf{\Sigma}_{yx}\mathbf{\Sigma}_{xx}^{-1}\)
 and
 \(\boldsymbol{\Sigma}_{y|x} = \boldsymbol{\Sigma}_{yy} - \boldsymbol{\Sigma}_{yx}\boldsymbol{\Sigma}_{xx}^{-1}\boldsymbol{\Sigma}_{xy}\)
 
@@ -1040,6 +1040,123 @@ are at positions 5, 6, 7, 8. The number of components used by
 reinforces the conclusion from the density plot (Figure
 \ref{fig:comp-pca-hist-mthd-gamma-relpos}) in the previous section.
 
+\section{Examples}\label{examples}
+
+In addition to the analysis with the simulated data, following two
+examples explores the prediction performance of the methods using real
+datasets.
+
+\subsection{Raman spectra analysis of contents of polyunsaturated fatty
+acids
+(PUFA)}\label{raman-spectra-analysis-of-contents-of-polyunsaturated-fatty-acids-pufa}
+
+This dataset contains 44 training samples and 25 test samples of fatty
+acid information expressed as: a) percent of total sample weight and b)
+percent of total fat content. The dataset is used from
+\citet{naes2013multi} where more information can be found. The samples
+were analysed using Raman spectroscopy from which 1096 variables are
+obtained as predictors. Raman spectroscopy provide detailed chemical
+information from minor components in food. The aim of this example is to
+compare how well the prediction methods that we have considered are able
+to predict the contents of PUFA using these Raman spectra.
+
+
+
+
+
+
+
+
+\begin{figure}
+\includegraphics[width=1\linewidth]{main_files/figure-latex/ex1-cumulative-eigevalues-1} \caption{(Left) Bar represents the eigenvalues
+corresponding to Raman Spectra. The points and line are the covariance
+between response and the principal components of Raman Spectra. All the
+values are normalized to scale from 0 to 1. (Middle) Cumulative sum of
+eigenvalues corresponding to predictors. (Right) Cumulative sum of
+eigenvalues corresponding to responses.}\label{fig:ex1-cumulative-eigevalues}
+\end{figure}
+
+Figure \ref{fig:ex1-cumulative-eigevalues} (left) shows that the first
+few predictor components are somewhat correlated with response
+variables. In addition the most variation in predictors are explained by
+less than five components (middle). Further, the response variables are
+highly correlated suggesting that a single latent dimension explained
+most of the variation (right). This resembles with the design 19 (Figure
+\ref{fig:design-plot}) from our simulation.
+
+\begin{figure}[!htb]
+\includegraphics[width=1\linewidth]{main_files/figure-latex/ex1-prediction-error-1} \caption{Prediction Error of different prediction methods using different number of components.}\label{fig:ex1-prediction-error}
+\end{figure}
+
+Using components from 1 to 15, a regression model is fitted using each
+of the methods. The fitted models are used to predict the test
+observation and the root mean squared error of prediction (RMSEP) is
+calculated. Figure \ref{fig:ex1-prediction-error} shows that PLS2 has
+given minimum prediction error of 3.783 using 9 components in the case
+of response \%Pufa while PLS1 has given minimum prediction error of
+1.308 using 11 components in the case of response PUFA\%emul. However
+the figure also shows that both envelope methods have reached to almost
+minimum predicton error in few number of components. This pattern is
+also visible in the simulation results (Figure
+\ref{fig:pred-eff-plots}).
+
+\subsection{Example-2: NIR spectra of biscuit
+dough}\label{example-2-nir-spectra-of-biscuit-dough}
+
+The dataset consists of 700 wavelengths of NIR spectra (1100--2498 nm in
+steps of 2 nm) which we will use as predictor variables. There are four
+response variables as the yield percentages of (a) fat, (b) sucrose, (c)
+flour and (d) water. The measurements are taken from 40 training
+observation of biscuit dough. A separate set with 32 samples which were
+created and measured on different occasions are used as test
+observations. The dataset is used from \citet{indahl2005twist} where
+further information can be obtained.
+
+
+
+
+
+
+
+
+\begin{figure}
+\includegraphics[width=1\linewidth]{main_files/figure-latex/ex2-cumulative-eigevalues-1} \caption{(Left) Bar represents the eigenvalues
+corresponding to NIR Spectra. The points and line are the covariance
+between response and the principal components of NIR Spectra. All the
+values are normalized to scale from 0 to 1. (Middle) Cumulative sum of
+eigenvalues corresponding to predictors. (Right) Cumulative sum of
+eigenvalues corresponding to responses.}\label{fig:ex2-cumulative-eigevalues}
+\end{figure}
+
+Figure \ref{fig:ex2-cumulative-eigevalues} (left) shows that the first
+predictor component has largest variance and also has large covariance
+with all response variables. The second component, however, has larger
+variance (middle) than the succeeding components but has small
+covaration with all the response which indicates that the component is
+less relevant for any of the responses. In addition, two response
+components have explained most of the variation in response variables
+(right). This structure is also similar to Design 19.
+
+\begin{figure}[!htb]
+\includegraphics[width=1\linewidth]{main_files/figure-latex/ex2-prediction-error-1} \caption{Prediction Error of different prediction methods using different number of components.}\label{fig:ex2-prediction-error}
+\end{figure}
+
+Similar model is opted as in the first example and the fitted model from
+each of 15 components are used for prediction. Figure
+\ref{fig:ex2-prediction-error} shows the root mean squared error for
+both test and train prediction. Here four different methods have minimum
+test prediction error for four responses. As the structure of the data
+is similar to the first example, the pattern in the prediction is also
+similar for all methods.
+
+The results from both of these examples also testify the simulation
+results in Figure \ref{fig:pred-pca-hist-mthd-gamma-relpos} which has
+shown large variation in prediction error in certain cases of envelope
+method. However this also collaborate with Figure
+\ref{fig:comp-pca-hist-mthd-gamma-relpos} which suggests that in most of
+the designs, envelope methods have used less number of components to
+achieve the minimum prediction error.
+
 \section{Discussions and Conclusion}\label{discussions-and-conclusion}
 
 On one hand, the envelope methods have shown better prediction
@@ -1048,7 +1165,8 @@ multicollinearity, the methods have shown some cases of unstable
 prediction. Here for the prediction error, we have used the components
 that give the minimum average prediction error for all replicates. This
 hints that for some replicates, the methods has used non-optimal number
-of components and consequently resulting in high prediction error.
+of components and consequently resulting in high prediction error. The
+two examples in the previous section collaborate with this point.
 
 On the other hand, PLS1, PLS2 and PCR methods have smaller prediction
 error in the model with high multicollinearity which suggest their
@@ -1067,11 +1185,11 @@ fixed has allowed us to analyze other factors properly.
 
 Two clear comment can be made about the effect of correlation of
 response on the prediction methods. Highly correlated response has shown
-hight prediction error in general and the effect is distinct in envelope
-methods. Since the envelope methods identifies the relevant space as the
-span of relevant eigenvectors, the methods are able to obtain the
-minimum average prediction error by using fewer number of components for
-all levels of \texttt{eta}.
+highest prediction error in general and the effect is distinct in
+envelope methods. Since the envelope methods identifies the relevant
+space as the span of relevant eigenvectors, the methods are able to
+obtain the minimum average prediction error by using fewer number of
+components for all levels of \texttt{eta}.
 
 As of our knowledge, the effect of correlation in the response on PCR
 and PLS methods are less explored. In this regards, it is interesting to
@@ -1108,7 +1226,9 @@ used to reproduce this study.
 
 We are grateful to Inge Helland on his inputs on this paper throughout
 the period. His guidance on the envelope models and review on this paper
-helped us to shape this paper extensively.
+helped us to shape this paper extensively. We would gratefully like to
+thank Kristian Lillan, Ulf Indahl, Tormod Næs, Ingrid Måge and the team
+for providing the data for analysis.
 
 \hypertarget{refs}{}
 

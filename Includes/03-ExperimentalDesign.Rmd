@@ -37,7 +37,6 @@ Further, a complete factorial design from the levels of the above given paramete
 
 ```{r design-plot, fig.cap="Experimental Design of simulation parameters. Each point represents an unique data property.", echo = FALSE, fig.asp=0.5, fig.width=8}
 design_chr %>%
-    arrange(relpos, eta, p, gamma) %>%
     mutate(Design = row_number()) %>%
     ggplot(aes(eta, gamma)) +
     geom_point(shape=4) +

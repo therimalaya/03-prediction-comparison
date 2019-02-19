@@ -9,7 +9,7 @@ fontfamily: mathpazo
 params:
   dataset: 
     label: "Dataset:"
-    value: Raman-PUFA
+    value: majones
     input: select
     choices: [Raman-PUFA, NIR-PUFA, NIR_Dough, majones]
   ncomp: 15
@@ -28,8 +28,12 @@ library(tidyverse)
 library(pls)
 library(Renvlp)
 
+DATA <- params$dataset
 NCOMP <- params$ncomp
 SCALE <- params$scale
+CLASSIFY <- params$dataset == "majones"
+CLSF_FUN <- function(x) ifelse(x <= -0.5, -1, ifelse(x <= 0.5, 0, 1))
+ERR_TYPE <- ifelse(CLASSIFY, "loss", "rmsep")
 ```
 
 # About Dataset
@@ -86,11 +90,11 @@ relcomp <- list(
     Y0 = with(Dataset, scale(Y[!train,], scale = FALSE))
   )  
 )
-relcomp_df <- map_df(relcomp, ~get_abs_rel_comp(.x$X0, .x$Y0), .id = "Type")
+relcomp_df <- map_df(relcomp, ~ex_get_abs_rel_comp(.x$X0, .x$Y0), .id = "Type")
 ```
 
 ```{r relcomp-plot, fig.asp=0.5, fig.width=9, fig.cap="Estimated relevant Components for training and test samples"}
-plot_relcomp(relcomp_df, ncomp = NCOMP)
+ex_plot_relcomp(relcomp_df, ncomp = NCOMP)
 ```
 
 # Eigenvalues of Response Matrix
@@ -109,7 +113,7 @@ eigen_lst <- list(
   )
 )
 eigen_df <- eigen_lst %>% 
-  map_df(~map_df(..1, make_eigen_df, .id = "xy"), 
+  map_df(~map_df(..1, ex_make_eigen_df, .id = "xy"), 
          .id = "test_train") %>% 
   filter(ncomp <= NCOMP)
 ```
@@ -133,7 +137,7 @@ b) Scaling (divided by standard deviation) removed all useful relationship and i
 
 ```{r}
 train <- with(Dataset, {
-  prepare_data(X[train,], Y[train,], prop = 0.975, ncomp = NCOMP)
+  ex_prepare_data(X[train,], Y[train,], prop = 0.975, ncomp = NCOMP)
 })
 train_ <- with(Dataset, {
   data.frame(x = I(X[train,]), y = I(Y[train,]))
@@ -145,32 +149,34 @@ methods <- c("PCR", "PLS1", "PLS2", "Xenv", "Senv")
 names(methods) <- methods
 pred_error <- map_df(methods, function(mthd) {
   ## Compute Coefficient
-  fit <- fit_model(train$data, method = mthd, ncomp = NCOMP, scale = SCALE)
+  fit <- ex_fit_model(train$data, method = mthd, ncomp = NCOMP, scale = FALSE,
+                   u = if (mthd == "Senv" & DATA == "majones") 4 else 2)
   if (mthd %in% c('Xenv', 'Senv')) {
     coef <- fit %>%
-      get_beta_fn(tolower(mthd))(intercept = FALSE) %>% 
-      rotate_coef(train$rotation) %>% 
-      compute_intercept(train$centers$x, train$centers$y)
+      ex_get_beta_fn(tolower(mthd))(intercept = FALSE) %>%
+      ex_rotate_coef(train$rotation) %>%
+      ex_compute_intercept(train$centers$x, train$centers$y)
   } else {
-    coef <- fit %>% 
-    get_beta_fn(tolower(mthd))(intercept = FALSE, ncomp = NCOMP) %>% 
-    compute_intercept(train$centers$x, train$centers$y)
+    coef <- fit %>%
+    ex_get_beta_fn(tolower(mthd))(intercept = FALSE, ncomp = NCOMP) %>%
+    ex_compute_intercept(train$centers$x, train$centers$y)
   }
   
   ## Make Prediction
-  train_pred <- get_prediction(train_$x, coef)
-  test_pred <- get_prediction(test$x, coef)
-  
+  train_pred <- ex_get_prediction(train_$x, coef, classify = CLASSIFY, condition = CLSF_FUN)
+  test_pred <- ex_get_prediction(test$x, coef, classify = CLASSIFY, condition = CLSF_FUN)
+
   ## Calculate Prediction Error
-  train_error <- get_error(train_pred, train_$y, type = "rmsep") %>% 
-    as_tibble(rownames = "Response") %>% 
-    gather(Component, Error, -Response) %>% 
+  train_error <- ex_get_error(train_pred, train_$y, type = ERR_TYPE) %>%
+      as_tibble(rownames = "Response") %>%
+      gather(Component, Error, -Response) %>%
+      mutate(Component = str_remove(Component, "Comp") %>% as.integer())
+
+  test_error <- ex_get_error(test_pred, test$y, type = ERR_TYPE) %>%
+    as_tibble(rownames = "Response") %>%
+    gather(Component, Error, -Response) %>%
     mutate(Component = str_remove(Component, "Comp") %>% as.integer())
-  test_error <- get_error(test_pred, test$y, type = "rmsep") %>% 
-    as_tibble(rownames = "Response") %>% 
-    gather(Component, Error, -Response) %>% 
-    mutate(Component = str_remove(Component, "Comp") %>% as.integer())
-  
+
   ## Bind both training and test prediction error
   bind_rows(train = train_error, test = test_error, .id = "Type")
 }, .id = "Method")
@@ -184,7 +190,7 @@ ggplot(pred_error, aes(Component, Error, color = Type)) +
   scale_x_continuous(breaks = seq(0, NCOMP, 5)) +
   theme(legend.position = "bottom") +
   labs(x = "Number of Components",
-       y = "Prediction Error (RMSEP)",
+       y = paste0("Prediction Error (", toupper(ERR_TYPE), ")"),
        color = NULL,
        title = "Prediction Error",
        subtitle = "Subdivided by each prediction methods per Response")
