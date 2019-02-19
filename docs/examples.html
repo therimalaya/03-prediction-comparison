@@ -156,7 +156,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="examples" class="section level1">
 <h1>Examples</h1>
-<p>In addition to the analysis with the simulated data, following two examples explores the prediction performance of the methods using real datasets.</p>
+<p>In addition to the analysis with the simulated data, following two examples explores the prediction performance of the methods using real datasets. Since both examples have wide predictor matrices, principal components explaining 97.5% of the variation in them are used for envelope methods. The coefficients were transformed back after the estimation.</p>
 <div id="raman-spectra-analysis-of-contents-of-polyunsaturated-fatty-acids-pufa" class="section level2">
 <h2>Raman spectra analysis of contents of polyunsaturated fatty acids (PUFA)</h2>
 <p>This dataset contains 44 training samples and 25 test samples of fatty acid information expressed as: a) percent of total sample weight and b) percent of total fat content. The dataset is used from <span class="citation">Næs et al. (<a href="references.html#ref-naes2013multi">2013</a>)</span> where more information can be found. The samples were analysed using Raman spectroscopy from which 1096 variables are obtained as predictors. Raman spectroscopy provide detailed chemical information from minor components in food. The aim of this example is to compare how well the prediction methods that we have considered are able to predict the contents of PUFA using these Raman spectra.</p>
@@ -174,17 +174,7 @@ Figure 10: (Left) Bar represents the eigenvalues corresponding to Raman Spectra.
 Figure 11: Prediction Error of different prediction methods using different number of components.
 </p>
 </div>
-<p>Using components from 1 to 15, a regression model is fitted using each of the methods. The fitted models are used to predict the test observation and the root mean squared error of prediction (RMSEP) is calculated. Figure <a href="examples.html#fig:ex1-prediction-error">11</a> shows that PLS2 has given minimum prediction error of 3.783 using 9 components in the case of response %Pufa while PLS1 has given minimum prediction error of 1.308 using 11 components in the case of response PUFA%emul. However the figure also shows that both envelope methods have</p>
-<!--
-The Raman-Pufa data is a good candidate to show that:
-
-1) The envelope methods perform well when there is apparently one dominating component in Y.
-2) The envelop methods are more stable (less components dependent) and reaches minimum testerror with fewer components than PCR and PLS1,PLS2.
-
- Could you look
-at the results for eta = 1.2, gamma=0.9 and relpos 1,2,3,4 in the simulations, and compare the performance of the envelope methods to the others? Hopefully
-there are similar patterns as for this data set.
--->
+<p>Using components from 1 to 15, a regression model is fitted using each of the methods. The fitted models are used to predict the test observation and the root mean squared error of prediction (RMSEP) is calculated. Figure <a href="examples.html#fig:ex1-prediction-error">11</a> shows that PLS2 has given minimum prediction error of 3.783 using 9 components in the case of response %Pufa while PLS1 has given minimum prediction error of 1.308 using 11 components in the case of response PUFA%emul. However the figure also shows that both envelope methods have reached to almost minimum predicton error in few number of components. This pattern is also visible in the simulation results (Figure <a href="statistical-analysis.html#fig:pred-eff-plots">8</a>).</p>
 </div>
 <div id="example-2-nir-spectra-of-biscuit-dough" class="section level2">
 <h2>Example-2: NIR spectra of biscuit dough</h2>
@@ -203,6 +193,8 @@ Figure 12: (Left) Bar represents the eigenvalues corresponding to NIR Spectra. T
 Figure 13: Prediction Error of different prediction methods using different number of components.
 </p>
 </div>
+<p>Similar model is opted as in the first example and the fitted model from each of 15 components are used for prediction. Figure <a href="examples.html#fig:ex2-prediction-error">13</a> shows the root mean squared error for both test and train prediction. Here four different methods have minimum test prediction error for four responses. As the structure of the data is similar to the first example, the pattern in the prediction is also similar for all methods.</p>
+<p>The results from both of these examples also testify the simulation results in Figure <a href="exploration.html#fig:pred-pca-hist-mthd-gamma-relpos">5</a> which has shown large variation in prediction error in certain cases of envelope method. However this also collaborate with Figure <a href="exploration.html#fig:comp-pca-hist-mthd-gamma-relpos">6</a> which suggests that in most of the designs, envelope methods have used less number of components to achieve the minimum prediction error.</p>
 
 </div>
 </div>

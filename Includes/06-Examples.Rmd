@@ -5,7 +5,7 @@ editor_options:
 ---
 # Examples
 
-In addition to the analysis with the simulated data, following two examples explores the prediction performance of the methods using real datasets.
+In addition to the analysis with the simulated data, following two examples explores the prediction performance of the methods using real datasets. Since both examples have wide predictor matrices, principal components explaining 97.5% of the variation in them are used for envelope methods. The coefficients were transformed back after the estimation.
 
 ## Raman spectra analysis of contents of polyunsaturated fatty acids (PUFA)
 
