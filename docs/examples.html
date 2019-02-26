@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2019-02-19">
+<meta name="date" content="2019-02-25">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -122,8 +122,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="data-preparation.html"><a href="data-preparation.html"><i class="fa fa-check"></i>Data Preparation</a></li>
 <li class="chapter" data-level="" data-path="exploration.html"><a href="exploration.html"><i class="fa fa-check"></i>Exploration</a></li>
 <li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html"><i class="fa fa-check"></i>Statistical Analysis</a><ul>
-<li><a href="statistical-analysis.html#effect-analysis-of-error-model">Effect Analysis of <em>Error Model</em></a></li>
-<li><a href="statistical-analysis.html#effect-analysis-of-component-model">Effect Analysis of <em>Component Model</em></a></li>
+<li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html#effect-analysis-of-error-model"><i class="fa fa-check"></i>Effect Analysis of Error Model</a></li>
+<li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html#effect-analysis-of-component-model"><i class="fa fa-check"></i>Effect Analysis of Component Model</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="examples.html"><a href="examples.html"><i class="fa fa-check"></i>Examples</a><ul>
 <li class="chapter" data-level="" data-path="examples.html"><a href="examples.html#raman-spectra-analysis-of-contents-of-polyunsaturated-fatty-acids-pufa"><i class="fa fa-check"></i>Raman spectra analysis of contents of polyunsaturated fatty acids (PUFA)</a></li>
@@ -156,10 +156,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="examples" class="section level1">
 <h1>Examples</h1>
-<p>In addition to the analysis with the simulated data, following two examples explores the prediction performance of the methods using real datasets. Since both examples have wide predictor matrices, principal components explaining 97.5% of the variation in them are used for envelope methods. The coefficients were transformed back after the estimation.</p>
+<p>In addition to the analysis with the simulated data, the following two examples explore the prediction performance of the methods using real datasets. Since both examples have wide predictor matrices, principal components explaining 97.5% of the variation in them are used for envelope methods. The coefficients were transformed back after the estimation.</p>
 <div id="raman-spectra-analysis-of-contents-of-polyunsaturated-fatty-acids-pufa" class="section level2">
 <h2>Raman spectra analysis of contents of polyunsaturated fatty acids (PUFA)</h2>
-<p>This dataset contains 44 training samples and 25 test samples of fatty acid information expressed as: a) percent of total sample weight and b) percent of total fat content. The dataset is used from <span class="citation">Næs et al. (<a href="references.html#ref-naes2013multi">2013</a>)</span> where more information can be found. The samples were analysed using Raman spectroscopy from which 1096 variables are obtained as predictors. Raman spectroscopy provide detailed chemical information from minor components in food. The aim of this example is to compare how well the prediction methods that we have considered are able to predict the contents of PUFA using these Raman spectra.</p>
+<p>This dataset contains 44 training samples and 25 test samples of fatty acid information expressed as: a) percentage of total sample weight and b) percentage of total fat content. The dataset is borrowed from <span class="citation">Næs et al. (<a href="references.html#ref-naes2013multi">2013</a>)</span> where more information can be found. The samples were analysed using Raman spectroscopy from which 1096 wavelength variables were obtained as predictors. Raman spectroscopy provides detailed chemical information from minor components in food. The aim of this example is to compare how well the prediction methods that we have considered are able to predict the contents of PUFA using these Raman spectra.</p>
 
 <div class="figure"><span id="fig:ex1-cumulative-eigevalues"></span>
 <img src="main_files/figure-html/ex1-cumulative-eigevalues-1.svg" alt="(Left) Bar represents the eigenvalues corresponding to Raman Spectra. The points and line are the covariance between response and the principal components of Raman Spectra. All the values are normalized to scale from 0 to 1. (Middle) Cumulative sum of eigenvalues corresponding to predictors. (Right) Cumulative sum of eigenvalues corresponding to responses." width="100%" />
@@ -167,18 +167,18 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 Figure 10: (Left) Bar represents the eigenvalues corresponding to Raman Spectra. The points and line are the covariance between response and the principal components of Raman Spectra. All the values are normalized to scale from 0 to 1. (Middle) Cumulative sum of eigenvalues corresponding to predictors. (Right) Cumulative sum of eigenvalues corresponding to responses.
 </p>
 </div>
-<p>Figure <a href="examples.html#fig:ex1-cumulative-eigevalues">10</a> (left) shows that the first few predictor components are somewhat correlated with response variables. In addition the most variation in predictors are explained by less than five components (middle). Further, the response variables are highly correlated suggesting that a single latent dimension explained most of the variation (right). This resembles with the design 19 (Figure <a href="experimental-design.html#fig:design-plot">2</a>) from our simulation.</p>
+<p>Figure <a href="examples.html#fig:ex1-cumulative-eigevalues">10</a> (left) shows that the first few predictor components are somewhat correlated with response variables. In addition the most variation in predictors are explained by less than five components (middle). Further, the response variables are highly correlated suggesting that a single latent dimension explains most of the variation (right). We may therefore also believe that the relevant latent space in the predictor matrix is of dimension one. This resembles the design 19 (Figure <a href="experimental-design.html#fig:design-plot">2</a>) from our simulation.</p>
 <div class="figure"><span id="fig:ex1-prediction-error"></span>
 <img src="main_files/figure-html/ex1-prediction-error-1.svg" alt="Prediction Error of different prediction methods using different number of components." width="100%" />
 <p class="caption">
 Figure 11: Prediction Error of different prediction methods using different number of components.
 </p>
 </div>
-<p>Using components from 1 to 15, a regression model is fitted using each of the methods. The fitted models are used to predict the test observation and the root mean squared error of prediction (RMSEP) is calculated. Figure <a href="examples.html#fig:ex1-prediction-error">11</a> shows that PLS2 has given minimum prediction error of 3.783 using 9 components in the case of response %Pufa while PLS1 has given minimum prediction error of 1.308 using 11 components in the case of response PUFA%emul. However the figure also shows that both envelope methods have reached to almost minimum predicton error in few number of components. This pattern is also visible in the simulation results (Figure <a href="statistical-analysis.html#fig:pred-eff-plots">8</a>).</p>
+<p>Using a range of components from 1 to 15, a regression models were fitted using each of the methods. The fitted models were used to predict the test observation and the root mean squared error of prediction (RMSEP) was calculated. Figure <a href="examples.html#fig:ex1-prediction-error">11</a> shows that PLS2 obtained minimum prediction error of 3.783 using 9 components in the case of response %Pufa while PLS1 obtained minimum prediction error of 1.308 using 11 components in the case of response PUFA%emul. However the figure also shows that both envelope methods have reached to almost minimum predicton error in fewer number of components. This pattern is also visible in the simulation results (Figure <a href="statistical-analysis.html#fig:comp-eff-plots">9</a>).</p>
 </div>
 <div id="example-2-nir-spectra-of-biscuit-dough" class="section level2">
 <h2>Example-2: NIR spectra of biscuit dough</h2>
-<p>The dataset consists of 700 wavelengths of NIR spectra (1100–2498 nm in steps of 2 nm) which we will use as predictor variables. There are four response variables as the yield percentages of (a) fat, (b) sucrose, (c) flour and (d) water. The measurements are taken from 40 training observation of biscuit dough. A separate set with 32 samples which were created and measured on different occasions are used as test observations. The dataset is used from <span class="citation">Indahl (<a href="references.html#ref-indahl2005twist">2005</a>)</span> where further information can be obtained.</p>
+<p>The dataset consists of 700 wavelengths of NIR spectra (1100–2498 nm in steps of 2 nm) which were used as predictor variables. There are four response variables as the yield percentages of (a) fat, (b) sucrose, (c) flour and (d) water. The measurements were taken from 40 training observation of biscuit dough. A separate set with 32 samples which were created and measured on different occasions were used as test observations. The dataset is borrowed from <span class="citation">Indahl (<a href="references.html#ref-indahl2005twist">2005</a>)</span> where further information can be obtained.</p>
 
 <div class="figure"><span id="fig:ex2-cumulative-eigevalues"></span>
 <img src="main_files/figure-html/ex2-cumulative-eigevalues-1.svg" alt="(Left) Bar represents the eigenvalues corresponding to NIR Spectra. The points and line are the covariance between response and the principal components of NIR Spectra. All the values are normalized to scale from 0 to 1. (Middle) Cumulative sum of eigenvalues corresponding to predictors. (Right) Cumulative sum of eigenvalues corresponding to responses." width="100%" />
@@ -186,15 +186,15 @@ Figure 11: Prediction Error of different prediction methods using different numb
 Figure 12: (Left) Bar represents the eigenvalues corresponding to NIR Spectra. The points and line are the covariance between response and the principal components of NIR Spectra. All the values are normalized to scale from 0 to 1. (Middle) Cumulative sum of eigenvalues corresponding to predictors. (Right) Cumulative sum of eigenvalues corresponding to responses.
 </p>
 </div>
-<p>Figure <a href="examples.html#fig:ex2-cumulative-eigevalues">12</a> (left) shows that the first predictor component has largest variance and also has large covariance with all response variables. The second component, however, has larger variance (middle) than the succeeding components but has small covaration with all the response which indicates that the component is less relevant for any of the responses. In addition, two response components have explained most of the variation in response variables (right). This structure is also similar to Design 19.</p>
+<p>Figure <a href="examples.html#fig:ex2-cumulative-eigevalues">12</a> (left) shows that the first predictor component has largest variance and also has large covariance with all response variables. The second component, however, has larger variance (middle) than the succeeding components but has small covaration with all the response which indicates that the component is less relevant for any of the responses. In addition, two response components have explained most of the variation in response variables (right). This structure is also somewhat similar to Design 19, although it is uncertain whether the dimension of the relevant space in the response matrix is larger than one.</p>
 <div class="figure"><span id="fig:ex2-prediction-error"></span>
 <img src="main_files/figure-html/ex2-prediction-error-1.svg" alt="Prediction Error of different prediction methods using different number of components." width="100%" />
 <p class="caption">
 Figure 13: Prediction Error of different prediction methods using different number of components.
 </p>
 </div>
-<p>Similar model is opted as in the first example and the fitted model from each of 15 components are used for prediction. Figure <a href="examples.html#fig:ex2-prediction-error">13</a> shows the root mean squared error for both test and train prediction. Here four different methods have minimum test prediction error for four responses. As the structure of the data is similar to the first example, the pattern in the prediction is also similar for all methods.</p>
-<p>The results from both of these examples also testify the simulation results in Figure <a href="exploration.html#fig:pred-pca-hist-mthd-gamma-relpos">5</a> which has shown large variation in prediction error in certain cases of envelope method. However this also collaborate with Figure <a href="exploration.html#fig:comp-pca-hist-mthd-gamma-relpos">6</a> which suggests that in most of the designs, envelope methods have used less number of components to achieve the minimum prediction error.</p>
+<p>Figure <a href="examples.html#fig:ex2-prediction-error">13</a> corresponding to <a href="examples.html#fig:ex1-prediction-error">11</a> shows the root mean squared error for both test and train prediction. Here four different methods have minimum test prediction error for the four responses. As the structure of the data is similar to the first example, the pattern in the prediction is also similar for all methods.</p>
+<p>The prediction performance on the test data of the envelop methods appears to be more stable compared to the PCR and PLS methods. Furthermore, the envelope methods obtain good performance generally using fewer components, which is in accordance with Figure <a href="exploration.html#fig:comp-pca-hist-mthd-gamma-relpos">6</a>.</p>
 
 </div>
 </div>

@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2019-02-19">
+<meta name="date" content="2019-02-25">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -122,8 +122,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="data-preparation.html"><a href="data-preparation.html"><i class="fa fa-check"></i>Data Preparation</a></li>
 <li class="chapter" data-level="" data-path="exploration.html"><a href="exploration.html"><i class="fa fa-check"></i>Exploration</a></li>
 <li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html"><i class="fa fa-check"></i>Statistical Analysis</a><ul>
-<li><a href="statistical-analysis.html#effect-analysis-of-error-model">Effect Analysis of <em>Error Model</em></a></li>
-<li><a href="statistical-analysis.html#effect-analysis-of-component-model">Effect Analysis of <em>Component Model</em></a></li>
+<li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html#effect-analysis-of-error-model"><i class="fa fa-check"></i>Effect Analysis of Error Model</a></li>
+<li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html#effect-analysis-of-component-model"><i class="fa fa-check"></i>Effect Analysis of Component Model</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="examples.html"><a href="examples.html"><i class="fa fa-check"></i>Examples</a><ul>
 <li class="chapter" data-level="" data-path="examples.html"><a href="examples.html#raman-spectra-analysis-of-contents-of-polyunsaturated-fatty-acids-pufa"><i class="fa fa-check"></i>Raman spectra analysis of contents of polyunsaturated fatty acids (PUFA)</a></li>
@@ -157,7 +157,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="exploration" class="section level1">
 <h1>Exploration</h1>
 <p>This section focuses on exploring the variation in the <em>error dataset</em> and the <em>component dataset</em> for which we will use Principal Component Analysis (PCA). Let <span class="math inline">\(\mathbf{t}_u\)</span> and <span class="math inline">\(\mathbf{t}_v\)</span> be the principal component score sets corresponding to PCA run on the <span class="math inline">\(\mathbf{u}\)</span> and <span class="math inline">\(\mathbf{v}\)</span> matrices respectively. Figure-<a href="exploration.html#fig:pred-pca-hist-mthd-gamma-relpos">5</a> plots the scores density corresponding to the first principal component of <span class="math inline">\(\mathbf{u}\)</span>, i.e. the first column of <span class="math inline">\(\mathbf{t}_u\)</span>.</p>
-<p>Since higher prediction error here corresponds to high scores, the plot shows that the PCR, PLS1 and PLS2 methods are influenced by the two levels of position of relevant predictor components. When the relevant predictors are at positions 5, 6, 7, 8, the eigenvalues corresponding to them are relatively smaller. This also suggest that PCR, PLS1 and PLS2 depends highly on the position of the relevant components and the variation of these components affect their prediction performance. However, the envelope methods appears to be less influenced by <code>relpos</code> in this regard.</p>
+<p>Since higher prediction error here corresponds to high scores, the plot shows that the PCR, PLS1 and PLS2 methods are influenced by the two levels of position of relevant predictor components. When the relevant predictors are at positions 5, 6, 7, 8, the eigenvalues corresponding to them are relatively smaller. This also suggest that PCR, PLS1 and PLS2 depends heavily on the position of the relevant components and the variation of these components affect their prediction performance. However, the envelope methods appear to be less influenced by <code>relpos</code> in this regard.</p>
 
 <div class="figure"><span id="fig:pred-pca-hist-mthd-gamma-relpos"></span>
 <img src="main_files/figure-html/pred-pca-hist-mthd-gamma-relpos-1.svg" alt="Scores density corresponding to first principal component of error dataset (\(\mathbf{u}\)) subdivided by methods, gamma and eta and grouped by relpos." width="100%" />

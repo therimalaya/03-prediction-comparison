@@ -2,6 +2,7 @@
 editor_options: 
   chunk_output_type: console
 ---
+
 # Experimental Design #
 
 This study compares prediction methods based on their prediction ability. Data with specific properties are simulated, some of which are easier to predict than others. These data are simulated using the R-package `simrel`, which is discussed in @saebo2015simrel and @Rimal2018. Here we will use four different factors to vary the property of the data: a) Number of predictors (`p`), b) Multicollinearity in predictor variables (`gamma`), c) Correlation in response variables (`eta`) and d) position of predictor components relevant for the response (`relpos`). Using two levels of `p`, `gamma` and `relpos` and four levels of `eta`, `r nrow(design)` set of distinct properties are designed for the simulation.

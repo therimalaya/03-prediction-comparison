@@ -7,7 +7,7 @@ editor_options:
 
 This section focuses on exploring the variation in the _error dataset_ and the _component dataset_ for which we will use Principal Component Analysis (PCA). Let $\mathbf{t}_u$ and $\mathbf{t}_v$ be the principal component score sets corresponding to PCA run on the $\mathbf{u}$ and $\mathbf{v}$ matrices respectively. Figure-\@ref(fig:pred-pca-hist-mthd-gamma-relpos) plots the scores density corresponding to the first principal component of $\mathbf{u}$, i.e. the first column of $\mathbf{t}_u$.
 
-Since higher prediction error here corresponds to high scores, the plot shows that the PCR, PLS1 and PLS2 methods are influenced by the two levels of position of relevant predictor components. When the relevant predictors are at positions `r opts$relpos[2]`, the eigenvalues corresponding to them are relatively smaller. This also suggest that PCR, PLS1 and PLS2 depends highly on the position of the relevant components and the variation of these components affect their prediction performance. However, the envelope methods appears to be less influenced by `relpos` in this regard. 
+Since higher prediction error here corresponds to high scores, the plot shows that the PCR, PLS1 and PLS2 methods are influenced by the two levels of position of relevant predictor components. When the relevant predictors are at positions `r opts$relpos[2]`, the eigenvalues corresponding to them are relatively smaller. This also suggest that PCR, PLS1 and PLS2 depends heavily on the position of the relevant components and the variation of these components affect their prediction performance. However, the envelope methods appear to be less influenced by `relpos` in this regard. 
 
 ```{r pca}
 pred_pca <- with(pred_min, prcomp(cbind(Y1, Y2, Y3, Y4)))

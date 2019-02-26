@@ -478,15 +478,20 @@ matrices, i.e. \(p > n\). In order to incorporate these methods in our
 comparison, we have used the principal components \((\mathbf{z})\) of
 the predictor variables \((\mathbf{x})\) as predictors, using the
 required number of components for capturing 97.5\% of the variation in
-\(\mathbf{x}\). The new set of variables, \(\mathbf{z}\), were used for
-envelope estimation. The regression coefficients
-\((\hat{\boldsymbol{\alpha}})\) corresponding to these new variables
-\(\mathbf{z}\) were transformed back to obtain coefficients for each
-predictor variable as,
-
+\(\mathbf{x}\) for the designs where \(p > n\). The new set of
+variables, \(\mathbf{z}\), were used for envelope estimation. The
+regression coefficients \((\hat{\boldsymbol{\alpha}})\) corresponding to
+these new variables \(\mathbf{z}\) were transformed back to obtain
+coefficients for each predictor variable as,
 \[\hat{\boldsymbol{\beta}} = \mathbf{e}_k\hat{\boldsymbol{\alpha}_k}\]
 where, \(\mathbf{e}_k\) is a matrix of eigenvectors with first \(k\)
-number of components.
+number of components. Since, only simultaneous envelope allows to
+specify the dimension of response envelope which we have fixed at two in
+the simulation study. In the case of Senv, when the envelope dimension
+for response is same as the number of responses, it degenerates to Xenv
+method and if the envelope dimension for predictor is same as the number
+of predictors, it degenerates to the standard multivariate linear
+regression \citep{env2018}.
 
 \hypertarget{experimental-design}{\section{Experimental
 Design}\label{experimental-design}}
@@ -623,7 +628,7 @@ irrelevant and all other response components are uninformative. However,
 due to orthogonal rotation of the informative response component
 together with uninformative response components, all response variables
 in the population have similar covariance with the relevant predictor
-components (Figure \ref{fig:est-cov-plot}(top right)). The sample
+components (Figure \ref{fig:est-cov-plot} (top right)). The sample
 covariances between the predictors components and predictor variables
 with response variables are in Figure \ref{fig:est-cov-plot} (bottom
 left) and (bottom right) respectively.
@@ -799,9 +804,9 @@ shows that the PCR, PLS1 and PLS2 methods are influenced by the two
 levels of position of relevant predictor components. When the relevant
 predictors are at positions 5, 6, 7, 8, the eigenvalues corresponding to
 them are relatively smaller. This also suggest that PCR, PLS1 and PLS2
-depends highly on the position of the relevant components and the
+depends heavily on the position of the relevant components and the
 variation of these components affect their prediction performance.
-However, the envelope methods appears to be less influenced by
+However, the envelope methods appear to be less influenced by
 \texttt{relpos} in this regard.
 
 
@@ -962,24 +967,24 @@ interaction as in \emph{error model} is also observed in this model.
 The following section will continue exploring the effects of different
 levels of the factors in the case of these interactions.
 
-\subsection{\texorpdfstring{Effect Analysis of \emph{Error
-Model}}{Effect Analysis of Error Model}}\label{effect-analysis-of-error-model}
+\subsection{Effect Analysis of Error
+Model}\label{effect-analysis-of-error-model}
 
 Figure \ref{fig:pred-eff-plots} (left) shows that, for the envelope
 models, the differences in the prediction error is large. These
-differences are intensified when position of relevant predictor at at 5,
-6, 7, 8. The results also shows that the envelope methods is more
-sensible to the levels of \texttt{eta} more than the rest of the
-methods. In the case of PCR and PLS, the difference in the effect of
-levels of \texttt{eta} is small.
+differences are intensified when position of relevant predictor at 5, 6,
+7, 8. The results also show that the envelope methods are more sensible
+to the levels of \texttt{eta} than the rest of the methods. In the case
+of PCR and PLS, the difference in the effect of levels of \texttt{eta}
+is small.
 
 In Figure \ref{fig:pred-eff-plots} (right), we can see that the
-multicollinearity has affected all the methods, however, PCR, PLS1 and
-PLS2 are more robust for the condition than the envelope methods. Rather
-these methods have shown better performance when high multicollinearity
-is present in the data. Envelope methods on the other hand are better at
-handling the model when relevant positions are at 5, 6, 7, 8 in both
-high and low multicollinearity cases.
+multicollinearity (controlled by \texttt{gamma}) has affected all the
+methods. However, envelope methods have better performance on low
+multicollinearity than high and PCR, PLS1 and PLS2 are robust for high
+multicollinearity. Despite handling high multicollinearity, these
+methods have higher prediction error in both cases of multicollinearity
+than the envelope methods.
 
 
 
@@ -989,8 +994,8 @@ high and low multicollinearity cases.
 linear model of prediction error}\label{fig:pred-eff-plots}
 \end{figure}
 
-\subsection{\texorpdfstring{Effect Analysis of \emph{Component
-Model}}{Effect Analysis of Component Model}}\label{effect-analysis-of-component-model}
+\subsection{Effect Analysis of Component
+Model}\label{effect-analysis-of-component-model}
 
 
 
@@ -1002,48 +1007,36 @@ linear model of number of components to get minimum prediction error}\label{fig:
 
 Unlike for prediction errors, Figure \ref{fig:comp-eff-plots} (left)
 shows that the number of components used by the methods to obtain minium
-prediction error is less affected by the levels of \texttt{eta}.
-However, simulteneous envelope has used slightly larger number of
-components when there is no correlation between the response variables
-than the cases with moderate correlation. This pattern is distinct
-within the simultaneous envelope method. Envelope methods are able to
-obtain minimum prediction error by using components ranging from 1 to 3
-in both the cases of \texttt{relpos}. This value is much higher in the
-case of PCR as its prediction is based only on the principal components
-of predictors. The number of components used by this method ranges from
-3 to 5 when relevant components are at positions 1, 2, 3, 4 and 5 to 8
-when relevant components are at positions 5, 6, 7, 8.
+prediction error is less affected by the levels of \texttt{eta}. All
+methods appear to use on average more components when eta increases.
+Envelope methods are able to obtain minimum prediction error by using
+components ranging from 1 to 3 in both the cases of \texttt{relpos}.
+This value is much higher in the case of PCR as its prediction is based
+only on the principal components of the predictor matrix. The number of
+components used by this method ranges from 3 to 5 when relevant
+components are at positions 1, 2, 3, 4 and 5 to 8 when relevant
+components are at positions 5, 6, 7, 8.
 
-We can also see that at \texttt{relpos} 1, 2, 3, 4 for PLS1 and PLS2
-have used fewer components than simulteneous envelope. However, in the
-case when relevant components are at position 5, 6, 7, 8, simulteneous
-envelope manage to obtain smaller prediction error using fewer
-components than that of the PLS models. This is the case when
-eigenvalues of relevant predictors are small and responses are
-relatively difficult to predict.
-
-With regard to the interaction effect between \texttt{gamma},
-\texttt{relpos} and \texttt{Method} (Figure \ref{fig:comp-eff-plots}
-(right)), PCR, PLS1 and PLS2 methods have used a fairly large number of
-components the cases of high multicollinearity and relevant predictors
-at positions 5, 6, 7, 8. The number of components used by the envelope
-methods in both cases of \texttt{relpos} is similar, although slightly
-higher for the models with high multicollinearity than models with low
-multicollinearity.
+When relevant components are at position 5, 6, 7, 8, the eigenvalues of
+relevant predictors becomes smaller and responses are relatively
+difficult to predict. This becomes more critical for high
+multicollinearity case. Figure \ref{fig:comp-eff-plots} (right) shows
+that the envelope methods are less influenced by the level of
+\texttt{relpos} and are particularly better in achieving minimum
+prediction error using fewer number of components than others.
 
 In the case of \texttt{PCR}, prediction relies heavily on the position
 of relevant components (\texttt{relpos}). Here the method has used 3 to
 5 number of components when the relevant components are at positions 1,
-2, 3, 4; and 7 to 8 number of components when the relevant components
-are at positions 5, 6, 7, 8. The number of components used by
-\texttt{PCR} is expected as in Figure \ref{fig:comp-eff-plots}. This
-reinforces the conclusion from the density plot (Figure
-\ref{fig:comp-pca-hist-mthd-gamma-relpos}) in the previous section.
+2, 3, 4; and 7 to 8 components when the relevant components are at
+positions 5, 6, 7, 8. This reinforces the conclusion from the density
+plot (Figure \ref{fig:comp-pca-hist-mthd-gamma-relpos}) in the previous
+section.
 
 \section{Examples}\label{examples}
 
-In addition to the analysis with the simulated data, following two
-examples explores the prediction performance of the methods using real
+In addition to the analysis with the simulated data, the following two
+examples explore the prediction performance of the methods using real
 datasets. Since both examples have wide predictor matrices, principal
 components explaining 97.5\% of the variation in them are used for
 envelope methods. The coefficients were transformed back after the
@@ -1054,14 +1047,15 @@ acids
 (PUFA)}\label{raman-spectra-analysis-of-contents-of-polyunsaturated-fatty-acids-pufa}
 
 This dataset contains 44 training samples and 25 test samples of fatty
-acid information expressed as: a) percent of total sample weight and b)
-percent of total fat content. The dataset is used from
+acid information expressed as: a) percentage of total sample weight and
+b) percentage of total fat content. The dataset is borrowed from
 \citet{naes2013multi} where more information can be found. The samples
-were analysed using Raman spectroscopy from which 1096 variables are
-obtained as predictors. Raman spectroscopy provide detailed chemical
-information from minor components in food. The aim of this example is to
-compare how well the prediction methods that we have considered are able
-to predict the contents of PUFA using these Raman spectra.
+were analysed using Raman spectroscopy from which 1096 wavelength
+variables were obtained as predictors. Raman spectroscopy provides
+detailed chemical information from minor components in food. The aim of
+this example is to compare how well the prediction methods that we have
+considered are able to predict the contents of PUFA using these Raman
+spectra.
 
 
 
@@ -1083,36 +1077,38 @@ Figure \ref{fig:ex1-cumulative-eigevalues} (left) shows that the first
 few predictor components are somewhat correlated with response
 variables. In addition the most variation in predictors are explained by
 less than five components (middle). Further, the response variables are
-highly correlated suggesting that a single latent dimension explained
-most of the variation (right). This resembles with the design 19 (Figure
-\ref{fig:design-plot}) from our simulation.
+highly correlated suggesting that a single latent dimension explains
+most of the variation (right). We may therefore also believe that the
+relevant latent space in the predictor matrix is of dimension one. This
+resembles the design 19 (Figure \ref{fig:design-plot}) from our
+simulation.
 
 \begin{figure}[!htb]
 \includegraphics[width=1\linewidth]{main_files/figure-latex/ex1-prediction-error-1} \caption{Prediction Error of different prediction methods using different number of components.}\label{fig:ex1-prediction-error}
 \end{figure}
 
-Using components from 1 to 15, a regression model is fitted using each
-of the methods. The fitted models are used to predict the test
-observation and the root mean squared error of prediction (RMSEP) is
-calculated. Figure \ref{fig:ex1-prediction-error} shows that PLS2 has
-given minimum prediction error of 3.783 using 9 components in the case
-of response \%Pufa while PLS1 has given minimum prediction error of
-1.308 using 11 components in the case of response PUFA\%emul. However
+Using a range of components from 1 to 15, a regression models were
+fitted using each of the methods. The fitted models were used to predict
+the test observation and the root mean squared error of prediction
+(RMSEP) was calculated. Figure \ref{fig:ex1-prediction-error} shows that
+PLS2 obtained minimum prediction error of 3.783 using 9 components in
+the case of response \%Pufa while PLS1 obtained minimum prediction error
+of 1.308 using 11 components in the case of response PUFA\%emul. However
 the figure also shows that both envelope methods have reached to almost
-minimum predicton error in few number of components. This pattern is
+minimum predicton error in fewer number of components. This pattern is
 also visible in the simulation results (Figure
-\ref{fig:pred-eff-plots}).
+\ref{fig:comp-eff-plots}).
 
 \subsection{Example-2: NIR spectra of biscuit
 dough}\label{example-2-nir-spectra-of-biscuit-dough}
 
 The dataset consists of 700 wavelengths of NIR spectra (1100--2498 nm in
-steps of 2 nm) which we will use as predictor variables. There are four
+steps of 2 nm) which were used as predictor variables. There are four
 response variables as the yield percentages of (a) fat, (b) sucrose, (c)
-flour and (d) water. The measurements are taken from 40 training
+flour and (d) water. The measurements were taken from 40 training
 observation of biscuit dough. A separate set with 32 samples which were
-created and measured on different occasions are used as test
-observations. The dataset is used from \citet{indahl2005twist} where
+created and measured on different occasions were used as test
+observations. The dataset is borrowed from \citet{indahl2005twist} where
 further information can be obtained.
 
 
@@ -1138,47 +1134,49 @@ variance (middle) than the succeeding components but has small
 covaration with all the response which indicates that the component is
 less relevant for any of the responses. In addition, two response
 components have explained most of the variation in response variables
-(right). This structure is also similar to Design 19.
+(right). This structure is also somewhat similar to Design 19, although
+it is uncertain whether the dimension of the relevant space in the
+response matrix is larger than one.
 
 \begin{figure}[!htb]
 \includegraphics[width=1\linewidth]{main_files/figure-latex/ex2-prediction-error-1} \caption{Prediction Error of different prediction methods using different number of components.}\label{fig:ex2-prediction-error}
 \end{figure}
 
-Similar model is opted as in the first example and the fitted model from
-each of 15 components are used for prediction. Figure
-\ref{fig:ex2-prediction-error} shows the root mean squared error for
+Figure \ref{fig:ex2-prediction-error} corresponding to
+\ref{fig:ex1-prediction-error} shows the root mean squared error for
 both test and train prediction. Here four different methods have minimum
-test prediction error for four responses. As the structure of the data
-is similar to the first example, the pattern in the prediction is also
-similar for all methods.
+test prediction error for the four responses. As the structure of the
+data is similar to the first example, the pattern in the prediction is
+also similar for all methods.
 
-The results from both of these examples also testify the simulation
-results in Figure \ref{fig:pred-pca-hist-mthd-gamma-relpos} which has
-shown large variation in prediction error in certain cases of envelope
-method. However this also collaborate with Figure
-\ref{fig:comp-pca-hist-mthd-gamma-relpos} which suggests that in most of
-the designs, envelope methods have used less number of components to
-achieve the minimum prediction error.
+The prediction performance on the test data of the envelop methods
+appears to be more stable compared to the PCR and PLS methods.
+Furthermore, the envelope methods obtain good performance generally
+using fewer components, which is in accordance with Figure
+\ref{fig:comp-pca-hist-mthd-gamma-relpos}.
 
 \section{Discussions and Conclusion}\label{discussions-and-conclusion}
 
-On one hand, the envelope methods have shown better prediction
-performance with fewer number of components. However, for data with high
-multicollinearity, the methods have shown some cases of unstable
-prediction. Here for the prediction error, we have used the components
-that give the minimum average prediction error for all replicates. This
-hints that for some replicates, the methods has used non-optimal number
-of components and consequently resulting in high prediction error. The
-two examples in the previous section collaborate with this point.
+Analysis with both simulated data and real data have shown that the
+envelope methods are more stable, less influenced by \texttt{relpos} and
+\texttt{gamma} and are in general performed better than PCR and PLS
+methods. These methods are also found to be less dependent on the number
+of components. Observing data in fewer and relevant dimension is an
+advantage for many discipline as well.
 
-On the other hand, PLS1, PLS2 and PCR methods have smaller prediction
-error in the model with high multicollinearity which suggest their
-robustness in the particular case. However, they have shown poor
-performance in modelling information at relevant components with small
-variance. These methods have used larger number of components, in
-general, than envelopes. Although resulting higher prediction error than
-envelope methods in most situations, these methods are more stable
-especially in the cases of high multicollinearity.
+Since each facets in the Figure
+\ref{fig:pred-pca-hist-mthd-gamma-relpos} and
+\ref{fig:comp-pca-hist-mthd-gamma-relpos} have own scales, despite
+having some large prediction error seen at the right tail, envelope
+methods still have less prediction error and have used fewer number of
+components than the others.
+
+Particularly in the case of simultaneous envelope, since users can
+specify the number of dimension for response envelope, the method can
+leverage the relevant space of response while PCR, PLS and Xenv are
+constrained to play only on predictor space. Since the simulation is
+based on single latent component of the response variables, this might
+have given some advantage for simultaneous envelope.
 
 Further, we have fixed the coefficient of determination (\(R^2\))
 constant throughtout all the designs. Initial simulations (not shown)
@@ -1188,7 +1186,7 @@ fixed has allowed us to analyze other factors properly.
 
 Two clear comment can be made about the effect of correlation of
 response on the prediction methods. Highly correlated response has shown
-highest prediction error in general and the effect is distinct in
+highest prediction error in general and the effect is most distinct in
 envelope methods. Since the envelope methods identifies the relevant
 space as the span of relevant eigenvectors, the methods are able to
 obtain the minimum average prediction error by using fewer number of
@@ -1205,12 +1203,13 @@ these methods at different number of components.
 In addition, since using principal components or actual variables as
 predictors in envelope methods have shown similar results, we have used
 principal components that have explained 97.5\% of the variation as
-mentioned previously in the cases of envelope methods. As the envelope
-methods are based on MLE and this can be an alternative way of using the
-methods in data with wide predictors. The results from this study will
-help researcher to understand these methods for different nature of
-data. We encourage researcher to use newly developed methods such as
-envlope based on the nature of data they are working on.
+mentioned previously in the cases of envelope methods for the designs
+where \(p>n\). As the envelope methods are based on MLE and this can be
+an alternative way of using the methods in data with wide predictors.
+The results from this study will help researcher to understand these
+methods for different nature of data. We encourage researcher to use
+newly developed methods such as envlope based on the nature of data they
+are working on.
 
 Since, this study have focused entirely on prediction performance,
 further analysis of their estimative properties of these methods is

@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2019-02-19">
+<meta name="date" content="2019-02-25">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -122,8 +122,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="data-preparation.html"><a href="data-preparation.html"><i class="fa fa-check"></i>Data Preparation</a></li>
 <li class="chapter" data-level="" data-path="exploration.html"><a href="exploration.html"><i class="fa fa-check"></i>Exploration</a></li>
 <li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html"><i class="fa fa-check"></i>Statistical Analysis</a><ul>
-<li><a href="statistical-analysis.html#effect-analysis-of-error-model">Effect Analysis of <em>Error Model</em></a></li>
-<li><a href="statistical-analysis.html#effect-analysis-of-component-model">Effect Analysis of <em>Component Model</em></a></li>
+<li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html#effect-analysis-of-error-model"><i class="fa fa-check"></i>Effect Analysis of Error Model</a></li>
+<li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html#effect-analysis-of-component-model"><i class="fa fa-check"></i>Effect Analysis of Component Model</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="examples.html"><a href="examples.html"><i class="fa fa-check"></i>Examples</a><ul>
 <li class="chapter" data-level="" data-path="examples.html"><a href="examples.html#raman-spectra-analysis-of-contents-of-polyunsaturated-fatty-acids-pufa"><i class="fa fa-check"></i>Raman spectra analysis of contents of polyunsaturated fatty acids (PUFA)</a></li>
@@ -203,9 +203,9 @@ Figure 7: Pillai Statistic and F-value for the MANOVA model. The bar represents 
 </dl>
 <p>The following section will continue exploring the effects of different levels of the factors in the case of these interactions.</p>
 <div id="effect-analysis-of-error-model" class="section level2">
-<h2>Effect Analysis of <em>Error Model</em></h2>
-<p>Figure <a href="statistical-analysis.html#fig:pred-eff-plots">8</a> (left) shows that, for the envelope models, the differences in the prediction error is large. These differences are intensified when position of relevant predictor at at 5, 6, 7, 8. The results also shows that the envelope methods is more sensible to the levels of <code>eta</code> more than the rest of the methods. In the case of PCR and PLS, the difference in the effect of levels of <code>eta</code> is small.</p>
-<p>In Figure <a href="statistical-analysis.html#fig:pred-eff-plots">8</a> (right), we can see that the multicollinearity has affected all the methods, however, PCR, PLS1 and PLS2 are more robust for the condition than the envelope methods. Rather these methods have shown better performance when high multicollinearity is present in the data. Envelope methods on the other hand are better at handling the model when relevant positions are at 5, 6, 7, 8 in both high and low multicollinearity cases.</p>
+<h2>Effect Analysis of Error Model</h2>
+<p>Figure <a href="statistical-analysis.html#fig:pred-eff-plots">8</a> (left) shows that, for the envelope models, the differences in the prediction error is large. These differences are intensified when position of relevant predictor at 5, 6, 7, 8. The results also show that the envelope methods are more sensible to the levels of <code>eta</code> than the rest of the methods. In the case of PCR and PLS, the difference in the effect of levels of <code>eta</code> is small.</p>
+<p>In Figure <a href="statistical-analysis.html#fig:pred-eff-plots">8</a> (right), we can see that the multicollinearity (controlled by <code>gamma</code>) has affected all the methods. However, envelope methods have better performance on low multicollinearity than high and PCR, PLS1 and PLS2 are robust for high multicollinearity. Despite handling high multicollinearity, these methods have higher prediction error in both cases of multicollinearity than the envelope methods.</p>
 
 <div class="figure"><span id="fig:pred-eff-plots"></span>
 <img src="main_files/figure-html/pred-eff-plots-1.svg" alt="Effect plot of some interactions of the multivariate linear model of prediction error" width="100%" />
@@ -215,7 +215,7 @@ Figure 8: Effect plot of some interactions of the multivariate linear model of p
 </div>
 </div>
 <div id="effect-analysis-of-component-model" class="section level2">
-<h2>Effect Analysis of <em>Component Model</em></h2>
+<h2>Effect Analysis of Component Model</h2>
 
 <div class="figure"><span id="fig:comp-eff-plots"></span>
 <img src="main_files/figure-html/comp-eff-plots-1.svg" alt="Effect plot of some interactions of the multivariate linear model of number of components to get minimum prediction error" width="100%" />
@@ -223,10 +223,9 @@ Figure 8: Effect plot of some interactions of the multivariate linear model of p
 Figure 9: Effect plot of some interactions of the multivariate linear model of number of components to get minimum prediction error
 </p>
 </div>
-<p>Unlike for prediction errors, Figure <a href="statistical-analysis.html#fig:comp-eff-plots">9</a> (left) shows that the number of components used by the methods to obtain minium prediction error is less affected by the levels of <code>eta</code>. However, simulteneous envelope has used slightly larger number of components when there is no correlation between the response variables than the cases with moderate correlation. This pattern is distinct within the simultaneous envelope method. Envelope methods are able to obtain minimum prediction error by using components ranging from 1 to 3 in both the cases of <code>relpos</code>. This value is much higher in the case of PCR as its prediction is based only on the principal components of predictors. The number of components used by this method ranges from 3 to 5 when relevant components are at positions 1, 2, 3, 4 and 5 to 8 when relevant components are at positions 5, 6, 7, 8.</p>
-<p>We can also see that at <code>relpos</code> 1, 2, 3, 4 for PLS1 and PLS2 have used fewer components than simulteneous envelope. However, in the case when relevant components are at position 5, 6, 7, 8, simulteneous envelope manage to obtain smaller prediction error using fewer components than that of the PLS models. This is the case when eigenvalues of relevant predictors are small and responses are relatively difficult to predict.</p>
-<p>With regard to the interaction effect between <code>gamma</code>, <code>relpos</code> and <code>Method</code> (Figure <a href="statistical-analysis.html#fig:comp-eff-plots">9</a> (right)), PCR, PLS1 and PLS2 methods have used a fairly large number of components the cases of high multicollinearity and relevant predictors at positions 5, 6, 7, 8. The number of components used by the envelope methods in both cases of <code>relpos</code> is similar, although slightly higher for the models with high multicollinearity than models with low multicollinearity.</p>
-<p>In the case of <code>PCR</code>, prediction relies heavily on the position of relevant components (<code>relpos</code>). Here the method has used 3 to 5 number of components when the relevant components are at positions 1, 2, 3, 4; and 7 to 8 number of components when the relevant components are at positions 5, 6, 7, 8. The number of components used by <code>PCR</code> is expected as in Figure <a href="statistical-analysis.html#fig:comp-eff-plots">9</a>. This reinforces the conclusion from the density plot (Figure <a href="exploration.html#fig:comp-pca-hist-mthd-gamma-relpos">6</a>) in the previous section.</p>
+<p>Unlike for prediction errors, Figure <a href="statistical-analysis.html#fig:comp-eff-plots">9</a> (left) shows that the number of components used by the methods to obtain minium prediction error is less affected by the levels of <code>eta</code>. All methods appear to use on average more components when eta increases. Envelope methods are able to obtain minimum prediction error by using components ranging from 1 to 3 in both the cases of <code>relpos</code>. This value is much higher in the case of PCR as its prediction is based only on the principal components of the predictor matrix. The number of components used by this method ranges from 3 to 5 when relevant components are at positions 1, 2, 3, 4 and 5 to 8 when relevant components are at positions 5, 6, 7, 8.</p>
+<p>When relevant components are at position 5, 6, 7, 8, the eigenvalues of relevant predictors becomes smaller and responses are relatively difficult to predict. This becomes more critical for high multicollinearity case. Figure <a href="statistical-analysis.html#fig:comp-eff-plots">9</a> (right) shows that the envelope methods are less influenced by the level of <code>relpos</code> and are particularly better in achieving minimum prediction error using fewer number of components than others.</p>
+<p>In the case of <code>PCR</code>, prediction relies heavily on the position of relevant components (<code>relpos</code>). Here the method has used 3 to 5 number of components when the relevant components are at positions 1, 2, 3, 4; and 7 to 8 components when the relevant components are at positions 5, 6, 7, 8. This reinforces the conclusion from the density plot (Figure <a href="exploration.html#fig:comp-pca-hist-mthd-gamma-relpos">6</a>) in the previous section.</p>
 
 </div>
 </div>

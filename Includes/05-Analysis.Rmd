@@ -133,11 +133,11 @@ _Component Model_:
 
 The following section will continue exploring the effects of different levels of the factors in the case of these interactions.
 
-## Effect Analysis of _Error Model_
+## Effect Analysis of Error Model
 
-Figure \@ref(fig:pred-eff-plots) (left) shows that, for the envelope models, the differences in the prediction error is large. These differences are intensified when position of relevant predictor at at `r unique(opts$relpos)[2]`. The results also shows that the envelope methods is more sensible to the levels of `eta` more than the rest of the methods. In the case of PCR and PLS, the difference in the effect of levels of `eta` is small.
+Figure \@ref(fig:pred-eff-plots) (left) shows that, for the envelope models, the differences in the prediction error is large. These differences are intensified when position of relevant predictor at `r unique(opts$relpos)[2]`. The results also show that the envelope methods are more sensible to the levels of `eta` than the rest of the methods. In the case of PCR and PLS, the difference in the effect of levels of `eta` is small.
 
-In Figure \@ref(fig:pred-eff-plots) (right), we can see that the multicollinearity has affected all the methods, however, PCR, PLS1 and PLS2 are more robust for the condition than the envelope methods. Rather these methods have shown better performance when high multicollinearity is present in the data. Envelope methods on the other hand are better at handling the model when relevant positions are at 5, 6, 7, 8 in both high and low multicollinearity cases.
+In Figure \@ref(fig:pred-eff-plots) (right), we can see that the multicollinearity (controlled by `gamma`) has affected all the methods. However, envelope methods have better performance on low multicollinearity than high and PCR, PLS1 and PLS2 are robust for high multicollinearity. Despite handling high multicollinearity, these methods have higher prediction error in both cases of multicollinearity than the envelope methods.
 
 (ref:pred-eff-plot) Effect plot of some interactions of the multivariate linear model of prediction error
 
@@ -162,7 +162,7 @@ grid::grid.draw(plt)
 ```
 
 
-## Effect Analysis of _Component Model_
+## Effect Analysis of Component Model
 
 (ref:comp-eff-plot) Effect plot of some interactions of the multivariate linear model of number of components to get minimum prediction error
 
@@ -188,10 +188,8 @@ grid::grid.draw(plt)
 ```
 
 
-Unlike for prediction errors, Figure \@ref(fig:comp-eff-plots) (left) shows that the number of components used by the methods to obtain minium prediction error is less affected by the levels of `eta`. However, simulteneous envelope has used slightly larger number of components when there is no correlation between the response variables than the cases with moderate correlation. This pattern is distinct within the simultaneous envelope method. Envelope methods are able to obtain minimum prediction error by using components ranging from 1 to 3 in both the cases of `relpos`. This value is much higher in the case of PCR as its prediction is based only on the principal components of predictors. The number of components used by this method ranges from 3 to 5 when relevant components are at positions 1, 2, 3, 4 and 5 to 8 when relevant components are at positions 5, 6, 7, 8.
+Unlike for prediction errors, Figure \@ref(fig:comp-eff-plots) (left) shows that the number of components used by the methods to obtain minium prediction error is less affected by the levels of `eta`. All methods appear to use on average more components when eta increases. Envelope methods are able to obtain minimum prediction error by using components ranging from 1 to 3 in both the cases of `relpos`. This value is much higher in the case of PCR as its prediction is based only on the principal components of the predictor matrix. The number of components used by this method ranges from 3 to 5 when relevant components are at positions `r unique(opts$relpos)[1]` and 5 to 8 when relevant components are at positions  `r unique(opts$relpos)[2]`.
 
-We can also see that at `relpos` 1, 2, 3, 4 for PLS1 and PLS2 have used fewer components than simulteneous envelope. However, in the case when relevant components are at position 5, 6, 7, 8, simulteneous envelope manage to obtain smaller prediction error using fewer components than that of the PLS models. This is the case when eigenvalues of relevant predictors are small and responses are relatively difficult to predict.
+When relevant components are at position 5, 6, 7, 8, the eigenvalues of relevant predictors becomes smaller and responses are relatively difficult to predict. This becomes more critical for high multicollinearity case. Figure \@ref(fig:comp-eff-plots) (right) shows that the envelope methods are less influenced by the level of `relpos` and are particularly better in achieving minimum prediction error using fewer number of components than others.
 
-With regard to the interaction effect between `gamma`, `relpos` and `Method` (Figure \@ref(fig:comp-eff-plots) (right)), PCR, PLS1 and PLS2 methods have used a fairly large number of components the cases of high multicollinearity and relevant predictors at positions 5, 6, 7, 8. The number of components used by the envelope methods in both cases of `relpos` is similar, although slightly higher for the models with high multicollinearity than models with low multicollinearity.
-
-In the case of `PCR`, prediction relies heavily on the position of relevant components (`relpos`). Here the method has used 3 to 5 number of components when the relevant components are at positions 1, 2, 3, 4; and 7 to 8 number of components when the relevant components are at positions 5, 6, 7, 8. The number of components used by `PCR` is expected as in Figure \@ref(fig:comp-eff-plots). This reinforces the conclusion from the density plot (Figure \@ref(fig:comp-pca-hist-mthd-gamma-relpos)) in the previous section.
+In the case of `PCR`, prediction relies heavily on the position of relevant components (`relpos`). Here the method has used 3 to 5 number of components when the relevant components are at positions `r unique(opts$relpos)[1]`; and 7 to 8 components when the relevant components are at positions `r unique(opts$relpos)[2]`. This reinforces the conclusion from the density plot (Figure \@ref(fig:comp-pca-hist-mthd-gamma-relpos)) in the previous section.

@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2019-02-19">
+<meta name="date" content="2019-02-25">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -122,8 +122,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="data-preparation.html"><a href="data-preparation.html"><i class="fa fa-check"></i>Data Preparation</a></li>
 <li class="chapter" data-level="" data-path="exploration.html"><a href="exploration.html"><i class="fa fa-check"></i>Exploration</a></li>
 <li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html"><i class="fa fa-check"></i>Statistical Analysis</a><ul>
-<li><a href="statistical-analysis.html#effect-analysis-of-error-model">Effect Analysis of <em>Error Model</em></a></li>
-<li><a href="statistical-analysis.html#effect-analysis-of-component-model">Effect Analysis of <em>Component Model</em></a></li>
+<li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html#effect-analysis-of-error-model"><i class="fa fa-check"></i>Effect Analysis of Error Model</a></li>
+<li class="chapter" data-level="" data-path="statistical-analysis.html"><a href="statistical-analysis.html#effect-analysis-of-component-model"><i class="fa fa-check"></i>Effect Analysis of Component Model</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="examples.html"><a href="examples.html"><i class="fa fa-check"></i>Examples</a><ul>
 <li class="chapter" data-level="" data-path="examples.html"><a href="examples.html#raman-spectra-analysis-of-contents-of-polyunsaturated-fatty-acids-pufa"><i class="fa fa-check"></i>Raman spectra analysis of contents of polyunsaturated fatty acids (PUFA)</a></li>
@@ -172,8 +172,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </dl>
 <div id="modification-in-envelope-estimation" class="section level2">
 <h2>Modification in envelope estimation</h2>
-<p>Since envelope estimators (Xenv and Senv) are based on maximum likelihood estimation (MLE), it fails to estimate in case of wide matrices, i.e. <span class="math inline">\(p &gt; n\)</span>. In order to incorporate these methods in our comparison, we have used the principal components <span class="math inline">\((\mathbf{z})\)</span> of the predictor variables <span class="math inline">\((\mathbf{x})\)</span> as predictors, using the required number of components for capturing 97.5% of the variation in <span class="math inline">\(\mathbf{x}\)</span>. The new set of variables, <span class="math inline">\(\mathbf{z}\)</span>, were used for envelope estimation. The regression coefficients <span class="math inline">\((\hat{\boldsymbol{\alpha}})\)</span> corresponding to these new variables <span class="math inline">\(\mathbf{z}\)</span> were transformed back to obtain coefficients for each predictor variable as,</p>
-<p><span class="math display">\[\hat{\boldsymbol{\beta}} = \mathbf{e}_k\hat{\boldsymbol{\alpha}_k}\]</span> where, <span class="math inline">\(\mathbf{e}_k\)</span> is a matrix of eigenvectors with first <span class="math inline">\(k\)</span> number of components.</p>
+<p>Since envelope estimators (Xenv and Senv) are based on maximum likelihood estimation (MLE), it fails to estimate in case of wide matrices, i.e. <span class="math inline">\(p &gt; n\)</span>. In order to incorporate these methods in our comparison, we have used the principal components <span class="math inline">\((\mathbf{z})\)</span> of the predictor variables <span class="math inline">\((\mathbf{x})\)</span> as predictors, using the required number of components for capturing 97.5% of the variation in <span class="math inline">\(\mathbf{x}\)</span> for the designs where <span class="math inline">\(p &gt; n\)</span>. The new set of variables, <span class="math inline">\(\mathbf{z}\)</span>, were used for envelope estimation. The regression coefficients <span class="math inline">\((\hat{\boldsymbol{\alpha}})\)</span> corresponding to these new variables <span class="math inline">\(\mathbf{z}\)</span> were transformed back to obtain coefficients for each predictor variable as, <span class="math display">\[\hat{\boldsymbol{\beta}} = \mathbf{e}_k\hat{\boldsymbol{\alpha}_k}\]</span> where, <span class="math inline">\(\mathbf{e}_k\)</span> is a matrix of eigenvectors with first <span class="math inline">\(k\)</span> number of components. Since, only simultaneous envelope allows to specify the dimension of response envelope which we have fixed at two in the simulation study. In the case of Senv, when the envelope dimension for response is same as the number of responses, it degenerates to Xenv method and if the envelope dimension for predictor is same as the number of predictors, it degenerates to the standard multivariate linear regression <span class="citation">(Lee and Su <a href="references.html#ref-env2018">2018</a>)</span>.</p>
 
 </div>
 </div>
