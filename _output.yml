@@ -36,5 +36,4 @@ bookdown::pdf_book:
   dev: "pdf"
 bookdown::epub_book:
   dev: svg
-  
-# bookdown::word_document2: default
+bookdown::word_document2: default

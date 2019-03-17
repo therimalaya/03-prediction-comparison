@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2019-02-25">
+<meta name="date" content="2019-03-17">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -156,10 +156,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="experimental-design" class="section level1">
 <h1>Experimental Design</h1>
-<p>This study compares prediction methods based on their prediction ability. Data with specific properties are simulated, some of which are easier to predict than others. These data are simulated using the R-package <code>simrel</code>, which is discussed in <span class="citation">Sæbø, Almøy, and Helland (<a href="references.html#ref-saebo2015simrel">2015</a>)</span> and <span class="citation">Rimal, Almøy, and Sæbø (<a href="references.html#ref-Rimal2018">2018</a>)</span>. Here we will use four different factors to vary the property of the data: a) Number of predictors (<code>p</code>), b) Multicollinearity in predictor variables (<code>gamma</code>), c) Correlation in response variables (<code>eta</code>) and d) position of predictor components relevant for the response (<code>relpos</code>). Using two levels of <code>p</code>, <code>gamma</code> and <code>relpos</code> and four levels of <code>eta</code>, 32 set of distinct properties are designed for the simulation.</p>
+<p>This study compares prediction methods based on their prediction ability. Data with specific properties are simulated, some of which are easier to predict than others. These data are simulated using the R-package <code>simrel</code>, which is discussed in <span class="citation">Sæbø, Almøy, and Helland (<a href="references.html#ref-saebo2015simrel">2015</a>)</span> and <span class="citation">Rimal, Almøy, and Sæbø (<a href="references.html#ref-Rimal2018">2018</a>)</span>. Here we have used four different factors to vary the property of the data: a) Number of predictors (<code>p</code>), b) Multicollinearity in predictor variables (<code>gamma</code>), c) Correlation in response variables (<code>eta</code>) and d) position of predictor components relevant for the response (<code>relpos</code>). Using two levels of <code>p</code>, <code>gamma</code> and <code>relpos</code> and four levels of <code>eta</code>, 32 set of distinct properties are designed for the simulation.</p>
 <dl>
 <dt><strong>Number of predictors:</strong></dt>
-<dd>In order to observe the performance of the methods on tall and wide predictor matrices, 20 and 250 predictor variables are simulated. Parameter <code>p</code> controls this properties in the <code>simrel</code> function.
+<dd>To observe the performance of the methods on tall and wide predictor matrices, 20 and 250 predictor variables are simulated with the number of observations fixed at 100. Parameter <code>p</code> controls these properties in the <code>simrel</code> function.
 </dd>
 <dt><strong>Multicollinearity in predictor variables:</strong></dt>
 <dd><p>Highly collinear predictors can be explained completely by few components. The parameter <code>gamma</code> (<span class="math inline">\(\gamma\)</span>) in <code>simrel</code> controls decline in the eigenvalues of the predictor variables as <a href="experimental-design.html#eq:gamma">(5)</a>.</p>
@@ -169,32 +169,32 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 \end{equation}\]</span>
 </dd>
 </dl>
-<p>Here, <span class="math inline">\(\lambda_i, i = 1, 2, \ldots p\)</span> are eigenvalues of the predictor variables. Here we have used 0.2 and 0.9 as different levels of <code>gamma</code>. The higher the value of gamma, the higher will be the multicollinearity and vice versa.</p>
+<p>Here, <span class="math inline">\(\lambda_i, i = 1, 2, \ldots p\)</span> are eigenvalues of the predictor variables. We have used 0.2 and 0.9 as different levels of <code>gamma</code>. The higher the value of gamma, the higher the multicollinearity will be, and vice versa.</p>
 <dl>
 <dt><strong>Correlation in response variables:</strong></dt>
-<dd><p>Correlation among response variables is a less explored area. Here we have tried to explore that part with 4 levels of correlation in the response variables. We have used the <code>eta</code> (<span class="math inline">\(\eta\)</span>) parameter of <code>simrel</code> for controlling the decline in eigenvalues corresponding to the response variables as <a href="experimental-design.html#eq:eta">(6)</a>.</p>
+<dd><p>Correlation among response variables has been explored to a lesser extent. Here we have tried to explore that part with four levels of correlation in the response variables. We have used the <code>eta</code> (<span class="math inline">\(\eta\)</span>) parameter of <code>simrel</code> for controlling the decline in eigenvalues corresponding to the response variables as <a href="experimental-design.html#eq:eta">(6)</a>.</p>
 <span class="math display" id="eq:eta">\[\begin{equation}
   \kappa_j = e^{-\eta(j - 1)}, \eta &gt; 0 \text{ and } j = 1, 2, \ldots, m
   \tag{6}
 \end{equation}\]</span>
 </dd>
 </dl>
-<p>Here, <span class="math inline">\(\kappa_j, i = 1, 2, \ldots m\)</span> are the eigenvalues of the response variables and <code>m</code> is the number of response variables. Here we have used 0, 0.4, 0.8 and 1.2 as different levels of <code>eta</code>. The larger the value of eta, the larger will be the correlation between response variables and vice versa.</p>
+<p>Here, <span class="math inline">\(\kappa_j, i = 1, 2, \ldots m\)</span> are the eigenvalues of the response variables and <code>m</code> is the number of response variables. We have used 0, 0.4, 0.8 and 1.2 as different levels of <code>eta</code>. The larger the value of eta, the larger will be the correlation will be between response variables, and vice versa.</p>
 <dl>
 <dt><strong>Position of predictor components relevant to the response:</strong></dt>
-<dd>The principal components of the predictors are ordered. The first principal component captures most of the variation in the predictors. The second captures the most in the rest that is left by the first principal components and so on. In highly collinear predictors, the variation captured by the first few components is relatively high. However, if those components are not relevant for the response, prediction becomes difficult <span class="citation">(Helland and Almøy <a href="references.html#ref-Helland1994b">1994</a>)</span>. Here, two levels of the positions of these relevant components are used: 1, 2, 3, 4 and 5, 6, 7, 8.
+<dd>The principal components of the predictors are ordered. The first principal component captures most of the variation in the predictors. The second captures the most of the remainder left by the first principal component and so on. In highly collinear predictors, the variation captured by the first few components is relatively high. However, if those components are not relevant for the response, prediction becomes difficult <span class="citation">(Helland and Almøy <a href="references.html#ref-Helland1994b">1994</a>)</span>. Here, two levels of the positions of these relevant components are used as 1, 2, 3, 4 and 5, 6, 7, 8.
 </dd>
 </dl>
-<p>Further, a complete factorial design from the levels of the above given parameters gave us 32 designs. Each design is associated with a dataset having unique properties. Figure~<a href="experimental-design.html#fig:design-plot">2</a>, shows all the designs. For each design and prediction method, 50 datasets were simulated as replicates. In total, there were <span class="math inline">\(5 \times 32 \times 50\)</span>, i.e. 8000 dataset simulated.</p>
+<p>Moreover, a complete factorial design from the levels of the above parameters gave us 32 designs. Each design is associated with a dataset having unique properties. Figure~<a href="experimental-design.html#fig:design-plot">2</a>, shows all the designs. For each design and prediction method, 50 datasets were simulated as replicates. In total, there were <span class="math inline">\(5 \times 32 \times 50\)</span>, i.e. 8000 simulated datasets.</p>
 <div class="figure"><span id="fig:design-plot"></span>
-<img src="main_files/figure-html/design-plot-1.svg" alt="Experimental Design of simulation parameters. Each point represents an unique data property." width="100%" />
+<img src="main_files/figure-html/design-plot-1.svg" alt="Experimental Design of simulation parameters. Each point represents a unique data property." width="100%" />
 <p class="caption">
-Figure 2: Experimental Design of simulation parameters. Each point represents an unique data property.
+Figure 2: Experimental Design of simulation parameters. Each point represents a unique data property.
 </p>
 </div>
 <dl>
 <dt><strong>Common parameters:</strong></dt>
-<dd>Each dataset was simulated with <span class="math inline">\(n = 100\)</span> number of observation and <span class="math inline">\(m = 4\)</span> response variables. Further, the coefficient of determination corresponding to each response components in all the designs is set to and 0.8. In addition, we have assumed that there is only one informative response component. Hence, the informative response component is rotated orthogonally together with three uninformative response components to generate four response variables. This spread out the information in all simulated response variables. For further details on the simulation tool see <span class="citation">(Rimal, Almøy, and Sæbø <a href="references.html#ref-Rimal2018">2018</a>)</span>.
+<dd>Each dataset was simulated with <span class="math inline">\(n = 100\)</span> number of observation and <span class="math inline">\(m = 4\)</span> response variables. Furthermore, the coefficient of determination corresponding to each response components in all the designs is set to 0.8. In addition, we have assumed that there is only one informative response component. Hence, the informative response component is rotated orthogonally together with three uninformative response components to generate four response variables. This spreads out the information in all simulated response variables. For further details on the simulation tool, see <span class="citation">(Rimal, Almøy, and Sæbø <a href="references.html#ref-Rimal2018">2018</a>)</span>.
 </dd>
 </dl>
 <p>An example of simulation parameters for the first design is as follows:</p>
@@ -211,20 +211,20 @@ Figure 2: Experimental Design of simulation parameters. Each point represents an
     <span class="dt">type    =</span> <span class="st">&quot;multivariate&quot;</span>
 )</code></pre></div>
 <div class="figure"><span id="fig:cov-plot-1"></span>
-<img src="main_files/figure-html/cov-plot-1-1.svg" alt="(left) Covariance structure of latent components. (right) Covariance structure of predictor and response" width="100%" />
+<img src="main_files/figure-html/cov-plot-1-1.svg" alt="(left) Covariance structure of latent components (right) Covariance structure of predictor and response" width="100%" />
 <p class="caption">
-Figure 3: (left) Covariance structure of latent components. (right) Covariance structure of predictor and response
+Figure 3: (left) Covariance structure of latent components (right) Covariance structure of predictor and response
 </p>
 </div>
-<p>Figure <a href="experimental-design.html#fig:cov-plot-1">3</a> shows the covariance structure of the data simulated with this design. The figure shows that the predictor components at position 1, 2, 3 and 4 are relevant for the first response component. After the rotation with orthogonal rotation matrix, all predictors are somewhat relevant for all response variables, fulfilling other desired properties like multicollinearity and coefficient of determination. For the same design, Figure <a href="experimental-design.html#fig:est-cov-plot">4</a> (top left) shows that the predictor components 1, 2, 3 and 4 are relevant for the first response component. All other predictor components are irrelevant and all other response components are uninformative. However, due to orthogonal rotation of the informative response component together with uninformative response components, all response variables in the population have similar covariance with the relevant predictor components (Figure <a href="experimental-design.html#fig:est-cov-plot">4</a> (top right)). The sample covariances between the predictors components and predictor variables with response variables are in Figure <a href="experimental-design.html#fig:est-cov-plot">4</a> (bottom left) and (bottom right) respectively.</p>
+<p>The covariance structure of the data simulated with this design in the Figure <a href="experimental-design.html#fig:cov-plot-1">3</a> shows that the predictor components at positions 1, 2, 3 and 4 are relevant for the first response component. After the rotation with orthogonal rotation matrix, all predictor variables are somewhat relevant for all response variables, satisfying other desired properties such as multicollinearity and coefficient of determination. For the same design, Figure <a href="experimental-design.html#fig:est-cov-plot">4</a> (top left) shows that the predictor components 1, 2, 3 and 4 are relevant for the first response component. All other predictor components are irrelevant and all other response components are uninformative. However, due to orthogonal rotation of the informative response component together with uninformative response components, all response variables in the population have similar covariance with the relevant predictor components (Figure <a href="experimental-design.html#fig:est-cov-plot">4</a> (top right)). The sample covariances between the predictor components and predictor variables with response variables are shown in Figure <a href="experimental-design.html#fig:est-cov-plot">4</a> (bottom left) and (bottom right) respectively.</p>
 
 <div class="figure"><span id="fig:est-cov-plot"></span>
-<img src="main_files/figure-html/est-cov-plot-1.svg" alt="Expected Scaled absolute covariance between predictor components and response components (top left). Expected Scaled absolute covariance between predictor components and response variables (top right). Sample scaled absolute covariance between predictor components and response variables (bottom left). Sample scaled absolute covariance between predictor variables and response variables (bottom right). The bar in the background are eigenvalues corresponding to each components in population (top plots) and in sample (bottom plots). One can compare the top-right plot (true covariance of the population) with bottom-left (covariance in the simulated data) which shows a similar pattern for different components." width="100%" />
+<img src="main_files/figure-html/est-cov-plot-1.svg" alt="Expected Scaled absolute covariance between predictor components and response components (top left). Expected Scaled absolute covariance between predictor components and response variables (top right). Sample scaled absolute covariance between predictor components and response variables (bottom left). Sample scaled absolute covariance between predictor variables and response variables (bottom right). The bar graph in the background represents eigenvalues corresponding to each components in population (top plots) and in sample (bottom plots). One can compare the top-right plot (true covariance of the population) with bottom-left (covariance in the simulated data) which shows a similar pattern for different components." width="100%" />
 <p class="caption">
-Figure 4: Expected Scaled absolute covariance between predictor components and response components (top left). Expected Scaled absolute covariance between predictor components and response variables (top right). Sample scaled absolute covariance between predictor components and response variables (bottom left). Sample scaled absolute covariance between predictor variables and response variables (bottom right). The bar in the background are eigenvalues corresponding to each components in population (top plots) and in sample (bottom plots). One can compare the top-right plot (true covariance of the population) with bottom-left (covariance in the simulated data) which shows a similar pattern for different components.
+Figure 4: Expected Scaled absolute covariance between predictor components and response components (top left). Expected Scaled absolute covariance between predictor components and response variables (top right). Sample scaled absolute covariance between predictor components and response variables (bottom left). Sample scaled absolute covariance between predictor variables and response variables (bottom right). The bar graph in the background represents eigenvalues corresponding to each components in population (top plots) and in sample (bottom plots). One can compare the top-right plot (true covariance of the population) with bottom-left (covariance in the simulated data) which shows a similar pattern for different components.
 </p>
 </div>
-<p>A similar discussion can be made on all 32 designs where each of the design holds the properties of the data they simulate. These data are used by the prediction methods discussed in previous section. Each prediction method is given independent datasets simulated in order to give them equal opportunity to capture the dynamics in the data.</p>
+<p>A similar description can be made for all 32 designs, where each of the designs holds the properties of the data they simulate. These data are used by the prediction methods discussed in the previous section. Each prediction method is given independently simulated datasets in order to give them an equal opportunity to capture the dynamics in the data.</p>
 </div>
             </section>
 
@@ -262,7 +262,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/therimalaya/03-prediction-comparison/edit/master/Includes/03-ExperimentalDesign.Rmd",
+"link": "https://github.com/therimalaya/03-prediction-comparison/edit/master/includes/03-ExperimentalDesign.Rmd",
 "text": "Edit"
 },
 "history": {

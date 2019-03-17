@@ -1,0 +1,12 @@
+`r if (knitr:::is_html_output()) '# References {-}'`
+<!-- # References {-} -->
+
+```{r include=FALSE, eval = FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown', 'tidyverse', 'simrel'
+), 'packages.bib')
+```
+
+<div id="refs"></div>
+

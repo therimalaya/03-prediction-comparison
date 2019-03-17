@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2019-02-25">
+<meta name="date" content="2019-03-17">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -156,7 +156,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="basis-of-comparison" class="section level1">
 <h1>Basis of comparison</h1>
-<p>This study focuses mainly on the prediction performance of the methods and emphasis specifically on the interaction between the properties of the data controlled by the simulation parameters, and the prediction methods. The prediction performance is measured on the following basis:</p>
+<p>This study focuses mainly on the prediction performance of the methods with emphasis specifically on the interaction between the properties of the data controlled by the simulation parameters, and the prediction methods. The prediction performance is measured based on the following:</p>
 <ol style="list-style-type: lower-alpha">
 <li>The average prediction error that a method can give using arbitrary number of components and</li>
 <li>The average number of components used by the method to give the minimum prediction error</li>
@@ -164,23 +164,23 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Let us define,</p>
 <span class="math display" id="eq:pred-error">\[\begin{equation}
 \mathcal{PE}_{ijkl} = \frac{1}{\sigma_{y_{ij}|x}^2}
-  \mathsf{E}{\left[\left(\boldsymbol{\beta}_{ij} - 
+  \mathsf{E}{\left[\left(\boldsymbol{\beta}_{ij} -
   \boldsymbol{\hat{\beta}_{ijkl}}\right)^t
   \left(\boldsymbol{\Sigma}_{xx}\right)_i
   \left(\boldsymbol{\beta}_{ij} - \boldsymbol{\hat{\beta}_{ijkl}}\right)\right]} + 1
 \tag{7}
 \end{equation}\]</span>
-<p>as a prediction error of response <span class="math inline">\(j = 1, \ldots 4\)</span> for a given design <span class="math inline">\(i=1, 2, \ldots 32\)</span> and method <span class="math inline">\(k=1(PCR), \ldots 5(Senv)\)</span> using <span class="math inline">\(l=0, \ldots 10\)</span> number of components. Here, <span class="math inline">\(\left(\boldsymbol{\Sigma}_{xx}\right)_i\)</span> is the true covariance matrix of the predictors, unique for a particular design <span class="math inline">\(i\)</span> and <span class="math inline">\(\sigma_{y_j\mid x}^2\)</span> for response <span class="math inline">\(j = 1, \ldots m\)</span> is the true model error. Here prediction error is scaled by the true model error to remove the effects of influencing residual variances. Since both the expectation and the variance of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> are unknown, the prediction error are estimated using data from 50 replications as follows,</p>
+<p>as a prediction error of response <span class="math inline">\(j = 1, \ldots 4\)</span> for a given design <span class="math inline">\(i=1, 2, \ldots 32\)</span> and method <span class="math inline">\(k=1(\text{PCR}), \ldots 5(\text{Senv})\)</span> using <span class="math inline">\(l=0, \ldots 10\)</span> number of components. Here, <span class="math inline">\(\left(\boldsymbol{\Sigma}_{xx}\right)_i\)</span> is the true covariance matrix of the predictors, unique for a particular design <span class="math inline">\(i\)</span> and <span class="math inline">\(\sigma_{y_j\mid x}^2\)</span> for response <span class="math inline">\(j = 1, \ldots m\)</span> is the true model error. Here prediction error is scaled by the true model error to remove the effects of influencing residual variances. Since both the expectation and the variance of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> are unknown, the prediction error is estimated using data from 50 replications as follows,</p>
 <span class="math display" id="eq:estimated-pred-error">\[\begin{equation}
 \widehat{\mathcal{PE}_{ijkl}} = \frac{1}{\sigma_{y_{ij}|x}^2}
-  \sum_{r=0}^{50}{\left[\left(\boldsymbol{\beta}_{ij} - 
+  \sum_{r=0}^{50}{\left[\left(\boldsymbol{\beta}_{ij} -
   \boldsymbol{\hat{\beta}_{ijklr}}\right)^t
   \left(\boldsymbol{\Sigma}_{xx}\right)_i
   \left(\boldsymbol{\beta}_{ij} - \boldsymbol{\hat{\beta}_{ijklr}}\right)\right]} + 1
 \tag{8}
 \end{equation}\]</span>
-<p>where, <span class="math inline">\(\widehat{\mathcal{PE}_{ijkl}}\)</span> is the estimated prediction error averaged over <span class="math inline">\(r=50\)</span> replicates.</p>
-<p>Following section focuses on the data for the estimation of these prediction error that are used for the two models discussed above in a) and b) of this section.</p>
+<p>where <span class="math inline">\(\widehat{\mathcal{PE}_{ijkl}}\)</span> is the estimated prediction error averaged over <span class="math inline">\(r=50\)</span> replicates.</p>
+<p>The following section focuses on the data for the estimation of these prediction errors that are used for the two models discussed above in a) and b) of this section.</p>
 </div>
             </section>
 
@@ -218,7 +218,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/therimalaya/03-prediction-comparison/edit/master/Includes/03-ExperimentalDesign.Rmd",
+"link": "https://github.com/therimalaya/03-prediction-comparison/edit/master/includes/03-ExperimentalDesign.Rmd",
 "text": "Edit"
 },
 "history": {

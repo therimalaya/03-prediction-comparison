@@ -1,0 +1,19 @@
+<!-- `r if (knitr:::is_html_output()) '# References {-}'` -->
+
+# (APPENDIX) Appendix A {-}
+
+`r if (knitr::is_html_output()) '# Shiny Application' `
+
+<embed src="http://therimalaya.shinyapps.io/Comparison" height="900px" width="100%">
+
+<script>
+  $("document").ready(function(){
+    $("#shiny-application").parents('.page-inner').css("max-width", "100%");
+    $("#shiny-application>h1:first").hide();
+  })
+</script>
+
+     
+`r if (knitr::is_html_output()) '# Reproduce 
+This document along with PDF, EPUB and shiny application can be reproduced using
+Docker.'`

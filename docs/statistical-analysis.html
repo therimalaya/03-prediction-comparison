@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2019-02-25">
+<meta name="date" content="2019-03-17">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -156,7 +156,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="statistical-analysis" class="section level1">
 <h1>Statistical Analysis</h1>
-<p>In this section we will model the <em>error data</em> and the <em>component data</em> as function of the simulation parameters in order to better understand the connection between data properties and prediction methods.</p>
+<p>This section has modelled the <em>error data</em> and the <em>component data</em> as a function of the simulation parameters to better understand the connection between data properties and prediction methods using multivariate analysis of variation (MANOVA).</p>
 <p>Let us consider a model with third order interaction of the simulation parameters (<code>p</code>, <code>gamma</code>, <code>eta</code> and <code>relpos</code>) and <code>Methods</code> as in <a href="statistical-analysis.html#eq:error-model">(11)</a> and <a href="statistical-analysis.html#eq:component-model">(12)</a> using datasets <span class="math inline">\(\mathbf{u}\)</span> and <span class="math inline">\(\mathbf{v}\)</span>, respectively. Let us refer them as the <em>error model</em> and the <em>component model</em>.</p>
 <dl>
 <dt><strong>Error Model:</strong></dt>
@@ -177,7 +177,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </dd>
 </dl>
 <p>where, <span class="math inline">\(\mathbf{u}_{abcdef}\)</span> is a vector of prediction errors in the <em>error model</em> and <span class="math inline">\(\mathbf{v}_{abcdef}\)</span> is a vector of number of components used by a method to obtain minimum prediction error in the <em>component model</em>.</p>
-<p>Although there are several test-statistic for MANOVA, for large samples all are essentially equivalent <span class="citation">(Johnson and Wichern <a href="references.html#ref-johnson2018applied">2018</a>)</span>. Here we will use Pillai’s trace statistic which is defined as,</p>
+<p>Although there are several test-statistics for MANOVA, all are essentially equivalent for large samples <span class="citation">(Johnson and Wichern <a href="references.html#ref-johnson2018applied">2018</a>)</span>. Here we will use Pillai’s trace statistic which is defined as,</p>
 <span class="math display" id="eq:pillai">\[\begin{equation}
 \text{Pillai statistic} = \text{tr}\left[
 \left(\mathbf{E} + \mathbf{H}\right)^{-1}\mathbf{H}
@@ -194,18 +194,18 @@ Figure 7: Pillai Statistic and F-value for the MANOVA model. The bar represents 
 </p>
 </div>
 <dl>
-<dt><em>Error Model</em>:</dt>
-<dd>Figure <a href="statistical-analysis.html#fig:manova-plot">7</a> (left) shows the Pillai’s trace statistic for factors of the <em>error model</em>. The main effects of <code>Method</code> has largest influence on the model followed by <code>relpos</code>, <code>eta</code> and <code>gamma</code>. A highly significant two interaction of <code>Method</code> with <code>eta</code> followed by <code>relpos</code> and <code>gamma</code> clearly shows that methods perform differently for different levels of these data properties. Further, the significant third order interaction between <code>Method</code>, <code>eta</code> and <code>gamma</code> suggests that a method performs differently for a given level of multicollinearity and the correlation between the responses. Since, only some methods consider modelling predictor and response together, the prediction is affected by the level of correlation between the response (<code>eta</code>) for a given method.
+<dt>Error Model:</dt>
+<dd>Figure <a href="statistical-analysis.html#fig:manova-plot">7</a> (left) shows the Pillai’s trace statistic for factors of the <em>error model</em>. The main effect of <code>Method</code> followed by <code>relpos</code>, <code>eta</code> and <code>gamma</code> have largest influence on the model. A highly significant two-factor interaction of <code>Method</code> with <code>eta</code> followed by <code>relpos</code> and <code>gamma</code> clearly shows that methods perform differently for different levels of these data properties. The significant third order interaction between <code>Method</code>, <code>eta</code> and <code>gamma</code> suggests that the performance of a method differs for a given level of multicollinearity and the correlation between the responses. Since only some methods consider modelling predictor and response together, the prediction is affected by the level of correlation between the responses (<code>eta</code>) for a given method.
 </dd>
-<dt><em>Component Model</em>:</dt>
-<dd>Figure <a href="statistical-analysis.html#fig:manova-plot">7</a> (right) shows the Pillai’s trace statistic for factors of the <em>component model</em>. As in the <em>error model</em>, the main effects of the Method, <code>relpos</code>, <code>gamma</code> and <code>eta</code> have significantly large effect on the number of components that a method has used to obtain minimum prediction error. The two factor interactions of <code>Method</code> with simulation parameters are larger in this case. This shows that the Methods and these interactions have larger effect on the use of number of component than the prediction error itself. In addition, a similar significant high third order interaction as in <em>error model</em> is also observed in this model.
+<dt>Component Model:</dt>
+<dd>Figure <a href="statistical-analysis.html#fig:manova-plot">7</a> (right) shows the Pillai’s trace statistic for factors of the <em>component model</em>. As in the <em>error model</em>, the main effects of the Method, <code>relpos</code>, <code>gamma</code> and <code>eta</code> have significantly large effect on the number of components that a method has used to obtain minimum prediction error. The two factor interactions of <code>Method</code> with simulation parameters are larger in this case. This shows that the Methods and these interactions have larger effect on the use of number of component than the prediction error itself. In addition, a similar significant high third-order interaction as found in the <em>error model</em> is also observed in this model.
 </dd>
 </dl>
-<p>The following section will continue exploring the effects of different levels of the factors in the case of these interactions.</p>
+<p>The following section will continue to explore the effects of different levels of the factors in the case of these interactions.</p>
 <div id="effect-analysis-of-error-model" class="section level2">
 <h2>Effect Analysis of Error Model</h2>
-<p>Figure <a href="statistical-analysis.html#fig:pred-eff-plots">8</a> (left) shows that, for the envelope models, the differences in the prediction error is large. These differences are intensified when position of relevant predictor at 5, 6, 7, 8. The results also show that the envelope methods are more sensible to the levels of <code>eta</code> than the rest of the methods. In the case of PCR and PLS, the difference in the effect of levels of <code>eta</code> is small.</p>
-<p>In Figure <a href="statistical-analysis.html#fig:pred-eff-plots">8</a> (right), we can see that the multicollinearity (controlled by <code>gamma</code>) has affected all the methods. However, envelope methods have better performance on low multicollinearity than high and PCR, PLS1 and PLS2 are robust for high multicollinearity. Despite handling high multicollinearity, these methods have higher prediction error in both cases of multicollinearity than the envelope methods.</p>
+<p>The large difference in the prediction error for the envelope models in Figure <a href="statistical-analysis.html#fig:pred-eff-plots">8</a> (left) are intensified when the position of relevant predictor is at 5, 6, 7, 8. The results also show that the envelope methods are more sensitive to the levels of <code>eta</code> than the rest of the methods. In the case of PCR and PLS, the difference in the effect of levels of <code>eta</code> is small.</p>
+<p>In Figure <a href="statistical-analysis.html#fig:pred-eff-plots">8</a> (right), we can see that the multicollinearity (controlled by <code>gamma</code>) has affected all the methods. However, envelope methods have better performance on low multicollinearity, as opposed to high multicollinearity, and PCR, PLS1 and PLS2 are robust for high multicollinearity. Despite handling high multicollinearity, these methods have higher prediction error in both cases of multicollinearity than the envelope methods.</p>
 
 <div class="figure"><span id="fig:pred-eff-plots"></span>
 <img src="main_files/figure-html/pred-eff-plots-1.svg" alt="Effect plot of some interactions of the multivariate linear model of prediction error" width="100%" />
@@ -223,9 +223,8 @@ Figure 8: Effect plot of some interactions of the multivariate linear model of p
 Figure 9: Effect plot of some interactions of the multivariate linear model of number of components to get minimum prediction error
 </p>
 </div>
-<p>Unlike for prediction errors, Figure <a href="statistical-analysis.html#fig:comp-eff-plots">9</a> (left) shows that the number of components used by the methods to obtain minium prediction error is less affected by the levels of <code>eta</code>. All methods appear to use on average more components when eta increases. Envelope methods are able to obtain minimum prediction error by using components ranging from 1 to 3 in both the cases of <code>relpos</code>. This value is much higher in the case of PCR as its prediction is based only on the principal components of the predictor matrix. The number of components used by this method ranges from 3 to 5 when relevant components are at positions 1, 2, 3, 4 and 5 to 8 when relevant components are at positions 5, 6, 7, 8.</p>
-<p>When relevant components are at position 5, 6, 7, 8, the eigenvalues of relevant predictors becomes smaller and responses are relatively difficult to predict. This becomes more critical for high multicollinearity case. Figure <a href="statistical-analysis.html#fig:comp-eff-plots">9</a> (right) shows that the envelope methods are less influenced by the level of <code>relpos</code> and are particularly better in achieving minimum prediction error using fewer number of components than others.</p>
-<p>In the case of <code>PCR</code>, prediction relies heavily on the position of relevant components (<code>relpos</code>). Here the method has used 3 to 5 number of components when the relevant components are at positions 1, 2, 3, 4; and 7 to 8 components when the relevant components are at positions 5, 6, 7, 8. This reinforces the conclusion from the density plot (Figure <a href="exploration.html#fig:comp-pca-hist-mthd-gamma-relpos">6</a>) in the previous section.</p>
+<p>Unlike for prediction errors, Figure <a href="statistical-analysis.html#fig:comp-eff-plots">9</a> (left) shows that the number of components used by the methods to obtain minimum prediction error is less affected by the levels of <code>eta</code>. All methods appear to use on average more components when eta increases. Envelope methods are able to obtain minimum prediction error by using components ranging from 1 to 3 in both the cases of <code>relpos</code>. This value is much higher in the case of PCR as its prediction is based only on the principal components of the predictor matrix. The number of components used by this method ranges from 3 to 5 when relevant components are at positions 1, 2, 3, 4 and 5 to 8 when relevant components are at positions 5, 6, 7, 8.</p>
+<p>When relevant components are at position 5, 6, 7, 8, the eigenvalues of relevant predictors becomes smaller and responses are relatively difficult to predict. This becomes more critical for high multicollinearity cases. Figure <a href="statistical-analysis.html#fig:comp-eff-plots">9</a> (right) shows that the envelope methods are less influenced by the level of <code>relpos</code> and are particularly better in achieving minimum prediction error using a fewer number of components than other methods.</p>
 
 </div>
 </div>
@@ -265,7 +264,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/therimalaya/03-prediction-comparison/edit/master/Includes/05-Analysis.Rmd",
+"link": "https://github.com/therimalaya/03-prediction-comparison/edit/master/includes/05-Analysis.Rmd",
 "text": "Edit"
 },
 "history": {

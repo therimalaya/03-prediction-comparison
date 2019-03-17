@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2019-02-25">
+<meta name="date" content="2019-03-17">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -156,7 +156,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="data-preparation" class="section level1">
 <h1>Data Preparation</h1>
-<p>A dataset for estimating <a href="basis-of-comparison.html#eq:pred-error">(7)</a> is obtained from simulation which contains five factors corresponding to simulation parameters, prediction methods, number of components, replications and prediction error for four responses. The prediction error is computed using 0 to 10 predictor components for each 50 replicates as,</p>
+<p>A dataset for estimating <a href="basis-of-comparison.html#eq:pred-error">(7)</a> is obtained from simulation which contains a) five factors corresponding to simulation parameters, b) prediction methods, c) number of components, d) replications and e) prediction error for four responses. The prediction error is computed using predictor components ranging from 0 to 10 for each 50 replicates as,</p>
 <span class="math display">\[\begin{equation*}
 \left(\widehat{\mathcal{PE_\circ}}\right)_{ijklr} =
   \frac{1}{\sigma_{y_{ij}\mid x}^2}\left[
@@ -165,12 +165,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
     \left(\boldsymbol{\beta}_{ij} - \hat{\boldsymbol{\beta}}_{ijklr}\right)
   \right] + 1
 \end{equation*}\]</span>
-<p>.</p>
-<p>Thus there are 32 (design) <span class="math inline">\(\times\)</span> 5 (methods) <span class="math inline">\(\times\)</span> 11 (number of components) <span class="math inline">\(\times\)</span> 50 (replications), i.e. 88000 observations corresponding to the response variables from <code>Y1</code> to <code>Y4</code>.</p>
-<p>Since we will focus our discussion on the average minimum prediction error that a method can obtain and the average number of components they use to get the minimum prediciton error in each replicates, the dataset discussed above is summarized to construct following two smaller datasets. Let us call them <em>Error Dataset</em> and <em>Component Dataset</em>.</p>
+<p>Thus there are 32 (designs) <span class="math inline">\(\times\)</span> 5 (methods) <span class="math inline">\(\times\)</span> 11 (number of components) <span class="math inline">\(\times\)</span> 50 (replications), i.e. 88000 observations corresponding to the response variables from <code>Y1</code> to <code>Y4</code>.</p>
+<p>Since our discussions focus on the average minimum prediction error that a method can obtain and the average number of components they use to get the minimum prediction error in each replicates, the dataset discussed above is summarized as constructing the following two smaller datasets. Let us call them <em>Error Dataset</em> and <em>Component Dataset</em>.</p>
 <dl>
 <dt><em>Error Dataset</em>:</dt>
-<dd>For each prediction method, design and response, an average prediction error is computed over all replicates for each components. Next, a component that gives the minimum of this average prediction error is selected, i.e.,
+<dd>For each prediction method, design and response, an average prediction error is computed over all replicates for each component. Next, a component that gives the minimum of this average prediction error is selected, i.e.,
 <span class="math display" id="eq:min-pred">\[\begin{equation}
   l_\circ = \operatorname*{argmin}_{l}\left[\frac{1}{50}\sum_{i=1}^{50}{\left(\mathcal{PE}_\circ\right)_{ijklr}}\right]
   \tag{9}
@@ -179,12 +178,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <dd><p>Using the component <span class="math inline">\(l_\circ\)</span>, a dataset of <span class="math inline">\(\left(\mathcal{PE}_\circ\right)_{ijkl_\circ r}\)</span> is used as the <em>Error Dataset</em>. Let <span class="math inline">\(\mathbf{u}_{(8000 \times 4)} = (u_j)\)</span> for <span class="math inline">\(j = 1, \ldots 4\)</span> be the outcome variables measuring the prediction error corresponding to the response number <span class="math inline">\(j\)</span> in the context of this dataset.</p>
 </dd>
 <dt><em>Component Dataset</em>:</dt>
-<dd>The component number that gives the minimum prediction error in each replication is referred to as the <em>Component Dataset</em>, i.e.,
+<dd>The number of components that gives the minimum prediction error in each replication is referred to as the <em>Component Dataset</em>, i.e.,
 <span class="math display" id="eq:min-comp">\[\begin{equation}
   l_{\circ} = \operatorname*{argmin}_{l}\left[\mathcal{PE}_{ijklr}\right]
   \tag{10}
   \end{equation}\]</span>
-Here <span class="math inline">\(l_\circ\)</span> is the number of components that gives minimum prediction error <span class="math inline">\(\left(\mathcal{PE}_\circ\right)_{ijklr}\)</span> for design <span class="math inline">\(i\)</span>, response <span class="math inline">\(j\)</span>, method <span class="math inline">\(k\)</span> and replicate <span class="math inline">\(r\)</span>. Let <span class="math inline">\(\mathbf{v}_{(8000 \times 4)} = (v_j)\)</span> for <span class="math inline">\(j = 1, \ldots 4\)</span> be the outcome variables measuring the number of components used for minimum prediction error corresponding the response <span class="math inline">\(j\)</span> in the context of the component dataset.
+Here <span class="math inline">\(l_\circ\)</span> is the number of components that gives minimum prediction error <span class="math inline">\(\left(\mathcal{PE}_\circ\right)_{ijklr}\)</span> for design <span class="math inline">\(i\)</span>, response <span class="math inline">\(j\)</span>, method <span class="math inline">\(k\)</span> and replicate <span class="math inline">\(r\)</span>. Let <span class="math inline">\(\mathbf{v}_{(8000 \times 4)} = (v_j)\)</span> for <span class="math inline">\(j = 1, \ldots 4\)</span> be the outcome variables measuring the number of components used for minimum prediction error corresponding to the response <span class="math inline">\(j\)</span> in the context of this dataset.
 </dd>
 </dl>
 
@@ -225,7 +224,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/therimalaya/03-prediction-comparison/edit/master/Includes/03-ExperimentalDesign.Rmd",
+"link": "https://github.com/therimalaya/03-prediction-comparison/edit/master/includes/03-ExperimentalDesign.Rmd",
 "text": "Edit"
 },
 "history": {
