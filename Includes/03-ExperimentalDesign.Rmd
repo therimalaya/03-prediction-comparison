@@ -6,14 +6,15 @@ __Number of predictors:__
 : To observe the performance of the methods on tall and wide predictor matrices, `r catvec(opts$p)` predictor variables are simulated with the number of observations fixed at 100. Parameter `p` controls these properties in the `simrel` function.
 
 __Multicollinearity in predictor variables:__
-: Highly collinear predictors can be explained completely by few components. The parameter `gamma` ($\gamma$) in `simrel` controls decline in the eigenvalues of the predictor variables as \@ref(eq:gamma).
+: Highly collinear predictors can be explained completely by a few components. The parameter `gamma` ($\gamma$) in `simrel` controls decline in the eigenvalues of the predictor variables as \@ref(eq:gamma).
+
 
     \begin{equation}
       \lambda_i = e^{-\gamma(i - 1)}, \gamma > 0 \text{ and } i = 1, 2, \ldots, p
       (\#eq:gamma)
     \end{equation}
 
-  Here, $\lambda_i, i = 1, 2, \ldots p$ are eigenvalues of the predictor variables. We have used `r catvec(opts$gamma)` as different levels of `gamma`. The higher the value of gamma, the higher the multicollinearity will be, and vice versa.
+    Here, $\lambda_i, i = 1, 2, \ldots p$ are eigenvalues of the predictor variables. We have used `r catvec(opts$gamma)` as different levels of `gamma`. The higher the value of gamma, the higher the multicollinearity will be, and vice versa.
 
 __Correlation in response variables:__
 : Correlation among response variables has been explored to a lesser extent. Here we have tried to explore that part with `r num_vec[length(opts$eta)]` levels of correlation in the response variables. We have used the `eta` ($\eta$) parameter of `simrel` for controlling the decline in eigenvalues corresponding to the response variables as \@ref(eq:eta).
@@ -23,10 +24,10 @@ __Correlation in response variables:__
       (\#eq:eta)
     \end{equation}
 
-  Here, $\kappa_j, i = 1, 2, \ldots m$ are the eigenvalues of the response variables and `m` is the number of response variables. We have used `r catvec(opts$eta)` as different levels of `eta`. The larger the value of eta, the larger will be the correlation will be between response variables, and vice versa.
+    Here, $\kappa_j, i = 1, 2, \ldots m$ are the eigenvalues of the response variables and `m` is the number of response variables. We have used `r catvec(opts$eta)` as different levels of `eta`. The larger the value of eta, the larger will be the correlation will be between response variables and vice versa.
 
 __Position of predictor components relevant to the response:__
-: The principal components of the predictors are ordered. The first principal component captures most of the variation in the predictors. The second captures the most of the remainder left by the first principal component and so on. In highly collinear predictors, the variation captured by the first few components is relatively high. However, if those components are not relevant for the response, prediction becomes difficult [@Helland1994b]. Here, two levels of the positions of these relevant components are used as `r catvec(sapply(opts$relpos, list2chr))`.
+: The principal components of the predictors are ordered. The first principal component captures most of the variation in the predictors. The second captures most of the remainder left by the first principal component and so on. In highly collinear predictors, the variation captured by the first few components is relatively high. However, if those components are not relevant for the response, prediction becomes difficult [@Helland1994b]. Here, two levels of the positions of these relevant components are used as `r catvec(sapply(opts$relpos, list2chr))`.
 
 
 Moreover, a complete factorial design from the levels of the above parameters gave us `r nrow(design)` designs. Each design is associated with a dataset having unique properties. Figure~\@ref(fig:design-plot), shows all the designs. For each design and prediction method, 50 datasets were simulated as replicates. In total, there were $`r length(mthds)` \times `r nrow(design)` \times 50$, i.e. `r length(mthds) * nrow(design) * 50` simulated datasets.
@@ -89,10 +90,12 @@ grid::grid.draw(plt)
 
 
 
- The covariance structure of the data simulated with this design in the Figure \@ref(fig:cov-plot-1) shows that the predictor components at positions `r catvec(unlist(sobj$relpos))` are relevant for the first response component. After the rotation with orthogonal rotation matrix, all predictor variables are somewhat relevant for all response variables, satisfying other desired properties such as multicollinearity and coefficient of determination. For the same design, Figure \@ref(fig:est-cov-plot) (top left) shows that the predictor components `r catvec(unlist(sobj$relpos))` are relevant for the first response component. All other predictor components are irrelevant and all other response components are uninformative. However, due to orthogonal rotation of the informative response component together with uninformative response components, all response variables in the population have similar covariance with the relevant predictor components (Figure \@ref(fig:est-cov-plot) (top right)). The sample covariances between the predictor components and predictor variables with response variables are shown in Figure \@ref(fig:est-cov-plot) (bottom left) and (bottom right) respectively.
+ The covariance structure of the data simulated with this design in the Figure \@ref(fig:cov-plot-1) shows that the predictor components at positions `r catvec(unlist(sobj$relpos))` are relevant for the first response component. After the rotation with an orthogonal rotation matrix, all predictor variables are somewhat relevant for all response variables, satisfying other desired properties such as multicollinearity and coefficient of determination. For the same design, Figure \@ref(fig:est-cov-plot) (top left) shows that the predictor components `r catvec(unlist(sobj$relpos))` are relevant for the first response component. All other predictor components are irrelevant and all other response components are uninformative. However, due to orthogonal rotation of the informative response component together with uninformative response components, all response variables in the population have similar covariance with the relevant predictor components (Figure \@ref(fig:est-cov-plot) (top right)). The sample covariances between the predictor components and predictor variables with response variables are shown in Figure \@ref(fig:est-cov-plot) (bottom left) and (bottom right) respectively.
 
 
-(ref:simrel-plot) Expected Scaled absolute covariance between predictor components and response components (top left). Expected Scaled absolute covariance between predictor components and response variables (top right). Sample scaled absolute covariance between predictor components and response variables (bottom left). Sample scaled absolute covariance between predictor variables and response variables (bottom right). The bar graph in the background represents eigenvalues corresponding to each components in population (top plots) and in sample (bottom plots). One can compare the top-right plot (true covariance of the population) with bottom-left (covariance in the simulated data) which shows a similar pattern for different components.
+
+(ref:simrel-plot) Expected Scaled absolute covariance between predictor components and response components (top left). Expected Scaled absolute covariance between predictor components and response variables (top right). Sample scaled absolute covariance between predictor components and response variables (bottom left). Sample scaled absolute covariance between predictor variables and response variables (bottom right). The bar graph in the background represents eigenvalues corresponding to each component in the population (top plots) and in the sample (bottom plots). One can compare the top-right plot (true covariance of the population) with bottom-left (covariance in the simulated data) which shows a similar pattern for different components.
+
 
 ```{r est-cov-plot, fig.asp = 0.8, fig.width = 9, fig.cap = "(ref:simrel-plot)", warnings=FALSE, message=FALSE}
 set.seed(010101) # design-method-replication
@@ -142,9 +145,10 @@ A similar description can be made for all 32 designs, where each of the designs 
 
 # Basis of comparison
 
-This study focuses mainly on the prediction performance of the methods with emphasis specifically on the interaction between the properties of the data controlled by the simulation parameters, and the prediction methods. The prediction performance is measured based on the following:
+This study focuses mainly on the prediction performance of the methods with an emphasis specifically on the interaction between the properties of the data controlled by the simulation parameters and the prediction methods. The prediction performance is measured based on the following:
 
-a) The average prediction error that a method can give using arbitrary number of components and
+
+a) The average prediction error that a method can give using an arbitrary number of components and
 b) The average number of components used by the method to give the minimum prediction error
 
 Let us define,
@@ -173,7 +177,8 @@ The following section focuses on the data for the estimation of these prediction
 
 # Data Preparation
 
-A dataset for estimating \@ref(eq:pred-error) is obtained from simulation which contains a) five factors corresponding to simulation parameters, b) prediction methods, c) number of components, d) replications and e) prediction error for `r num_vec[unique(opts$m)]` responses. The prediction error is computed using predictor components ranging from 0 to 10 for each 50 replicates as,
+A dataset for estimating \@ref(eq:pred-error) is obtained from simulation which contains a) five factors corresponding to simulation parameters, b) prediction methods, c) number of components, d) replications and e) prediction error for `r num_vec[unique(opts$m)]` responses. The prediction error is computed using predictor components ranging from 0 to 10 for every 50 replicates as,
+
 
 \begin{equation*}
 \left(\widehat{\mathcal{PE_\circ}}\right)_{ijklr} =

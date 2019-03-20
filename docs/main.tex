@@ -233,7 +233,7 @@ Sciences, Ås, Norway}
 
 \section{Introduction}\label{introduction}
 
-Prediction has been an essential component of modern data science,
+The prediction has been an essential component of modern data science,
 whether in the discipline of statistical analysis or machine learning.
 Modern technology has facilitated a massive explosion of data however,
 such data often contain irrelevant information that consequently makes
@@ -243,18 +243,18 @@ models. Such models mostly contain predictor variables that are directly
 or indirectly correlated with other predictor variables. In addition,
 studies often consist of many response variables correlated with each
 other. These interlinked relationships influence any study, whether it
-is predictive modeling or inference.
+is predictive modelling or inference.
 
 Modern inter-disciplinary research fields such as chemometrics,
 econometrics and bioinformatics handle multi-response models
 extensively. This paper attempts to compare some multivariate prediction
 methods based on their prediction performance on linear model data with
-specific properties. The properties include correlation between response
-variables, correlation between predictor variables, number of predictor
-variables and the position of relevant predictor components. These
-properties are discussed more in the
+specific properties. The properties include the correlation between
+response variables, the correlation between predictor variables, number
+of predictor variables and the position of relevant predictor
+components. These properties are discussed more in the
 \protect\hyperlink{experimental-design}{Experimental Design} section.
-Among others \citet{saebo2015simrel} and \citet{Alm_y_1996} have
+Among others, \citet{saebo2015simrel} and \citet{Alm_y_1996} have
 conducted a similar comparison in the single response setting. In
 addition, \citet{Rimal2018} have also conducted a basic comparison of
 some prediction methods and their interaction with the data properties
@@ -266,9 +266,9 @@ with customary prediction methods such as Principal Component Regression
 (PCR), Partial Least Squares Regression (PLS) using simulated dataset
 with controlled properties. In the case of PLS, we have used PLS1 which
 fits individual response separately and PLS2 which fits all the
-responses together. An experimental design and the methods under
-comparison are discussed further, followed by a brief discussion of the
-strategy behind the data simulation.
+responses together. Experimental design and the methods under comparison
+are discussed further, followed by a brief discussion of the strategy
+behind the data simulation.
 
 \section{Simulation Model}\label{simulation-model}
 
@@ -322,12 +322,12 @@ response \(\mathbf{y}\) is partly explained by the predictor
 \(\mathbf{x}\). However, in many situations, only a subspace of the
 predictor space is relevant for the variation in the response
 \(\mathbf{y}\). This space can be referred to as the relevant space of
-\(\mathbf{x}\) and the rest as irrelevant space. In the similar way, for
-a certain model, we can assume that a subspace in the response space
+\(\mathbf{x}\) and the rest as irrelevant space. In a similar way, for a
+certain model, we can assume that a subspace in the response space
 exists and contains the information that the relevant space in predictor
 can explain (Figure-\ref{fig:relevant-space}). \citet{cook2010envelope}
 and \citet{cook2015simultaneous} have referred to the relevant space as
-material space, and the irrelevant space as immaterial space.
+material space and the irrelevant space as immaterial space.
 
 \begin{figure}
 
@@ -401,13 +401,13 @@ In addition, various simulation studies have been performed with the
 model based on the concept of relevant subspace. A simulation study by
 \citet{Alm_y_1996} has used a single response simulation model based on
 reduced regression and has compared some contemporary multivariate
-estimators. In the recent years \citet{helland2012near},
+estimators. In recent years \citet{helland2012near},
 \citet{saebo2015simrel}, \citet{helland2016algorithms} and
 \citet{Rimal2018} implemented similar simulation examples similar to
 those we are discussing in this study. This paper, however, presents an
 elaborate comparison of the prediction using multi-response simulated
 linear model data. The properties of the simulated data are varied
-through different levels of simulation parameters based on an
+through different levels of simulation-parameters based on an
 experimental design. \citet{Rimal2018} provide a detailed discussion of
 the simulation model that we have adopted here. The following section
 presents the estimators being compared in more detail.
@@ -421,22 +421,22 @@ wide predictor matrices, i.e. \(p\) (number or predictors)
 \textgreater{} \(n\) (number of observation) are common. These methods
 are popular in multivariate analysis, especially for exploratory studies
 and predictions. In recent years, a concept of envelope introduced by
-\citet{Cook2007a} based on reduction in regression model was implemented
-for the development of different estimators. This study compares these
-prediction methods based on their prediction performance on data
-simulated with different controlled properties.
+\citet{Cook2007a} based on the reduction in the regression model was
+implemented for the development of different estimators. This study
+compares these prediction methods based on their prediction performance
+on data simulated with different controlled properties.
 
 \begin{description}
 \tightlist
 \item[\emph{Principal Components Regression (PCR):}]
 Principal components are the linear combinations of predictor variables
 such that the transformation makes the new variables uncorrelated. In
-addition the variation of the original dataset captured by the new
-variables are sorted in descending order. In other words, each
-successive component captures maximum variation left by the preceding
-components in predictor variables \citep{Jolliffe2002}. Principal
-components regression uses these principal components as a new predictor
-to explain the variation in the response.
+addition, the variation of the original dataset captured by the new
+variables is sorted in descending order. In other words, each successive
+component captures maximum variation left by the preceding components in
+predictor variables \citep{Jolliffe2002}. Principal components
+regression uses these principal components as a new predictor to explain
+the variation in the response.
 \item[\emph{Partial Least Squares (PLS):}]
 Two variants of PLS: PLS1 and PLS2 are used for comparison. The first
 one considers individual response variables separately, i.e.~each
@@ -484,15 +484,15 @@ coefficients \((\hat{\boldsymbol{\alpha}})\) corresponding to these new
 variables \(\mathbf{z}\) were transformed back to obtain coefficients
 for each predictor variable as,
 \[\hat{\boldsymbol{\beta}} = \mathbf{e}_k\hat{\boldsymbol{\alpha}_k}\]
-where, \(\mathbf{e}_k\) is a matrix of eigenvectors with first \(k\)
+where \(\mathbf{e}_k\) is a matrix of eigenvectors with the first \(k\)
 number of components. Only simultaneous envelope allows to specify the
-dimension of response envelope and all the simulation is based on single
-latent dimension of response, so it is fixed at two in the simulation
-study. In the case of Senv, when the envelope dimension for response is
-the same as the number of responses, it degenerates to the Xenv method
-and if the envelope dimension for predictor is the same as the number of
-predictors, it degenerates to the standard multivariate linear
-regression \citep{env2018}.
+dimension of response envelope and all the simulation is based on a
+single latent dimension of response, so it is fixed at two in the
+simulation study. In the case of Senv, when the envelope dimension for
+response is the same as the number of responses, it degenerates to the
+Xenv method and if the envelope dimension for the predictor is the same
+as the number of predictors, it degenerates to the standard multivariate
+linear regression \citep{env2018}.
 
 \hypertarget{experimental-design}{\section{Experimental
 Design}\label{experimental-design}}
@@ -517,7 +517,7 @@ matrices, 20 and 250 predictor variables are simulated with the number
 of observations fixed at 100. Parameter \texttt{p} controls these
 properties in the \texttt{simrel} function.
 \item[\textbf{Multicollinearity in predictor variables:}]
-Highly collinear predictors can be explained completely by few
+Highly collinear predictors can be explained completely by a few
 components. The parameter \texttt{gamma} (\(\gamma\)) in \texttt{simrel}
 controls decline in the eigenvalues of the predictor variables as
 \eqref{eq:gamma}.
@@ -526,14 +526,11 @@ controls decline in the eigenvalues of the predictor variables as
   \lambda_i = e^{-\gamma(i - 1)}, \gamma > 0 \text{ and } i = 1, 2, \ldots, p
   \label{eq:gamma}
 \end{equation}
-\end{description}
 
 Here, \(\lambda_i, i = 1, 2, \ldots p\) are eigenvalues of the predictor
 variables. We have used 0.2 and 0.9 as different levels of
 \texttt{gamma}. The higher the value of gamma, the higher the
 multicollinearity will be, and vice versa.
-
-\begin{description}
 \item[\textbf{Correlation in response variables:}]
 Correlation among response variables has been explored to a lesser
 extent. Here we have tried to explore that part with four levels of
@@ -545,27 +542,22 @@ eigenvalues corresponding to the response variables as \eqref{eq:eta}.
   \kappa_j = e^{-\eta(j - 1)}, \eta > 0 \text{ and } j = 1, 2, \ldots, m
   \label{eq:eta}
 \end{equation}
-\end{description}
 
 Here, \(\kappa_j, i = 1, 2, \ldots m\) are the eigenvalues of the
 response variables and \texttt{m} is the number of response variables.
 We have used 0, 0.4, 0.8 and 1.2 as different levels of \texttt{eta}.
 The larger the value of eta, the larger will be the correlation will be
-between response variables, and vice versa.
-
-\begin{description}
-\tightlist
+between response variables and vice versa.
 \item[\textbf{Position of predictor components relevant to the
 response:}]
 The principal components of the predictors are ordered. The first
 principal component captures most of the variation in the predictors.
-The second captures the most of the remainder left by the first
-principal component and so on. In highly collinear predictors, the
-variation captured by the first few components is relatively high.
-However, if those components are not relevant for the response,
-prediction becomes difficult \citep{Helland1994b}. Here, two levels of
-the positions of these relevant components are used as 1, 2, 3, 4 and 5,
-6, 7, 8.
+The second captures most of the remainder left by the first principal
+component and so on. In highly collinear predictors, the variation
+captured by the first few components is relatively high. However, if
+those components are not relevant for the response, prediction becomes
+difficult \citep{Helland1994b}. Here, two levels of the positions of
+these relevant components are used as 1, 2, 3, 4 and 5, 6, 7, 8.
 \end{description}
 
 Moreover, a complete factorial design from the levels of the above
@@ -619,7 +611,7 @@ An example of simulation parameters for the first design is as follows:
 The covariance structure of the data simulated with this design in the
 Figure \ref{fig:cov-plot-1} shows that the predictor components at
 positions 1, 2, 3 and 4 are relevant for the first response component.
-After the rotation with orthogonal rotation matrix, all predictor
+After the rotation with an orthogonal rotation matrix, all predictor
 variables are somewhat relevant for all response variables, satisfying
 other desired properties such as multicollinearity and coefficient of
 determination. For the same design, Figure \ref{fig:est-cov-plot} (top
@@ -654,10 +646,10 @@ right). Sample scaled absolute covariance between predictor components
 and response variables (bottom left). Sample scaled absolute covariance
 between predictor variables and response variables (bottom right). The
 bar graph in the background represents eigenvalues corresponding to each
-components in population (top plots) and in sample (bottom plots). One
-can compare the top-right plot (true covariance of the population) with
-bottom-left (covariance in the simulated data) which shows a similar
-pattern for different components.}\label{fig:est-cov-plot}
+component in the population (top plots) and in the sample (bottom
+plots). One can compare the top-right plot (true covariance of the
+population) with bottom-left (covariance in the simulated data) which
+shows a similar pattern for different components.}\label{fig:est-cov-plot}
 \end{figure}
 
 A similar description can be made for all 32 designs, where each of the
@@ -669,15 +661,15 @@ give them an equal opportunity to capture the dynamics in the data.
 \section{Basis of comparison}\label{basis-of-comparison}
 
 This study focuses mainly on the prediction performance of the methods
-with emphasis specifically on the interaction between the properties of
-the data controlled by the simulation parameters, and the prediction
+with an emphasis specifically on the interaction between the properties
+of the data controlled by the simulation parameters and the prediction
 methods. The prediction performance is measured based on the following:
 
 \begin{enumerate}
 \def\labelenumi{\alph{enumi})}
 \tightlist
 \item
-  The average prediction error that a method can give using arbitrary
+  The average prediction error that a method can give using an arbitrary
   number of components and
 \item
   The average number of components used by the method to give the
@@ -729,7 +721,7 @@ A dataset for estimating \eqref{eq:pred-error} is obtained from simulation
 which contains a) five factors corresponding to simulation parameters,
 b) prediction methods, c) number of components, d) replications and e)
 prediction error for four responses. The prediction error is computed
-using predictor components ranging from 0 to 10 for each 50 replicates
+using predictor components ranging from 0 to 10 for every 50 replicates
 as,
 
 \begin{equation*}
@@ -800,13 +792,13 @@ column of \(\mathbf{t}_u\).
 
 Since higher prediction errors correspond to high scores, the plot shows
 that the PCR, PLS1 and PLS2 methods are influenced by the two levels of
-position of relevant predictor components. When the relevant predictors
-are at positions 5, 6, 7, 8, the eigenvalues corresponding to them are
-relatively smaller. This also suggests that PCR, PLS1 and PLS2 depends
-greatly on the position of the relevant components, and the variation of
-these components affects their prediction performance. However, the
-envelope methods appeared to be less influenced by \texttt{relpos} in
-this regard.
+the position of relevant predictor components. When the relevant
+predictors are at positions 5, 6, 7, 8, the eigenvalues corresponding to
+them are relatively smaller. This also suggests that PCR, PLS1 and PLS2
+depend greatly on the position of the relevant components, and the
+variation of these components affects their prediction performance.
+However, the envelope methods appeared to be less influenced by
+\texttt{relpos} in this regard.
 
 
 
@@ -825,13 +817,13 @@ i.e., the level of multicollinearity, has a lesser effect when the
 relevant predictors are at positions 1, 2, 3, 4. This indicates that the
 methods are somewhat robust for handling collinear predictors.
 Nevertheless, when the relevant predictors are at positions 5, 6, 7, 8,
-high multicollinearity results in small variance of these relevant
+high multicollinearity results in a small variance of these relevant
 components and consequently yields poor prediction. This is in
 accordance with the findings of \citet{Helland1994b}.
 
 Furthermore, the density curves for PCR, PLS1 and PLS2 are similar for
 different levels of \texttt{eta}, i.e., the factor controlling the
-correlation between responses. However the envelope models have been
+correlation between responses. However, the envelope models have been
 shown to have distinct interactions between the positions of relevant
 components (\texttt{relpos}) and \texttt{eta}. Here higher levels of
 \texttt{eta} have yielded higher scores and clear separation between two
@@ -839,7 +831,7 @@ levels of \texttt{relpos}.
 
 In the case of high multicollinearity, envelope methods have resulted in
 some large outliers indicating that in some cases that the methods can
-result in give unexpected prediction.
+result in giving an unexpected prediction.
 
 
 
@@ -897,8 +889,8 @@ model} and the \emph{component model}.
 \end{description}
 
 where, \(\mathbf{u}_{abcdef}\) is a vector of prediction errors in the
-\emph{error model} and \(\mathbf{v}_{abcdef}\) is a vector of number of
-components used by a method to obtain minimum prediction error in the
+\emph{error model} and \(\mathbf{v}_{abcdef}\) is a vector of the number
+of components used by a method to obtain minimum prediction error in the
 \emph{component model}.
 
 Although there are several test-statistics for MANOVA, all are
@@ -914,7 +906,7 @@ Here we will use Pillai's trace statistic which is defined as,
 
 Here the matrix \(\mathbf{H}\) holds between-sum-of-squares and
 sum-of-products for each of the predictors. The matrix \(\mathbf{E}\)
-has a within sum of squares and sum of products for each of the
+has a within the sum of squares and sum of products for each of the
 predictors. \(\nu_i\) represents the eigenvalues corresponding to
 \(\mathbf{E}^{-1}\mathbf{H}\) \citep{rencher2003methods}.
 
@@ -931,7 +923,7 @@ corresponding F-values as text labels for both models.
 \begin{figure}
 \includegraphics[width=1\linewidth]{main_files/figure-latex/manova-plot-1} \caption{Pillai Statistic and F-value for the MANOVA model. The
 bar represents the Pillai Statistic and the text labels are F-value for
-corresponding factor.}\label{fig:manova-plot}
+the corresponding factor.}\label{fig:manova-plot}
 \end{figure}
 
 \begin{description}
@@ -955,14 +947,14 @@ given method.
 Figure \ref{fig:manova-plot} (right) shows the Pillai's trace statistic
 for factors of the \emph{component model}. As in the \emph{error model},
 the main effects of the Method, \texttt{relpos}, \texttt{gamma} and
-\texttt{eta} have significantly large effect on the number of components
-that a method has used to obtain minimum prediction error. The two
-factor interactions of \texttt{Method} with simulation parameters are
-larger in this case. This shows that the Methods and these interactions
-have larger effect on the use of number of component than the prediction
-error itself. In addition, a similar significant high third-order
-interaction as found in the \emph{error model} is also observed in this
-model.
+\texttt{eta} have a significantly large effect on the number of
+components that a method has used to obtain minimum prediction error.
+The two-factor interactions of \texttt{Method} with simulation
+parameters are larger in this case. This shows that the Methods and
+these interactions have a larger effect on the use of the number of
+component than the prediction error itself. In addition, a similar
+significant high third-order interaction as found in the \emph{error
+model} is also observed in this model.
 \end{description}
 
 The following section will continue to explore the effects of different
@@ -972,11 +964,11 @@ levels of the factors in the case of these interactions.
 Model}\label{effect-analysis-of-error-model}
 
 The large difference in the prediction error for the envelope models in
-Figure \ref{fig:pred-eff-plots} (left) are intensified when the position
-of relevant predictor is at 5, 6, 7, 8. The results also show that the
-envelope methods are more sensitive to the levels of \texttt{eta} than
-the rest of the methods. In the case of PCR and PLS, the difference in
-the effect of levels of \texttt{eta} is small.
+Figure \ref{fig:pred-eff-plots} (left) is intensified when the position
+of the relevant predictor is at 5, 6, 7, 8. The results also show that
+the envelope methods are more sensitive to the levels of \texttt{eta}
+than the rest of the methods. In the case of PCR and PLS, the difference
+in the effect of levels of \texttt{eta} is small.
 
 In Figure \ref{fig:pred-eff-plots} (right), we can see that the
 multicollinearity (controlled by \texttt{gamma}) has affected all the
@@ -1002,7 +994,7 @@ Model}\label{effect-analysis-of-component-model}
 
 \begin{figure}[!htb]
 \includegraphics[width=1\linewidth]{main_files/figure-latex/comp-eff-plots-1} \caption{Effect plot of some interactions of the multivariate
-linear model of number of components to get minimum prediction error}\label{fig:comp-eff-plots}
+linear model of the number of components to get minimum prediction error}\label{fig:comp-eff-plots}
 \end{figure}
 
 Unlike for prediction errors, Figure \ref{fig:comp-eff-plots} (left)
@@ -1059,7 +1051,7 @@ spectra.
 
 \begin{figure}
 \includegraphics[width=1\linewidth]{main_files/figure-latex/ex1-cumulative-ues-1} \caption{(Left) Bar represents the eigenvalues
-corresponding to Raman Spectra. The points and line are the covariance
+corresponding to Raman Spectra. The points and line are the covariances
 between response and the principal components of Raman Spectra. All the
 values are normalized to scale from 0 to 1. (Middle) Cumulative sum of
 eigenvalues corresponding to predictors. (Right) Cumulative sum of
@@ -1069,8 +1061,8 @@ corresponds to test and training datasets respectively.}\label{fig:ex1-cumulativ
 
 Figure \ref{fig:ex1-cumulative-ues} (left) shows that the first few
 predictor components are somewhat correlated with response variables. In
-addition the most variation in predictors is explained by less than five
-components (middle). Further, the response variables are highly
+addition, the most variation in predictors is explained by less than
+five components (middle). Further, the response variables are highly
 correlated, suggesting that a single latent dimension explains most of
 the variation (right). We may therefore also believe that the relevant
 latent space in the response matrix is of dimension one. This resembles
@@ -1113,7 +1105,7 @@ further information can be obtained.
 
 \begin{figure}
 \includegraphics[width=1\linewidth]{main_files/figure-latex/ex2-cumulative-eigenvalues-1} \caption{(Left) Bar represents the eigenvalues
-corresponding to NIR Spectra. The points and line are the covariance
+corresponding to NIR Spectra. The points and line are the covariances
 between response and the principal components of NIR Spectra. All the
 values are normalized to scale from 0 to 1. (Middle) Cumulative sum of
 eigenvalues corresponding to predictors. (Right) Cumulative sum of
@@ -1121,15 +1113,15 @@ eigenvalues corresponding to responses.}\label{fig:ex2-cumulative-eigenvalues}
 \end{figure}
 
 Figure \ref{fig:ex2-cumulative-eigenvalues} (left) shows that the first
-predictor component has largest variance and also has large covariance
-with all response variables. The second component, however, has larger
-variance (middle) than the succeeding components but has a small
-covariance with all the responses, which indicates that the component is
-less relevant for any of the responses. In addition, two response
-components have explained most of the variation in response variables
-(right). This structure is also somewhat similar to Design 19, although
-it is uncertain whether the dimension of the relevant space in the
-response matrix is larger than one.
+predictor component has the largest variance and also has large
+covariance with all response variables. The second component, however,
+has larger variance (middle) than the succeeding components but has a
+small covariance with all the responses, which indicates that the
+component is less relevant for any of the responses. In addition, two
+response components have explained most of the variation in response
+variables (right). This structure is also somewhat similar to Design 19,
+although it is uncertain whether the dimension of the relevant space in
+the response matrix is larger than one.
 
 \begin{figure}[!htb]
 \includegraphics[width=1\linewidth]{main_files/figure-latex/ex2-prediction-error-1} \caption{Prediction Error of different prediction methods using different number of components.}\label{fig:ex2-prediction-error}
@@ -1152,36 +1144,36 @@ using fewer components, which is in accordance with Figure
 
 Analysis using both simulated data and real data has shown that the
 envelope methods are more stable, less influenced by \texttt{relpos} and
-\texttt{gamma} and in general performed better than PCR and PLS methods.
-These methods are also found to be less dependent on the number of
-components.
+\texttt{gamma} and in general, performed better than PCR and PLS
+methods. These methods are also found to be less dependent on the number
+of components.
 
 Since the facet in the Figures \ref{fig:pred-pca-hist-mthd-gamma-relpos}
 and \ref{fig:comp-pca-hist-mthd-gamma-relpos} have their own scales,
 despite having some large prediction errors seen at the right tail,
-envelope methods still have a smaller prediction error and have used
+envelope methods still have a smaller prediction error and have used a
 fewer number of components than the other methods.
 
-Particularly in the case of simultaneous envelope, since users can
+Particularly in the case of the simultaneous envelope, since users can
 specify the number of dimension for the response envelope, the method
 can leverage the relevant space of response while PCR, PLS and Xenv are
 constrained to play only on predictor space. \emph{Since the simulation
 is based on a single latent component of the response variables, this
-might have given some advantage for simultaneous envelope.}
+might have given some advantage for the simultaneous envelope.}
 
 Furthermore, we have fixed the coefficient of determination (\(R^2\)) as
-a constant throughtout all the designs. Initial simulations (not shown)
+a constant throughout all the designs. Initial simulations (not shown)
 indicated that low \(R^2\) affects all methods in a similar manner and
 that the MANOVA is highly dominated by \(R^2\). Keeping the value of
 \(R^2\) fixed has allowed us to analyze other factors properly.
 
 Two clear comments can be made about the effect of correlation of
-response on the prediction methods. Highly correlated response has shown
-highest prediction error in general and the effect is most distinct in
-envelope methods. Since the envelope methods identifies the relevant
-space as the span of relevant eigenvectors, the methods are able to
-obtain the minimum average prediction error by using a lesser number of
-components for all levels of \texttt{eta}.
+response on the prediction methods. The highly correlated response has
+shown the highest prediction error in general and the effect is most
+distinct in envelope methods. Since the envelope methods identify the
+relevant space as the span of relevant eigenvectors, the methods are
+able to obtain the minimum average prediction error by using a lesser
+number of components for all levels of \texttt{eta}.
 
 To our knowledge, the effect of correlation in the response on PCR and
 PLS methods has been explored only to a limited extent. In this regards,
@@ -1201,15 +1193,15 @@ results from this study will help researchers to understand these
 methods for their performance in various linear model data and encourage
 them to use newly developed methods such as the envelopes.
 
-Since, this study has focused entirely on prediction performance, a
-further analysis of the estimative properties of these methods is
-required. A study of estimation error and the performance of methods on
-non-optimal number of components can give deeper understanding of these
-methods.
+Since this study has focused entirely on prediction performance, further
+analysis of the estimative properties of these methods is required. A
+study of estimation error and the performance of methods on the
+non-optimal number of components can give a deeper understanding of
+these methods.
 
 A shiny application \citep{shiny} is available at
 \url{http://therimalaya.shinyapps.io/Comparison} where all the results
-related to this study can be visualized. In addition, a github
+related to this study can be visualized. In addition, a GitHub
 repository at
 \url{https://github.com/therimalaya/03-prediction-comparison} can be
 used to reproduce this study.

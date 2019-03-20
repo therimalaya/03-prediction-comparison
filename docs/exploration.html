@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2019-03-17">
+<meta name="date" content="2019-03-19">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -157,7 +157,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="exploration" class="section level1">
 <h1>Exploration</h1>
 <p>This section explores the variation in the <em>error dataset</em> and the <em>component dataset</em> for which we have used Principal Component Analysis (PCA). Let <span class="math inline">\(\mathbf{t}_u\)</span> and <span class="math inline">\(\mathbf{t}_v\)</span> be the principal component score sets corresponding to PCA run on the <span class="math inline">\(\mathbf{u}\)</span> and <span class="math inline">\(\mathbf{v}\)</span> matrices respectively. The scores density in Figure-<a href="exploration.html#fig:pred-pca-hist-mthd-gamma-relpos">5</a> corresponds to the first principal component of <span class="math inline">\(\mathbf{u}\)</span>, i.e. the first column of <span class="math inline">\(\mathbf{t}_u\)</span>.</p>
-<p>Since higher prediction errors correspond to high scores, the plot shows that the PCR, PLS1 and PLS2 methods are influenced by the two levels of position of relevant predictor components. When the relevant predictors are at positions 5, 6, 7, 8, the eigenvalues corresponding to them are relatively smaller. This also suggests that PCR, PLS1 and PLS2 depends greatly on the position of the relevant components, and the variation of these components affects their prediction performance. However, the envelope methods appeared to be less influenced by <code>relpos</code> in this regard.</p>
+<p>Since higher prediction errors correspond to high scores, the plot shows that the PCR, PLS1 and PLS2 methods are influenced by the two levels of the position of relevant predictor components. When the relevant predictors are at positions 5, 6, 7, 8, the eigenvalues corresponding to them are relatively smaller. This also suggests that PCR, PLS1 and PLS2 depend greatly on the position of the relevant components, and the variation of these components affects their prediction performance. However, the envelope methods appeared to be less influenced by <code>relpos</code> in this regard.</p>
 
 <div class="figure"><span id="fig:pred-pca-hist-mthd-gamma-relpos"></span>
 <img src="main_files/figure-html/pred-pca-hist-mthd-gamma-relpos-1.svg" alt="Scores density corresponding to first principal component of error dataset (\(\mathbf{u}\)) subdivided by methods, gamma and eta and grouped by relpos." width="100%" />
@@ -165,9 +165,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 Figure 5: Scores density corresponding to first principal component of <em>error dataset</em> (<span class="math inline">\(\mathbf{u}\)</span>) subdivided by <code>methods</code>, <code>gamma</code> and <code>eta</code> and grouped by <code>relpos</code>.
 </p>
 </div>
-<p>In addition, the plot also shows that the effect of <code>gamma</code>, i.e., the level of multicollinearity, has a lesser effect when the relevant predictors are at positions 1, 2, 3, 4. This indicates that the methods are somewhat robust for handling collinear predictors. Nevertheless, when the relevant predictors are at positions 5, 6, 7, 8, high multicollinearity results in small variance of these relevant components and consequently yields poor prediction. This is in accordance with the findings of <span class="citation">Helland and Almøy (<a href="references.html#ref-Helland1994b">1994</a>)</span>.</p>
-<p>Furthermore, the density curves for PCR, PLS1 and PLS2 are similar for different levels of <code>eta</code>, i.e., the factor controlling the correlation between responses. However the envelope models have been shown to have distinct interactions between the positions of relevant components (<code>relpos</code>) and <code>eta</code>. Here higher levels of <code>eta</code> have yielded higher scores and clear separation between two levels of <code>relpos</code>.</p>
-<p>In the case of high multicollinearity, envelope methods have resulted in some large outliers indicating that in some cases that the methods can result in give unexpected prediction.</p>
+<p>In addition, the plot also shows that the effect of <code>gamma</code>, i.e., the level of multicollinearity, has a lesser effect when the relevant predictors are at positions 1, 2, 3, 4. This indicates that the methods are somewhat robust for handling collinear predictors. Nevertheless, when the relevant predictors are at positions 5, 6, 7, 8, high multicollinearity results in a small variance of these relevant components and consequently yields poor prediction. This is in accordance with the findings of <span class="citation">Helland and Almøy (<a href="references.html#ref-Helland1994b">1994</a>)</span>.</p>
+<p>Furthermore, the density curves for PCR, PLS1 and PLS2 are similar for different levels of <code>eta</code>, i.e., the factor controlling the correlation between responses. However, the envelope models have been shown to have distinct interactions between the positions of relevant components (<code>relpos</code>) and <code>eta</code>. Here higher levels of <code>eta</code> have yielded higher scores and clear separation between two levels of <code>relpos</code>.</p>
+<p>In the case of high multicollinearity, envelope methods have resulted in some large outliers indicating that in some cases that the methods can result in giving an unexpected prediction.</p>
 
 <div class="figure"><span id="fig:comp-pca-hist-mthd-gamma-relpos"></span>
 <img src="main_files/figure-html/comp-pca-hist-mthd-gamma-relpos-1.svg" alt="Score density corresponding to first principal component of component dataset (\(\mathbf{v}\)) subdivided by methods, gamma and eta and grouped by relpos." width="100%" />

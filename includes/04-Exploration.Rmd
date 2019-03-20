@@ -2,7 +2,7 @@
 
 This section explores the variation in the _error dataset_ and the _component dataset_ for which we have used Principal Component Analysis (PCA). Let $\mathbf{t}_u$ and $\mathbf{t}_v$ be the principal component score sets corresponding to PCA run on the $\mathbf{u}$ and $\mathbf{v}$ matrices respectively. The scores density in Figure-\@ref(fig:pred-pca-hist-mthd-gamma-relpos) corresponds to the first principal component of $\mathbf{u}$, i.e. the first column of $\mathbf{t}_u$.
 
-Since higher prediction errors correspond to high scores, the plot shows that the PCR, PLS1 and PLS2 methods are influenced by the two levels of position of relevant predictor components. When the relevant predictors are at positions `r opts$relpos[2]`, the eigenvalues corresponding to them are relatively smaller. This also suggests that PCR, PLS1 and PLS2 depends greatly on the position of the relevant components, and the variation of these components affects their prediction performance. However, the envelope methods appeared to be less influenced by `relpos` in this regard. 
+Since higher prediction errors correspond to high scores, the plot shows that the PCR, PLS1 and PLS2 methods are influenced by the two levels of the position of relevant predictor components. When the relevant predictors are at positions `r opts$relpos[2]`, the eigenvalues corresponding to them are relatively smaller. This also suggests that PCR, PLS1 and PLS2 depend greatly on the position of the relevant components, and the variation of these components affects their prediction performance. However, the envelope methods appeared to be less influenced by `relpos` in this regard.
 
 ```{r pca}
 pred_pca <- with(pred_min, prcomp(cbind(Y1, Y2, Y3, Y4)))
@@ -47,12 +47,12 @@ pc_density_plot(pred_dta_with_pc, expl_var,
                 title = "Density of PCA scores for error model")
 ```
 
-In addition, the plot also shows that the effect of `gamma`, i.e., the level of multicollinearity, has a lesser effect when the relevant predictors are at positions 1, 2, 3, 4. This indicates that the methods are somewhat robust for handling collinear predictors. Nevertheless, when the relevant predictors are at positions 5, 6, 7, 8, high multicollinearity results in small variance of these relevant components and consequently yields poor prediction. This is in accordance with the findings of @Helland1994b.
+In addition, the plot also shows that the effect of `gamma`, i.e., the level of multicollinearity, has a lesser effect when the relevant predictors are at positions 1, 2, 3, 4. This indicates that the methods are somewhat robust for handling collinear predictors. Nevertheless, when the relevant predictors are at positions 5, 6, 7, 8, high multicollinearity results in a small variance of these relevant components and consequently yields poor prediction. This is in accordance with the findings of @Helland1994b.
 
+Furthermore, the density curves for PCR, PLS1 and PLS2 are similar for different levels of `eta`, i.e., the factor controlling the correlation between responses. However, the envelope models have been shown to have distinct interactions between the positions of relevant components (`relpos`) and `eta`. Here higher levels of `eta` have yielded higher scores and clear separation between two levels of `relpos`. 
 
-Furthermore, the density curves for PCR, PLS1 and PLS2 are similar for different levels of `eta`, i.e., the factor controlling the correlation between responses. However the envelope models have been shown to have distinct interactions between the positions of relevant components (`relpos`) and `eta`. Here higher levels of `eta` have yielded higher scores and clear separation between two levels of `relpos`. 
+In the case of high multicollinearity, envelope methods have resulted in some large outliers indicating that in some cases that the methods can result in giving an unexpected prediction.
 
-In the case of high multicollinearity, envelope methods have resulted in some large outliers indicating that in some cases that the methods can result in give unexpected prediction.
 
 (ref:comp-hist) Score density corresponding to first principal component of _component dataset_ ($\mathbf{v}$) subdivided by `methods`, `gamma` and `eta` and grouped by `relpos`.
 

@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2019-03-17">
+<meta name="date" content="2019-03-19">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -176,7 +176,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
   \end{equation}\]</span>
 </dd>
 </dl>
-<p>where, <span class="math inline">\(\mathbf{u}_{abcdef}\)</span> is a vector of prediction errors in the <em>error model</em> and <span class="math inline">\(\mathbf{v}_{abcdef}\)</span> is a vector of number of components used by a method to obtain minimum prediction error in the <em>component model</em>.</p>
+<p>where, <span class="math inline">\(\mathbf{u}_{abcdef}\)</span> is a vector of prediction errors in the <em>error model</em> and <span class="math inline">\(\mathbf{v}_{abcdef}\)</span> is a vector of the number of components used by a method to obtain minimum prediction error in the <em>component model</em>.</p>
 <p>Although there are several test-statistics for MANOVA, all are essentially equivalent for large samples <span class="citation">(Johnson and Wichern <a href="references.html#ref-johnson2018applied">2018</a>)</span>. Here we will use Pillai’s trace statistic which is defined as,</p>
 <span class="math display" id="eq:pillai">\[\begin{equation}
 \text{Pillai statistic} = \text{tr}\left[
@@ -184,13 +184,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 \right] = \sum_{i=1}^m{\frac{\nu_i}{1 + \nu_i}}
 \tag{13}
 \end{equation}\]</span>
-<p>Here the matrix <span class="math inline">\(\mathbf{H}\)</span> holds between-sum-of-squares and sum-of-products for each of the predictors. The matrix <span class="math inline">\(\mathbf{E}\)</span> has a within sum of squares and sum of products for each of the predictors. <span class="math inline">\(\nu_i\)</span> represents the eigenvalues corresponding to <span class="math inline">\(\mathbf{E}^{-1}\mathbf{H}\)</span> <span class="citation">(Rencher <a href="references.html#ref-rencher2003methods">2003</a>)</span>.</p>
+<p>Here the matrix <span class="math inline">\(\mathbf{H}\)</span> holds between-sum-of-squares and sum-of-products for each of the predictors. The matrix <span class="math inline">\(\mathbf{E}\)</span> has a within the sum of squares and sum of products for each of the predictors. <span class="math inline">\(\nu_i\)</span> represents the eigenvalues corresponding to <span class="math inline">\(\mathbf{E}^{-1}\mathbf{H}\)</span> <span class="citation">(Rencher <a href="references.html#ref-rencher2003methods">2003</a>)</span>.</p>
 <p>For both the models <a href="statistical-analysis.html#eq:error-model">(11)</a> and <a href="statistical-analysis.html#eq:component-model">(12)</a>, Pillai’s trace statistic is used for accessing the effect of each factor and returns an F-value for the strength of their significance. Figure <a href="statistical-analysis.html#fig:manova-plot">7</a> plots the Pillai’s trace statistics as bars with corresponding F-values as text labels for both models.</p>
 
 <div class="figure"><span id="fig:manova-plot"></span>
-<img src="main_files/figure-html/manova-plot-1.svg" alt="Pillai Statistic and F-value for the MANOVA model. The bar represents the Pillai Statistic and the text labels are F-value for corresponding factor." width="100%" />
+<img src="main_files/figure-html/manova-plot-1.svg" alt="Pillai Statistic and F-value for the MANOVA model. The bar represents the Pillai Statistic and the text labels are F-value for the corresponding factor." width="100%" />
 <p class="caption">
-Figure 7: Pillai Statistic and F-value for the MANOVA model. The bar represents the Pillai Statistic and the text labels are F-value for corresponding factor.
+Figure 7: Pillai Statistic and F-value for the MANOVA model. The bar represents the Pillai Statistic and the text labels are F-value for the corresponding factor.
 </p>
 </div>
 <dl>
@@ -198,13 +198,13 @@ Figure 7: Pillai Statistic and F-value for the MANOVA model. The bar represents 
 <dd>Figure <a href="statistical-analysis.html#fig:manova-plot">7</a> (left) shows the Pillai’s trace statistic for factors of the <em>error model</em>. The main effect of <code>Method</code> followed by <code>relpos</code>, <code>eta</code> and <code>gamma</code> have largest influence on the model. A highly significant two-factor interaction of <code>Method</code> with <code>eta</code> followed by <code>relpos</code> and <code>gamma</code> clearly shows that methods perform differently for different levels of these data properties. The significant third order interaction between <code>Method</code>, <code>eta</code> and <code>gamma</code> suggests that the performance of a method differs for a given level of multicollinearity and the correlation between the responses. Since only some methods consider modelling predictor and response together, the prediction is affected by the level of correlation between the responses (<code>eta</code>) for a given method.
 </dd>
 <dt>Component Model:</dt>
-<dd>Figure <a href="statistical-analysis.html#fig:manova-plot">7</a> (right) shows the Pillai’s trace statistic for factors of the <em>component model</em>. As in the <em>error model</em>, the main effects of the Method, <code>relpos</code>, <code>gamma</code> and <code>eta</code> have significantly large effect on the number of components that a method has used to obtain minimum prediction error. The two factor interactions of <code>Method</code> with simulation parameters are larger in this case. This shows that the Methods and these interactions have larger effect on the use of number of component than the prediction error itself. In addition, a similar significant high third-order interaction as found in the <em>error model</em> is also observed in this model.
+<dd>Figure <a href="statistical-analysis.html#fig:manova-plot">7</a> (right) shows the Pillai’s trace statistic for factors of the <em>component model</em>. As in the <em>error model</em>, the main effects of the Method, <code>relpos</code>, <code>gamma</code> and <code>eta</code> have a significantly large effect on the number of components that a method has used to obtain minimum prediction error. The two-factor interactions of <code>Method</code> with simulation parameters are larger in this case. This shows that the Methods and these interactions have a larger effect on the use of the number of component than the prediction error itself. In addition, a similar significant high third-order interaction as found in the <em>error model</em> is also observed in this model.
 </dd>
 </dl>
 <p>The following section will continue to explore the effects of different levels of the factors in the case of these interactions.</p>
 <div id="effect-analysis-of-error-model" class="section level2">
 <h2>Effect Analysis of Error Model</h2>
-<p>The large difference in the prediction error for the envelope models in Figure <a href="statistical-analysis.html#fig:pred-eff-plots">8</a> (left) are intensified when the position of relevant predictor is at 5, 6, 7, 8. The results also show that the envelope methods are more sensitive to the levels of <code>eta</code> than the rest of the methods. In the case of PCR and PLS, the difference in the effect of levels of <code>eta</code> is small.</p>
+<p>The large difference in the prediction error for the envelope models in Figure <a href="statistical-analysis.html#fig:pred-eff-plots">8</a> (left) is intensified when the position of the relevant predictor is at 5, 6, 7, 8. The results also show that the envelope methods are more sensitive to the levels of <code>eta</code> than the rest of the methods. In the case of PCR and PLS, the difference in the effect of levels of <code>eta</code> is small.</p>
 <p>In Figure <a href="statistical-analysis.html#fig:pred-eff-plots">8</a> (right), we can see that the multicollinearity (controlled by <code>gamma</code>) has affected all the methods. However, envelope methods have better performance on low multicollinearity, as opposed to high multicollinearity, and PCR, PLS1 and PLS2 are robust for high multicollinearity. Despite handling high multicollinearity, these methods have higher prediction error in both cases of multicollinearity than the envelope methods.</p>
 
 <div class="figure"><span id="fig:pred-eff-plots"></span>
@@ -218,9 +218,9 @@ Figure 8: Effect plot of some interactions of the multivariate linear model of p
 <h2>Effect Analysis of Component Model</h2>
 
 <div class="figure"><span id="fig:comp-eff-plots"></span>
-<img src="main_files/figure-html/comp-eff-plots-1.svg" alt="Effect plot of some interactions of the multivariate linear model of number of components to get minimum prediction error" width="100%" />
+<img src="main_files/figure-html/comp-eff-plots-1.svg" alt="Effect plot of some interactions of the multivariate linear model of the number of components to get minimum prediction error" width="100%" />
 <p class="caption">
-Figure 9: Effect plot of some interactions of the multivariate linear model of number of components to get minimum prediction error
+Figure 9: Effect plot of some interactions of the multivariate linear model of the number of components to get minimum prediction error
 </p>
 </div>
 <p>Unlike for prediction errors, Figure <a href="statistical-analysis.html#fig:comp-eff-plots">9</a> (left) shows that the number of components used by the methods to obtain minimum prediction error is less affected by the levels of <code>eta</code>. All methods appear to use on average more components when eta increases. Envelope methods are able to obtain minimum prediction error by using components ranging from 1 to 3 in both the cases of <code>relpos</code>. This value is much higher in the case of PCR as its prediction is based only on the principal components of the predictor matrix. The number of components used by this method ranges from 3 to 5 when relevant components are at positions 1, 2, 3, 4 and 5 to 8 when relevant components are at positions 5, 6, 7, 8.</p>

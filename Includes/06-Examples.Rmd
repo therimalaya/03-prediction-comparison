@@ -11,7 +11,8 @@ source("scripts/06-example.r")
 
 This dataset contains `r sum(Dataset$train)` training samples and `r sum(!Dataset$train)` test samples of fatty acid information expressed as: a) percentage of total sample weight and b) percentage of total fat content. The dataset is borrowed from @naes2013multi where more information can be found. The samples were analysed using Raman spectroscopy from which `r ncol(Dataset$X)` wavelength variables were obtained as predictors. Raman spectroscopy provides detailed chemical information from minor components in food. The aim of this example is to compare how well the prediction methods that we have considered are able to predict the contents of PUFA using these Raman spectra.
 
-(ref:ex1-relcomp-plot) (Left) Bar represents the eigenvalues corresponding to Raman Spectra. The points and line are the covariance between response and the principal components of Raman Spectra. All the values are normalized to scale from 0 to 1. (Middle) Cumulative sum of eigenvalues corresponding to predictors. (Right) Cumulative sum of eigenvalues corresponding to responses. The top and bottom row corresponds to test and training datasets respectively.
+(ref:ex1-relcomp-plot) (Left) Bar represents the eigenvalues corresponding to Raman Spectra. The points and line are the covariances between response and the principal components of Raman Spectra. All the values are normalized to scale from 0 to 1. (Middle) Cumulative sum of eigenvalues corresponding to predictors. (Right) Cumulative sum of eigenvalues corresponding to responses. The top and bottom row corresponds to test and training datasets respectively.
+
 
 ```{r ex1-cumulative-ues, fig.asp = 0.4, fig.cap = "(ref:ex1-relcomp-plot)", fig.width=8}
 relcomp_plot <- ex_plot_relcomp(relcomp_df, ncomp = NCOMP) +
@@ -56,7 +57,8 @@ ex1_design <- design_chr %>% rowid_to_column("Design") %>%
   pluck("Design")
 ```
 
-Figure \@ref(fig:ex1-cumulative-ues) (left) shows that the first few predictor components are somewhat correlated with response variables. In addition the most variation in predictors is explained by less than five components (middle). Further, the response variables are highly correlated, suggesting that a single latent dimension explains most of the variation (right). We may therefore also believe that the relevant latent space in the response matrix is of dimension one. This resembles the Design `r ex1_design` (Figure \@ref(fig:design-plot)) from our simulation.
+Figure \@ref(fig:ex1-cumulative-ues) (left) shows that the first few predictor components are somewhat correlated with response variables. In addition, the most variation in predictors is explained by less than five components (middle). Further, the response variables are highly correlated, suggesting that a single latent dimension explains most of the variation (right). We may therefore also believe that the relevant latent space in the response matrix is of dimension one. This resembles the Design `r ex1_design` (Figure \@ref(fig:design-plot)) from our simulation.
+
 
 ```{r ex1-minimum-prediction-error}
 min_pred <- pred_error %>% 
@@ -105,7 +107,8 @@ commandArgs <- function(...) c("NIR_Dough", 15, 2)
 source("scripts/06-example.r")
 ```
 
-(ref:ex2-relcomp-plot) (Left) Bar represents the eigenvalues corresponding to NIR Spectra. The points and line are the covariance between response and the principal components of NIR Spectra. All the values are normalized to scale from 0 to 1. (Middle) Cumulative sum of eigenvalues corresponding to predictors. (Right) Cumulative sum of eigenvalues corresponding to responses.
+(ref:ex2-relcomp-plot) (Left) Bar represents the eigenvalues corresponding to NIR Spectra. The points and line are the covariances between response and the principal components of NIR Spectra. All the values are normalized to scale from 0 to 1. (Middle) Cumulative sum of eigenvalues corresponding to predictors. (Right) Cumulative sum of eigenvalues corresponding to responses.
+
 
 ```{r ex2-cumulative-eigenvalues, fig.asp = 0.4, fig.cap = "(ref:ex2-relcomp-plot)", fig.width=8}
 relcomp_plot <- ex_plot_relcomp(relcomp_df, ncomp = NCOMP) +
@@ -152,7 +155,8 @@ ex2_design <- design_chr %>% rowid_to_column("Design") %>%
   pluck("Design")
 ```
 
-Figure \@ref(fig:ex2-cumulative-eigenvalues) (left) shows that the first predictor component has largest variance and also has large covariance with all response variables. The second component, however, has larger variance (middle) than the succeeding components but has a small covariance with all the responses, which indicates that the component is less relevant for any of the responses. In addition, two response components have explained most of the variation in response variables (right). This structure is `r if(ex1_design == ex2_design) "also"` somewhat similar to Design `r ex2_design`, although it is uncertain whether the dimension of the relevant space in the response matrix is larger than one.
+Figure \@ref(fig:ex2-cumulative-eigenvalues) (left) shows that the first predictor component has the largest variance and also has large covariance with all response variables. The second component, however, has larger variance (middle) than the succeeding components but has a small covariance with all the responses, which indicates that the component is less relevant for any of the responses. In addition, two response components have explained most of the variation in response variables (right). This structure is `r if(ex1_design == ex2_design) "also"` somewhat similar to Design `r ex2_design`, although it is uncertain whether the dimension of the relevant space in the response matrix is larger than one.
+
 
 ```{r ex2-minimum-prediction-error}
 min_pred <- pred_error %>% 

@@ -1,6 +1,6 @@
 Highlights:
 
 - A comparative study of prediction performance of multi-response multivariate linear regression
-- Comparison is based on both simulated and real data
-- Simultaneous envelope (Senv) and Envelope in predictor variable (Xenv) has shown stable prediction using fewer number of components than PCR and PLS methods
+- The comparison is based on both simulated and real data
+- Simultaneous envelope (Senv) and Envelope in predictor variable (Xenv) has shown stable prediction using a fewer number of components than PCR and PLS methods
 - Demonstrate how the simulation tool `simrel` can be used to construct complex models and experimental design for extensive comparison.
