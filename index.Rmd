@@ -18,7 +18,6 @@ address:
     address: Faculty of Chemistry and Bioinformatics, Norwegian University of Life Sciences, Ås, Norway
   - code: NMBU
     address: Professor, Norwegian University of Life Sciences, Ås, Norway
-# classoption: ["12pt", "3p", "authoryear"]
 classoption: ['review']
 monofont: 'sourcecodepro'
 monofontoptions: "Scale=0.7"
@@ -28,7 +27,7 @@ geometry: 'margin=1in'
 # fontfamily: mathpazo
 # use-landscape-page: yes
 tables: yes
-bibliography: ref-db.bib
+bibliography: References.bib
 biblio-title: References
 biblio-style: elsarticle-harv
 link-citations: true
@@ -62,9 +61,10 @@ The prediction has been an essential component of modern data science, whether i
 
 Modern inter-disciplinary research fields such as chemometrics, econometrics and bioinformatics handle multi-response models extensively. This paper attempts to compare some multivariate prediction methods based on their prediction performance on linear model data with specific properties. The properties include the correlation between response variables, the correlation between predictor variables, number of predictor variables and the position of relevant predictor components. These properties are discussed more in the [Experimental Design] section. Among others, @saebo2015simrel and @Alm_y_1996 have conducted a similar comparison in the single response setting. In addition, @Rimal2018 have also conducted a basic comparison of some prediction methods and their interaction with the data properties of a multi-response model. The main aim of this paper is to present a comprehensive comparison of contemporary prediction methods such as simultaneous envelope estimation (Senv) [@cook2015simultaneous] and envelope estimation in predictor space (Xenv) [@cook2010envelope] with customary prediction methods such as Principal Component Regression (PCR), Partial Least Squares Regression (PLS) using simulated dataset with controlled properties. In the case of PLS, we have used PLS1 which fits individual response separately and PLS2 which fits all the responses together. Experimental design and the methods under comparison are discussed further, followed by a brief discussion of the strategy behind the data simulation.
 
-
 ```{r scratch, echo = FALSE}
 num_vec <- c('one', 'two', 'three', 'four', 'five', 
              'six', 'seven', 'eight', 'nine', 'ten')
 names(num_vec) <- 1:10
 ```
+
+

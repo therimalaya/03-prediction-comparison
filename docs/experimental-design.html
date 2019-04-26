@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2019-03-19">
+<meta name="date" content="2019-04-26">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -60,41 +60,67 @@ div.abstract{
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -156,29 +182,29 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="experimental-design" class="section level1">
 <h1>Experimental Design</h1>
-<p>This study compares prediction methods based on their prediction ability. Data with specific properties are simulated, some of which are easier to predict than others. These data are simulated using the R-package <code>simrel</code>, which is discussed in <span class="citation">Sæbø, Almøy, and Helland (<a href="references.html#ref-saebo2015simrel">2015</a>)</span> and <span class="citation">Rimal, Almøy, and Sæbø (<a href="references.html#ref-Rimal2018">2018</a>)</span>. Here we have used four different factors to vary the property of the data: a) Number of predictors (<code>p</code>), b) Multicollinearity in predictor variables (<code>gamma</code>), c) Correlation in response variables (<code>eta</code>) and d) position of predictor components relevant for the response (<code>relpos</code>). Using two levels of <code>p</code>, <code>gamma</code> and <code>relpos</code> and four levels of <code>eta</code>, 32 set of distinct properties are designed for the simulation.</p>
+<p>This study compares prediction methods based on their prediction ability. Data with specific properties are simulated, some of which are easier to predict than others. These data are simulated using the R-package <code>simrel</code>, which is discussed in <span class="citation">Sæbø, Almøy, and Helland (<a href="references.html#ref-saebo2015simrel" role="doc-biblioref">2015</a>)</span> and <span class="citation">Rimal, Almøy, and Sæbø (<a href="references.html#ref-Rimal2018" role="doc-biblioref">2018</a>)</span>. Here we have used four different factors to vary the property of the data: a) Number of predictors (<code>p</code>), b) Multicollinearity in predictor variables (<code>gamma</code>), c) Correlation in response variables (<code>eta</code>) and d) position of predictor components relevant for the response (<code>relpos</code>). Using two levels of <code>p</code>, <code>gamma</code> and <code>relpos</code> and four levels of <code>eta</code>, 32 set of distinct properties are designed for the simulation.</p>
 <dl>
 <dt><strong>Number of predictors:</strong></dt>
 <dd>To observe the performance of the methods on tall and wide predictor matrices, 20 and 250 predictor variables are simulated with the number of observations fixed at 100. Parameter <code>p</code> controls these properties in the <code>simrel</code> function.
 </dd>
 <dt><strong>Multicollinearity in predictor variables:</strong></dt>
 <dd><p>Highly collinear predictors can be explained completely by a few components. The parameter <code>gamma</code> (<span class="math inline">\(\gamma\)</span>) in <code>simrel</code> controls decline in the eigenvalues of the predictor variables as <a href="experimental-design.html#eq:gamma">(5)</a>.</p>
-<span class="math display" id="eq:gamma">\[\begin{equation}
+<p><span class="math display" id="eq:gamma">\[\begin{equation}
   \lambda_i = e^{-\gamma(i - 1)}, \gamma &gt; 0 \text{ and } i = 1, 2, \ldots, p
   \tag{5}
-\end{equation}\]</span>
-<p>Here, <span class="math inline">\(\lambda_i, i = 1, 2, \ldots p\)</span> are eigenvalues of the predictor variables. We have used 0.2 and 0.9 as different levels of <code>gamma</code>. The higher the value of gamma, the higher the multicollinearity will be, and vice versa.</p>
+\end{equation}\]</span></p>
+<p>Here, <span class="math inline">\(\lambda_i, i = 1, 2, \ldots p\)</span> are eigenvalues of the predictor variables. We have used 0.2 and 0.9 as different levels of <code>gamma</code>. The higher the value of gamma, the higher the multicollinearity will be, and vice versa. In our simulation, the higher and lower <code>gamma</code> correspond to maximum correlation of 0.990 and 0.709 between the predictor variables respectively in the case of designs with 20 predictors. This value ranges from 0.998 to 0.923 respectively in the case of designs with 250 predictors.</p>
 </dd>
 <dt><strong>Correlation in response variables:</strong></dt>
 <dd><p>Correlation among response variables has been explored to a lesser extent. Here we have tried to explore that part with four levels of correlation in the response variables. We have used the <code>eta</code> (<span class="math inline">\(\eta\)</span>) parameter of <code>simrel</code> for controlling the decline in eigenvalues corresponding to the response variables as <a href="experimental-design.html#eq:eta">(6)</a>.</p>
-<span class="math display" id="eq:eta">\[\begin{equation}
+<p><span class="math display" id="eq:eta">\[\begin{equation}
   \kappa_j = e^{-\eta(j - 1)}, \eta &gt; 0 \text{ and } j = 1, 2, \ldots, m
   \tag{6}
-\end{equation}\]</span>
-<p>Here, <span class="math inline">\(\kappa_j, i = 1, 2, \ldots m\)</span> are the eigenvalues of the response variables and <code>m</code> is the number of response variables. We have used 0, 0.4, 0.8 and 1.2 as different levels of <code>eta</code>. The larger the value of eta, the larger will be the correlation will be between response variables and vice versa.</p>
+\end{equation}\]</span></p>
+<p>Here, <span class="math inline">\(\kappa_j, i = 1, 2, \ldots m\)</span> are the eigenvalues of the response variables and <code>m</code> is the number of response variables. We have used 0, 0.4, 0.8 and 1.2 as different levels of <code>eta</code>. The larger the value of eta, the larger will be the correlation will be between response variables and vice versa. In our simulation, the different levels of <code>eta</code> from small to large correspond to maximum correlation of 0, 0.442, 0.729 and 0.878 between the response variables respectively.</p>
 </dd>
 <dt><strong>Position of predictor components relevant to the response:</strong></dt>
-<dd>The principal components of the predictors are ordered. The first principal component captures most of the variation in the predictors. The second captures most of the remainder left by the first principal component and so on. In highly collinear predictors, the variation captured by the first few components is relatively high. However, if those components are not relevant for the response, prediction becomes difficult <span class="citation">(Helland and Almøy <a href="references.html#ref-Helland1994b">1994</a>)</span>. Here, two levels of the positions of these relevant components are used as 1, 2, 3, 4 and 5, 6, 7, 8.
+<dd>The principal components of the predictors are ordered. The first principal component captures most of the variation in the predictors. The second captures most of the remainder left by the first principal component and so on. In highly collinear predictors, the variation captured by the first few components is relatively high. However, if those components are not relevant for the response, prediction becomes difficult <span class="citation">(Helland and Almøy <a href="references.html#ref-Helland1994b" role="doc-biblioref">1994</a>)</span>. Here, two levels of the positions of these relevant components are used as 1, 2, 3, 4 and 5, 6, 7, 8.
 </dd>
 </dl>
 <p>Moreover, a complete factorial design from the levels of the above parameters gave us 32 designs. Each design is associated with a dataset having unique properties. Figure~<a href="experimental-design.html#fig:design-plot">2</a>, shows all the designs. For each design and prediction method, 50 datasets were simulated as replicates. In total, there were <span class="math inline">\(5 \times 32 \times 50\)</span>, i.e. 8000 simulated datasets.</p>
@@ -190,22 +216,22 @@ Figure 2: Experimental Design of simulation parameters. Each point represents a 
 </div>
 <dl>
 <dt><strong>Common parameters:</strong></dt>
-<dd>Each dataset was simulated with <span class="math inline">\(n = 100\)</span> number of observation and <span class="math inline">\(m = 4\)</span> response variables. Furthermore, the coefficient of determination corresponding to each response components in all the designs is set to 0.8. In addition, we have assumed that there is only one informative response component. Hence, the informative response component is rotated orthogonally together with three uninformative response components to generate four response variables. This spreads out the information in all simulated response variables. For further details on the simulation tool, see <span class="citation">(Rimal, Almøy, and Sæbø <a href="references.html#ref-Rimal2018">2018</a>)</span>.
+<dd>Each dataset was simulated with <span class="math inline">\(n = 100\)</span> number of observation and <span class="math inline">\(m = 4\)</span> response variables. Furthermore, the coefficient of determination corresponding to each response components in all the designs is set to 0.8. The latent covariance structures of informative and uninformative response and predictor components are generated independently with these design properties followed by an orthogonal rotated to obtain the population covariance structure of response and predictor variables. In addition, we have assumed that there is only one informative response component. Hence, the informative response component after the orthogonal rotation together with three uninformative response components generates four response variables. This spreads out the information in all simulated response variables. For further details on the simulation tool, see <span class="citation">(Rimal, Almøy, and Sæbø <a href="references.html#ref-Rimal2018" role="doc-biblioref">2018</a>)</span>.
 </dd>
 </dl>
 <p>An example of simulation parameters for the first design is as follows:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">simrel</span>(
-    <span class="dt">n       =</span> <span class="dv">100</span>,                 ## Training samples
-    <span class="dt">p       =</span> <span class="dv">20</span>,                  ## Predictors
-    <span class="dt">m       =</span> <span class="dv">4</span>,                   ## Responses
-    <span class="dt">q       =</span> <span class="dv">20</span>,                  ## Relevant predictors
-    <span class="dt">relpos  =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)), ## Relevant predictor components index
-    <span class="dt">eta     =</span> <span class="dv">0</span>,                   ## Decay factor of response eigenvalues
-    <span class="dt">gamma   =</span> <span class="fl">0.2</span>,                 ## Decay factor of predictor eigenvalues
-    <span class="dt">R2      =</span> <span class="fl">0.8</span>,                 ## Coefficient of determination
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">simrel</span>(
+    <span class="dt">n       =</span> <span class="dv">100</span>,                 <span class="co">## Training samples</span>
+    <span class="dt">p       =</span> <span class="dv">20</span>,                  <span class="co">## Predictors</span>
+    <span class="dt">m       =</span> <span class="dv">4</span>,                   <span class="co">## Responses</span>
+    <span class="dt">q       =</span> <span class="dv">20</span>,                  <span class="co">## Relevant predictors</span>
+    <span class="dt">relpos  =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)), <span class="co">## Relevant predictor components index</span>
+    <span class="dt">eta     =</span> <span class="dv">0</span>,                   <span class="co">## Decay factor of response eigenvalues</span>
+    <span class="dt">gamma   =</span> <span class="fl">0.2</span>,                 <span class="co">## Decay factor of predictor eigenvalues</span>
+    <span class="dt">R2      =</span> <span class="fl">0.8</span>,                 <span class="co">## Coefficient of determination</span>
     <span class="dt">ypos    =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)),
     <span class="dt">type    =</span> <span class="st">&quot;multivariate&quot;</span>
-)</code></pre></div>
+)</code></pre>
 <div class="figure"><span id="fig:cov-plot-1"></span>
 <img src="main_files/figure-html/cov-plot-1-1.svg" alt="(left) Covariance structure of latent components (right) Covariance structure of predictor and response" width="100%" />
 <p class="caption">
@@ -278,7 +304,7 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    var src = "";
+    var src = "true";
     if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(src))
       src = src.replace(/^https?:/, '');

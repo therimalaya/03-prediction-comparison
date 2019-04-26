@@ -14,7 +14,7 @@ __Multicollinearity in predictor variables:__
       (\#eq:gamma)
     \end{equation}
 
-    Here, $\lambda_i, i = 1, 2, \ldots p$ are eigenvalues of the predictor variables. We have used `r catvec(opts$gamma)` as different levels of `gamma`. The higher the value of gamma, the higher the multicollinearity will be, and vice versa.
+    Here, $\lambda_i, i = 1, 2, \ldots p$ are eigenvalues of the predictor variables. We have used `r catvec(opts$gamma)` as different levels of `gamma`. The higher the value of gamma, the higher the multicollinearity will be, and vice versa. In our simulation, the higher and lower `gamma` correspond to maximum correlation of 0.990 and 0.709 between the predictor variables respectively in the case of designs with 20 predictors. This value ranges from 0.998 to 0.923 respectively in the case of designs with 250 predictors.
 
 __Correlation in response variables:__
 : Correlation among response variables has been explored to a lesser extent. Here we have tried to explore that part with `r num_vec[length(opts$eta)]` levels of correlation in the response variables. We have used the `eta` ($\eta$) parameter of `simrel` for controlling the decline in eigenvalues corresponding to the response variables as \@ref(eq:eta).
@@ -24,7 +24,7 @@ __Correlation in response variables:__
       (\#eq:eta)
     \end{equation}
 
-    Here, $\kappa_j, i = 1, 2, \ldots m$ are the eigenvalues of the response variables and `m` is the number of response variables. We have used `r catvec(opts$eta)` as different levels of `eta`. The larger the value of eta, the larger will be the correlation will be between response variables and vice versa.
+    Here, $\kappa_j, i = 1, 2, \ldots m$ are the eigenvalues of the response variables and `m` is the number of response variables. We have used `r catvec(opts$eta)` as different levels of `eta`. The larger the value of eta, the larger will be the correlation will be between response variables and vice versa. In our simulation, the different levels of `eta` from small to large correspond to maximum correlation of 0, 0.442, 0.729 and 0.878 between the response variables respectively.
 
 __Position of predictor components relevant to the response:__
 : The principal components of the predictors are ordered. The first principal component captures most of the variation in the predictors. The second captures most of the remainder left by the first principal component and so on. In highly collinear predictors, the variation captured by the first few components is relatively high. However, if those components are not relevant for the response, prediction becomes difficult [@Helland1994b]. Here, two levels of the positions of these relevant components are used as `r catvec(sapply(opts$relpos, list2chr))`.
@@ -48,7 +48,7 @@ design_chr %>%
 
 
 __Common parameters:__
-: Each dataset was simulated with $n = `r unique(opts$n)`$ number of observation and $m = `r unique(opts$m)`$ response variables. Furthermore, the coefficient of determination corresponding to each response components in all the designs is set to `r unique(opts$R2)`. In addition, we have assumed that there is only `r num_vec[length(unique(design$ypos)[[1]])]` informative response component. Hence, the informative response component is rotated orthogonally together with `r num_vec[unique(opts$m) - length(unique(design$ypos)[[1]])]` uninformative response components to generate `r num_vec[unique(opts$m)]` response variables. This spreads out the information in all simulated response variables. For further details on the simulation tool, see [@Rimal2018].
+: Each dataset was simulated with $n = `r unique(opts$n)`$ number of observation and $m = `r unique(opts$m)`$ response variables. Furthermore, the coefficient of determination corresponding to each response components in all the designs is set to `r unique(opts$R2)`. The latent covariance structures of informative and uninformative response and predictor components are generated independently with these design properties followed by an orthogonal rotated to obtain the population covariance structure of response and predictor variables. In addition, we have assumed that there is only `r num_vec[length(unique(design$ypos)[[1]])]` informative response component. Hence, the informative response component after the orthogonal rotation together with `r num_vec[unique(opts$m) - length(unique(design$ypos)[[1]])]` uninformative response components generates `r num_vec[unique(opts$m)]` response variables. This spreads out the information in all simulated response variables. For further details on the simulation tool, see [@Rimal2018].
 
 An example of simulation parameters for the first design is as follows:
 
@@ -73,11 +73,11 @@ set.seed(010101)
 sobj <- design %>%
     get_design(1) %>%
     simulate()
-plt1 <- cov_plot(sobj, type = "relpos", facetting = FALSE) +
+plt1 <- plot_cov(sobj, type = "relpos", facetting = FALSE) +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5),
           panel.grid.minor = element_line(size = 0.2),
           panel.grid.major = element_blank())
-plt2 <- cov_plot(sobj, type = "relpred", facetting = FALSE) +
+plt2 <- plot_cov(sobj, type = "relpred", facetting = FALSE) +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5),
           panel.grid.minor = element_line(size = 0.2),
           panel.grid.major = element_blank()) +
@@ -146,7 +146,6 @@ A similar description can be made for all 32 designs, where each of the designs 
 # Basis of comparison
 
 This study focuses mainly on the prediction performance of the methods with an emphasis specifically on the interaction between the properties of the data controlled by the simulation parameters and the prediction methods. The prediction performance is measured based on the following:
-
 
 a) The average prediction error that a method can give using an arbitrary number of components and
 b) The average number of components used by the method to give the minimum prediction error
