@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2019-04-26">
+<meta name="date" content="2019-04-29">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -193,7 +193,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   \lambda_i = e^{-\gamma(i - 1)}, \gamma &gt; 0 \text{ and } i = 1, 2, \ldots, p
   \tag{5}
 \end{equation}\]</span></p>
-<p>Here, <span class="math inline">\(\lambda_i, i = 1, 2, \ldots p\)</span> are eigenvalues of the predictor variables. We have used 0.2 and 0.9 as different levels of <code>gamma</code>. The higher the value of gamma, the higher the multicollinearity will be, and vice versa. In our simulation, the higher and lower <code>gamma</code> correspond to maximum correlation of 0.990 and 0.709 between the predictor variables respectively in the case of designs with 20 predictors. This value ranges from 0.998 to 0.923 respectively in the case of designs with 250 predictors.</p>
+<p>Here, <span class="math inline">\(\lambda_i, i = 1, 2, \ldots p\)</span> are eigenvalues of the predictor variables. We have used 0.2 and 0.9 as different levels of <code>gamma</code>. The higher the value of gamma, the higher the multicollinearity will be, and vice versa. In our simulations, the higher and lower <code>gamma</code> values corresponded to maximum correlation between the predictors equal to 0.990 and 0.709, respectively, in the case of <span class="math inline">\(p = 20\)</span> variables. In the case of <span class="math inline">\(p = 250\)</span> the corresponding values for the maximum correlation were 0.998 to 0.923.</p>
 </dd>
 <dt><strong>Correlation in response variables:</strong></dt>
 <dd><p>Correlation among response variables has been explored to a lesser extent. Here we have tried to explore that part with four levels of correlation in the response variables. We have used the <code>eta</code> (<span class="math inline">\(\eta\)</span>) parameter of <code>simrel</code> for controlling the decline in eigenvalues corresponding to the response variables as <a href="experimental-design.html#eq:eta">(6)</a>.</p>
@@ -216,7 +216,7 @@ Figure 2: Experimental Design of simulation parameters. Each point represents a 
 </div>
 <dl>
 <dt><strong>Common parameters:</strong></dt>
-<dd>Each dataset was simulated with <span class="math inline">\(n = 100\)</span> number of observation and <span class="math inline">\(m = 4\)</span> response variables. Furthermore, the coefficient of determination corresponding to each response components in all the designs is set to 0.8. The latent covariance structures of informative and uninformative response and predictor components are generated independently with these design properties followed by an orthogonal rotated to obtain the population covariance structure of response and predictor variables. In addition, we have assumed that there is only one informative response component. Hence, the informative response component after the orthogonal rotation together with three uninformative response components generates four response variables. This spreads out the information in all simulated response variables. For further details on the simulation tool, see <span class="citation">(Rimal, Almøy, and Sæbø <a href="references.html#ref-Rimal2018" role="doc-biblioref">2018</a>)</span>.
+<dd>Each dataset was simulated with <span class="math inline">\(n = 100\)</span> number of observation and <span class="math inline">\(m = 4\)</span> response variables. Furthermore, the coefficient of determination corresponding to each response components in all the designs is set to 0.8. The informative and uninformative latent components are generated according to <a href="simulation-model.html#eq:model-2">(3)</a>. Since <span class="math inline">\(\boldsymbol{\Sigma}_{ww}\)</span> and <span class="math inline">\(\boldsymbol{\Sigma}_{zz}\)</span> are diagonal matrices, the components are independent within <span class="math inline">\(\mathbold{w}\)</span> and <span class="math inline">\(\mathbold{z}\)</span>, but dependence between the latent spaces of <span class="math inline">\(\mathbold{x}\)</span> and <span class="math inline">\(\mathbold{y}\)</span> are secured through the non-zero elements of <span class="math inline">\(\boldsymbol{\Sigma}_{wz}\)</span> with positions defined by the <code>relpos</code> and <code>ypos</code> parameters. The latent components are subsequently rotated to obtain the population covariance structure of response and predictor variables. In addition, we have assumed that there is only one informative response component. Hence, the informative response component after the orthogonal rotation together with three uninformative response components generates four response variables. This spreads out the information in all simulated response variables. For further details on the simulation tool, see <span class="citation">(Rimal, Almøy, and Sæbø <a href="references.html#ref-Rimal2018" role="doc-biblioref">2018</a>)</span>.
 </dd>
 </dl>
 <p>An example of simulation parameters for the first design is as follows:</p>

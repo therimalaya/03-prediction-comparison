@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2019.3.18)  26 APR 2019 15:08
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2019.3.18)  29 APR 2019 17:20
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1550,7 +1550,7 @@ e 364.
 [6]
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
 (Font)              Font shape `T1/lmtt/b/n' tried instead on input line 377.
-<main_files/figure-latex/cov-plot-1-1.pdf, id=207, pagebox=cropbox, 600.2425pt 
+<main_files/figure-latex/cov-plot-1-1.pdf, id=208, pagebox=cropbox, 600.2425pt 
 x 310.15875pt>
 File: main_files/figure-latex/cov-plot-1-1.pdf Graphic file (type pdf)
 <use main_files/figure-latex/cov-plot-1-1.pdf>
@@ -1559,7 +1559,7 @@ t line 393. on input line 393.
 Package pdftex.def Info: Requested size: 469.75502pt x 242.7416pt on input line
  393.
 [7 <./main_files/figure-latex/design-plot-1.pdf>]
-<main_files/figure-latex/est-cov-plot-1.pdf, id=228, pagebox=cropbox, 642.4pt x
+<main_files/figure-latex/est-cov-plot-1.pdf, id=229, pagebox=cropbox, 642.4pt x
  512.91624pt>
 File: main_files/figure-latex/est-cov-plot-1.pdf Graphic file (type pdf)
 <use main_files/figure-latex/est-cov-plot-1.pdf>
@@ -1567,6 +1567,8 @@ Package pdftex.def Info: main_files/figure-latex/est-cov-plot-1.pdf  used on in
 put line 401. on input line 401.
 Package pdftex.def Info: Requested size: 469.75502pt x 375.08318pt on input lin
 e 401.
+[8 <./main_files/figure-latex/cov-plot-1-1.pdf>] [9 <./main_files/figure-latex/
+est-cov-plot-1.pdf>]
 LaTeX Font Info:    Try loading font information for OT1+lmss on input line 424
 .
 (/usr/local/texlive/2017/texmf-dist/tex/latex/lm/ot1lmss.fd
@@ -1576,8 +1578,7 @@ Package microtype Info: Loading generic settings for font family
 (microtype)             `lmss' (encoding: OT1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-[8 <./main_files/figure-latex/cov-plot-1-1.pdf>] [9 <./main_files/figure-latex/
-est-cov-plot-1.pdf>]
+
 Underfull \hbox (badness 1502) in paragraph at lines 429--431
 \T1/ppl/m/n/10 (+20) as a pre-dic-tion er-ror of re-sponse $\OML/zplm/m/it/10 j
  \OT1/zplm/m/n/10 = \OT1/ppl/m/n/10 (+20) 1, [] 4$ \T1/ppl/m/n/10 (+20) for a g
@@ -1586,7 +1587,7 @@ iven de-sign $\OML/zplm/m/it/10 i \OT1/zplm/m/n/10 = \OT1/ppl/m/n/10 (+20) 1, 2
  []
 
 [10]
-<main_files/figure-latex/pred-pca-hist-mthd-gamma-relpos-1.pdf, id=347, pagebox
+<main_files/figure-latex/pred-pca-hist-mthd-gamma-relpos-1.pdf, id=348, pagebox
 =cropbox, 463.7325pt x 311.1625pt>
 File: main_files/figure-latex/pred-pca-hist-mthd-gamma-relpos-1.pdf Graphic fil
 e (type pdf)
@@ -1595,103 +1596,103 @@ Package pdftex.def Info: main_files/figure-latex/pred-pca-hist-mthd-gamma-relpo
 s-1.pdf  used on input line 492. on input line 492.
 Package pdftex.def Info: Requested size: 469.75502pt x 315.21173pt on input lin
 e 492.
-<main_files/figure-latex/comp-pca-hist-mthd-gamma-relpos-1.pdf, id=349, pagebox
+<main_files/figure-latex/comp-pca-hist-mthd-gamma-relpos-1.pdf, id=350, pagebox
 =cropbox, 459.7175pt x 311.1625pt>
 File: main_files/figure-latex/comp-pca-hist-mthd-gamma-relpos-1.pdf Graphic fil
 e (type pdf)
 <use main_files/figure-latex/comp-pca-hist-mthd-gamma-relpos-1.pdf>
 Package pdftex.def Info: main_files/figure-latex/comp-pca-hist-mthd-gamma-relpo
-s-1.pdf  used on input line 504. on input line 504.
+s-1.pdf  used on input line 503. on input line 503.
 Package pdftex.def Info: Requested size: 469.75502pt x 317.97505pt on input lin
-e 504.
+e 503.
 [11] [12 <./main_files/figure-latex/pred-pca-hist-mthd-gamma-relpos-1.pdf>] [13
  <./main_files/figure-latex/comp-pca-hist-mthd-gamma-relpos-1.pdf>]
-<main_files/figure-latex/manova-plot-1.pdf, id=403, pagebox=cropbox, 568.1225pt
+<main_files/figure-latex/manova-plot-1.pdf, id=404, pagebox=cropbox, 568.1225pt
  x 454.69875pt>
 File: main_files/figure-latex/manova-plot-1.pdf Graphic file (type pdf)
 <use main_files/figure-latex/manova-plot-1.pdf>
 Package pdftex.def Info: main_files/figure-latex/manova-plot-1.pdf  used on inp
-ut line 551. on input line 551.
+ut line 550. on input line 550.
 Package pdftex.def Info: Requested size: 469.75502pt x 375.98448pt on input lin
-e 551.
+e 550.
 [14 <./main_files/figure-latex/manova-plot-1.pdf>]
-<main_files/figure-latex/pred-eff-plots-1.pdf, id=421, pagebox=cropbox, 495.852
+<main_files/figure-latex/pred-eff-plots-1.pdf, id=422, pagebox=cropbox, 495.852
 5pt x 288.07625pt>
 File: main_files/figure-latex/pred-eff-plots-1.pdf Graphic file (type pdf)
 <use main_files/figure-latex/pred-eff-plots-1.pdf>
 Package pdftex.def Info: main_files/figure-latex/pred-eff-plots-1.pdf  used on 
-input line 574. on input line 574.
+input line 573. on input line 573.
 Package pdftex.def Info: Requested size: 469.75502pt x 272.91481pt on input lin
-e 574.
-<main_files/figure-latex/comp-eff-plots-1.pdf, id=422, pagebox=cropbox, 495.852
+e 573.
+<main_files/figure-latex/comp-eff-plots-1.pdf, id=423, pagebox=cropbox, 495.852
 5pt x 288.07625pt>
 File: main_files/figure-latex/comp-eff-plots-1.pdf Graphic file (type pdf)
 <use main_files/figure-latex/comp-eff-plots-1.pdf>
 Package pdftex.def Info: main_files/figure-latex/comp-eff-plots-1.pdf  used on 
-input line 583. on input line 583.
+input line 582. on input line 582.
 Package pdftex.def Info: Requested size: 469.75502pt x 272.91481pt on input lin
-e 583.
+e 582.
 [15] [16 <./main_files/figure-latex/pred-eff-plots-1.pdf> <./main_files/figure-
 latex/comp-eff-plots-1.pdf>]
-<main_files/figure-latex/ex1-cumulative-ues-1.pdf, id=456, pagebox=cropbox, 572
+<main_files/figure-latex/ex1-cumulative-ues-1.pdf, id=457, pagebox=cropbox, 572
 .1375pt x 225.84375pt>
 File: main_files/figure-latex/ex1-cumulative-ues-1.pdf Graphic file (type pdf)
 <use main_files/figure-latex/ex1-cumulative-ues-1.pdf>
 Package pdftex.def Info: main_files/figure-latex/ex1-cumulative-ues-1.pdf  used
- on input line 603. on input line 603.
+ on input line 602. on input line 602.
 Package pdftex.def Info: Requested size: 469.75502pt x 185.43083pt on input lin
-e 603.
-<main_files/figure-latex/ex1-prediction-error-1.pdf, id=459, pagebox=cropbox, 4
+e 602.
+<main_files/figure-latex/ex1-prediction-error-1.pdf, id=460, pagebox=cropbox, 4
 63.7325pt x 266.9975pt>
 File: main_files/figure-latex/ex1-prediction-error-1.pdf Graphic file (type pdf
 )
 <use main_files/figure-latex/ex1-prediction-error-1.pdf>
 Package pdftex.def Info: main_files/figure-latex/ex1-prediction-error-1.pdf  us
-ed on input line 609. on input line 609.
+ed on input line 608. on input line 608.
 Package pdftex.def Info: Requested size: 469.75502pt x 270.47198pt on input lin
-e 609.
+e 608.
 [17 <./main_files/figure-latex/ex1-cumulative-ues-1.pdf>]
-<main_files/figure-latex/ex2-cumulative-eigenvalues-1.pdf, id=478, pagebox=crop
+<main_files/figure-latex/ex2-cumulative-eigenvalues-1.pdf, id=479, pagebox=crop
 box, 572.1375pt x 225.84375pt>
 File: main_files/figure-latex/ex2-cumulative-eigenvalues-1.pdf Graphic file (ty
 pe pdf)
 <use main_files/figure-latex/ex2-cumulative-eigenvalues-1.pdf>
 Package pdftex.def Info: main_files/figure-latex/ex2-cumulative-eigenvalues-1.p
-df  used on input line 622. on input line 622.
+df  used on input line 621. on input line 621.
 Package pdftex.def Info: Requested size: 469.75502pt x 185.43083pt on input lin
-e 622.
-<main_files/figure-latex/ex2-prediction-error-1.pdf, id=480, pagebox=cropbox, 4
+e 621.
+<main_files/figure-latex/ex2-prediction-error-1.pdf, id=481, pagebox=cropbox, 4
 63.7325pt x 361.35pt>
 File: main_files/figure-latex/ex2-prediction-error-1.pdf Graphic file (type pdf
 )
 <use main_files/figure-latex/ex2-prediction-error-1.pdf>
 Package pdftex.def Info: main_files/figure-latex/ex2-prediction-error-1.pdf  us
-ed on input line 628. on input line 628.
+ed on input line 627. on input line 627.
 Package pdftex.def Info: Requested size: 469.75502pt x 366.05234pt on input lin
-e 628.
+e 627.
 [18 <./main_files/figure-latex/ex1-prediction-error-1.pdf>]
 
 LaTeX Warning: Text page 19 contains only floats.
 
 [19 <./main_files/figure-latex/ex2-cumulative-eigenvalues-1.pdf> <./main_files/
 figure-latex/ex2-prediction-error-1.pdf>] [20] (./main.bbl [21] [22]) [23]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 670.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 670.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 671.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 671.
 (./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 670.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 670.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 671.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 671.
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 98C06A433062FE62F9435B9D2A4F9366;2820.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 670.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 671.
  ) 
 Here is how much of TeX's memory you used:
- 28477 strings out of 492990
- 499634 string characters out of 6132636
+ 28481 strings out of 492990
+ 499712 string characters out of 6132636
  602066 words of memory out of 5000000
- 31175 multiletter control sequences out of 15000+600000
- 79007 words of font info for 283 fonts, out of 8000000 for 9000
+ 31179 multiletter control sequences out of 15000+600000
+ 80009 words of font info for 285 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 69i,13n,77p,1635b,489s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 69i,13n,77p,1635b,485s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/
 texlive/2017/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/2017/t
 exmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2017/texmf-dist/fonts
@@ -1712,10 +1713,10 @@ dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2017/texmf-dist/fo
 nts/type1/urw/palatino/uplbi8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/ty
 pe1/urw/palatino/uplr8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw
 /palatino/uplri8a.pfb>
-Output written on main.pdf (23 pages, 963236 bytes).
+Output written on main.pdf (23 pages, 964462 bytes).
 PDF statistics:
- 641 PDF objects out of 1000 (max. 8388607)
- 553 compressed objects within 6 object streams
+ 642 PDF objects out of 1000 (max. 8388607)
+ 554 compressed objects within 6 object streams
  115 named destinations out of 1000 (max. 500000)
  42702 words of extra memory for PDF output out of 42996 (max. 10000000)
 
