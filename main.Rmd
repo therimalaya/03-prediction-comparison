@@ -1,0 +1,938 @@
+---
+site: bookdown::bookdown_site
+title: 'Comparison of Multi-response Prediction Methods'
+date: "`r Sys.Date()`"
+author:
+  - name: Raju Rimal
+    email: raju.rimal@nmbu.no
+    affiliation: KBM
+    footnote: Corresponding Author
+  - name: Trygve Almøy
+    email: trygve.almoy@nmbu.no
+    affiliation: KBM
+  - name: Solve Sæbø
+    email: solve.sabo@nmbu.no
+    affiliation: NMBU
+address:
+  - code: KBM
+    address: Faculty of Chemistry and Bioinformatics, Norwegian University of Life Sciences, Ås, Norway
+  - code: NMBU
+    address: Professor, Norwegian University of Life Sciences, Ås, Norway
+classoption: ['review']
+monofont: 'sourcecodepro'
+monofontoptions: "Scale=0.7"
+colorlinks: true
+linespacing: 1.5
+geometry: 'margin=1in'
+# fontfamily: mathpazo
+# use-landscape-page: yes
+tables: yes
+bibliography: References.bib
+biblio-title: References
+biblio-style: elsarticle-harv
+link-citations: true
+github-repo: therimalaya/03-prediction-comparison
+always_allow_html: true
+url: 'http\://therimalaya.github.io/03-prediction-comparison'
+knit: 'bookdown::render_book'
+review: yes
+keywords: ['model-comparison ', 'multi-response ', 'simrel ']
+abstract: |
+  While data science is battling to extract information from the enormous explosion of data, many estimators and algorithms are being developed for better prediction. Researchers and data scientists often introduce new methods and evaluate them based on various aspects of data. However, studies on the impact of/on a model with multiple response variables are limited. This study compares some newly-developed (envelope) and well- established (PLS, PCR) prediction methods based on real data and simulated data specifically designed by varying properties such as multicollinearity, the correlation between multiple responses and position of relevant principal components of predictors. This study aims to give some insight into these methods and help the researcher to understand and use them in further studies.
+---
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, cache=FALSE}
+options(digits = 3, scipen = 999)
+source("scripts/00-function.r")
+source("scripts/01-setup.r")
+knitr::opts_chunk$set(comment = NULL, out.width = "100%", echo = FALSE)
+if (knitr::is_html_output()) {
+  knitr::opts_chunk$set(dev = 'svg', fig.retina = 2, dev.args = list(family="mono"))
+}
+```
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE, cache=TRUE}
+source("scripts/03-collection.r")
+```
+
+# Introduction #
+
+The prediction has been an essential component of modern data science, whether in the discipline of statistical analysis or machine learning. Modern technology has facilitated a massive explosion of data however, such data often contain irrelevant information that consequently makes prediction difficult. Researchers are devising new methods and algorithms in order to extract information to create robust predictive models. Such models mostly contain predictor variables that are directly or indirectly correlated with other predictor variables. In addition, studies often consist of many response variables correlated with each other. These interlinked relationships influence any study, whether it is predictive modelling or inference.
+
+Modern inter-disciplinary research fields such as chemometrics, econometrics and bioinformatics handle multi-response models extensively. This paper attempts to compare some multivariate prediction methods based on their prediction performance on linear model data with specific properties. The properties include the correlation between response variables, the correlation between predictor variables, number of predictor variables and the position of relevant predictor components. These properties are discussed more in the [Experimental Design] section. Among others, @saebo2015simrel and @Alm_y_1996 have conducted a similar comparison in the single response setting. In addition, @Rimal2018 have also conducted a basic comparison of some prediction methods and their interaction with the data properties of a multi-response model. The main aim of this paper is to present a comprehensive comparison of contemporary prediction methods such as simultaneous envelope estimation (Senv) [@cook2015simultaneous] and envelope estimation in predictor space (Xenv) [@cook2010envelope] with customary prediction methods such as Principal Component Regression (PCR), Partial Least Squares Regression (PLS) using simulated dataset with controlled properties. In the case of PLS, we have used PLS1 which fits individual response separately and PLS2 which fits all the responses together. Experimental design and the methods under comparison are discussed further, followed by a brief discussion of the strategy behind the data simulation.
+
+```{r scratch, echo = FALSE}
+num_vec <- c('one', 'two', 'three', 'four', 'five', 
+             'six', 'seven', 'eight', 'nine', 'ten')
+names(num_vec) <- 1:10
+```
+
+
+
+<!--chapter:end:index.Rmd-->
+
+# Simulation Model #
+
+Consider a model where the response vector $(\mathbf{y})$ with $m$ elements and predictor vector $(\mathbf{x})$ with $p$ elements follow a multivariate normal distribution as follows,
+
+\begin{equation}
+  \begin{bmatrix}
+    \mathbf{y} \\ \mathbf{x}
+  \end{bmatrix} \sim \mathcal{N}
+  \left(
+    \begin{bmatrix}
+      \boldsymbol{\mu}_y \\
+      \boldsymbol{\mu}_x
+    \end{bmatrix},
+    \begin{bmatrix}
+    \boldsymbol{\Sigma}_{yy} & \boldsymbol{\Sigma}_{yx} \\
+    \boldsymbol{\Sigma}_{xy} & \boldsymbol{\Sigma}_{xx}
+    \end{bmatrix}
+  \right)
+  (\#eq:model-1)
+\end{equation}
+
+where, $\boldsymbol{\Sigma}_{xx}$ and $\boldsymbol{\Sigma}_{yy}$ are the variance-covariance matrices of $\mathbf{x}$ and $\mathbf{y}$, respectively, $\boldsymbol{\Sigma}_{xy}$ is the covariance between $\mathbf{x}$ and $\mathbf{y}$ and $\boldsymbol{\mu}_x$ and $\boldsymbol{\mu}_y$ are mean vectors of $\mathbf{x}$ and $\mathbf{y}$, respectively. A linear model based on \@ref(eq:model-1) is,
+
+\begin{equation}
+\mathbf{y} = \boldsymbol{\mu}_y + 
+  \boldsymbol{\beta}^t(\mathbf{x} - \boldsymbol{\mu_x}) + 
+  \boldsymbol{\epsilon}
+(\#eq:reg-model-1)
+\end{equation}
+where, $\underset{m\times p}{\boldsymbol{\beta}^t}$ is a matrix of regression
+coefficients and $\boldsymbol{\epsilon}$ is an error term such that
+$\boldsymbol{\epsilon} \sim \mathcal{N}(0, \boldsymbol{\Sigma}_{y|x})$. Here, $\boldsymbol{\beta}^t = \mathbf{\Sigma}_{yx}\mathbf{\Sigma}_{xx}^{-1}$ and $\boldsymbol{\Sigma}_{y|x} = \boldsymbol{\Sigma}_{yy} - \boldsymbol{\Sigma}_{yx}\boldsymbol{\Sigma}_{xx}^{-1}\boldsymbol{\Sigma}_{xy}$
+
+In a model like \@ref(eq:reg-model-1), we assume that the variation in response $\mathbf{y}$ is partly explained by the predictor $\mathbf{x}$. However, in many situations, only a subspace of the predictor space is relevant for the variation in the response $\mathbf{y}$. This space can be referred to as the relevant space of $\mathbf{x}$ and the rest as irrelevant space. In a similar way, for a certain model, we can assume that a subspace in the response space exists and contains the information that the relevant space in predictor can explain (Figure-\@ref(fig:relevant-space)). @cook2010envelope and @cook2015simultaneous have referred to the relevant space as material space and the irrelevant space as immaterial space.
+
+```{r relevant-space, out.width = "80%", fig.asp = 0.7, retina = 2, fig.align = 'center', message = FALSE, fig.cap = "Relevant space in a regression model"}
+plot_relspace()
+```
+
+With an orthogonal transformation of $\mathbf{y}$ and $\mathbf{x}$ to latent variables $\mathbf{w}$ and $\mathbf{z}$, respectively, by $\mathbf{w=Qy}$ and $\mathbf{z = Rx}$, where $\mathbf{Q}$ and $\mathbf{R}$ are orthogonal rotation matrices, an equivalent model to \@ref(eq:model-1) in terms of the latent variables can be written as,
+
+\begin{equation}
+  \begin{bmatrix}
+    \mathbf{w} \\ \mathbf{z}
+  \end{bmatrix} \sim \mathcal{N}
+  \left(
+    \begin{bmatrix}
+      \boldsymbol{\mu}_w \\
+      \boldsymbol{\mu}_z
+    \end{bmatrix},
+    \begin{bmatrix}
+    \boldsymbol{\Sigma}_{ww} & \boldsymbol{\Sigma}_{wz} \\
+    \boldsymbol{\Sigma}_{zw} & \boldsymbol{\Sigma}_{zz}
+    \end{bmatrix}
+  \right)
+  (\#eq:model-2)
+\end{equation}
+
+where, $\boldsymbol{\Sigma}_{ww}$ and $\boldsymbol{\Sigma}_{zz}$ are the variance-covariance matrices of $\mathbf{w}$ and $\mathbf{z}$, respectively. $\boldsymbol{\Sigma}_{zw}$ is the covariance between $\mathbf{z}$ and $\mathbf{w}$. $\boldsymbol{\mu}_w$ and $\boldsymbol{\mu}_z$ are the mean vector of $\mathbf{z}$ and $\mathbf{w}$ respectively. 
+
+Here, the elements of $\mathbf{w}$ and $\mathbf{z}$ are the principal components of responses and predictors, which will respectively be referred to respectively as "response components" and "predictor components". The column vectors of respective rotation matrices $\mathbf{Q}$ and $\mathbf{R}$ are the eigenvectors corresponding to these principal components. We can write a linear model based on \@ref(eq:model-2) as,
+
+\begin{equation}
+\mathbf{w} = \boldsymbol{\mu}_w + \boldsymbol{\alpha}^t(\mathbf{z} - \boldsymbol{\mu_z}) + \boldsymbol{\tau}
+(\#eq:reg-model-2)
+\end{equation}
+where, $\underset{m\times p}{\boldsymbol{\alpha}^t}$ is a matrix of regression coefficients and $\boldsymbol{\tau}$ is an error term such that $\boldsymbol{\tau} \sim \mathcal{N}(0, \boldsymbol{\Sigma}_{w|z})$.
+
+Following the concept of relevant space, a subset of predictor components can be imagined to span the predictor space. These components can be regarded as relevant predictor components. @Naes1985 introduced the concept of relevant components which was explored further by @helland1990partial, @naes1993relevant, @Helland1994b and @Helland2000. The corresponding eigenvectors were referred to as relevant eigenvectors. A similar logic is introduced by @cook2010envelope and later by @cook2013envelopes as an envelope which is the space spanned by the relevant eigenvectors [@cook2018envelope, pp. 101].
+
+In addition, various simulation studies have been performed with the model based on the concept of relevant subspace. A simulation study by @Alm_y_1996 has used a single response simulation model based on reduced regression and has compared some contemporary multivariate estimators. In recent years @helland2012near, @saebo2015simrel, @helland2016algorithms and @Rimal2018 implemented similar simulation examples similar to those we are discussing in this study. This paper, however, presents an elaborate comparison of the prediction using multi-response simulated linear model data. The properties of the simulated data are varied through different levels of simulation-parameters based on an experimental design. @Rimal2018 provide a detailed discussion of the simulation model that we have adopted here. The following section presents the estimators being compared in more detail.
+
+# Prediction Methods
+
+Partial least squares regression (PLS) and Principal component regression (PCR) have been used in many disciplines such as chemometrics, econometrics, bioinformatics and machine learning, where wide predictor matrices, i.e. $p$ (number or predictors) > $n$ (number of observation) are common. These methods are popular in multivariate analysis, especially for exploratory studies and predictions.  In recent years, a concept of envelope introduced by @Cook2007a based on the reduction in the regression model was implemented for the development of different estimators. This study compares these prediction methods based on their prediction performance on data simulated with different controlled properties.
+
+_Principal Components Regression (PCR):_
+: Principal components are the linear combinations of predictor variables such that the transformation makes the new variables uncorrelated. In addition, the variation of the original dataset captured by the new variables is sorted in descending order. In other words, each successive component captures maximum variation left by the preceding components in predictor variables [@Jolliffe2002]. Principal components regression uses these principal components as a new predictor to explain the variation in the response. 
+ 
+
+_Partial Least Squares (PLS):_
+: Two variants of PLS: PLS1 and PLS2 are used for comparison. The first one considers individual response variables separately, i.e. each response is predicted with a single response model, while the latter considers all response variables together. In PLS regression, the components are determined so as to maximize a covariance between response and predictors [@DeJong1993]. Among other, there are three main PLS algorithms NIPALS, SIMPLS and Kernel Algorithm all of which removes the extracted information through deflation and makes the resulting new variables orthogonal. The algorithms differ in the deflation strategy and computation of various weight vectors [@alin09] and here we have used the kernel version of PLS. R-package `pls` [@pls2018] is used for both PCR and PLS methods.
+
+_Envelopes:_
+: The envelope, introduced by @Cook2007a, was first used to define response envelope [@cook2010envelope] as the smallest subspace in the response space and must be a reducing subspace of $\Sigma_{y|x}$ such that the span of regression coefficients lies in that space. Since a multivariate linear regression model contains relevant (material) and irrelevant (immaterial) variation in both response and predictor, the relevant part provides information, while the irrelevant part increases the estimative variation. The concept of the envelope uses the relevant part for estimation while excluding the irrelevant part consequently increasing the efficiency of the model [@cook2016algorithms]. 
+: The concept was later extended to the predictor space, where the predictor envelope was defined [@cook2013envelopes]. Further @cook2015simultaneous used envelopes for joint reduction of the responses and predictors and argued that this produced efficiency gains that were greater than those derived by using individual envelopes for either the responses or the predictors separately. All the variants of envelope estimations are based on maximum likelihood estimation. Here we have used predictor envelope (Xenv) and simultaneous envelope (Senv) for the comparison. R-package `Renvlp` [@env2018] is used for both Xenv and Senv methods.
+
+## Modification in envelope estimation
+
+Since envelope estimators (Xenv and Senv) are based on maximum likelihood estimation (MLE), it fails to estimate in the case of wide matrices, i.e. $p > n$. To incorporate these methods in our comparison, we have used the principal components $(\mathbf{z})$ of the predictor variables $(\mathbf{x})$ as predictors, using the required number of components for capturing 97.5\% of the variation in $\mathbf{x}$ for the designs where $p > n$. The new set of variables $\mathbf{z}$ were used for envelope estimation. The regression coefficients $(\hat{\boldsymbol{\alpha}})$ corresponding to these new variables $\mathbf{z}$ were transformed back to obtain coefficients for each predictor variable as, 
+$$\hat{\boldsymbol{\beta}} = \mathbf{e}_k\hat{\boldsymbol{\alpha}_k}$$
+where $\mathbf{e}_k$ is a matrix of eigenvectors with the first $k$ number of components. Only simultaneous envelope allows to specify the dimension of response envelope and all the simulation is based on a single latent dimension of response, so it is fixed at two in the simulation study. In the case of Senv, when the envelope dimension for response is the same as the number of responses, it degenerates to the Xenv method and if the envelope dimension for the predictor is the same as the number of predictors, it degenerates to the standard multivariate linear regression [@env2018].
+
+
+<!--chapter:end:Includes/02-SimulationModel.Rmd-->
+
+# Experimental Design #
+
+This study compares prediction methods based on their prediction ability. Data with specific properties are simulated, some of which are easier to predict than others. These data are simulated using the R-package `simrel`, which is discussed in @saebo2015simrel and @Rimal2018. Here we have used four different factors to vary the property of the data: a) Number of predictors (`p`), b) Multicollinearity in predictor variables (`gamma`), c) Correlation in response variables (`eta`) and d) position of predictor components relevant for the response (`relpos`). Using two levels of `p`, `gamma` and `relpos` and four levels of `eta`, `r nrow(design)` set of distinct properties are designed for the simulation.
+
+__Number of predictors:__
+: To observe the performance of the methods on tall and wide predictor matrices, `r catvec(opts$p)` predictor variables are simulated with the number of observations fixed at 100. Parameter `p` controls these properties in the `simrel` function.
+
+__Multicollinearity in predictor variables:__
+: Highly collinear predictors can be explained completely by a few components. The parameter `gamma` ($\gamma$) in `simrel` controls decline in the eigenvalues of the predictor variables as \@ref(eq:gamma).
+
+
+    \begin{equation}
+      \lambda_i = e^{-\gamma(i - 1)}, \gamma > 0 \text{ and } i = 1, 2, \ldots, p
+      (\#eq:gamma)
+    \end{equation}
+
+    Here, $\lambda_i, i = 1, 2, \ldots p$ are eigenvalues of the predictor variables. We have used `r catvec(opts$gamma)` as different levels of `gamma`. The higher the value of gamma, the higher the multicollinearity will be, and vice versa. In our simulations, the higher and lower `gamma` values corresponded to maximum correlation between the predictors equal to 0.990 and 0.709, respectively, in the case of $p = 20$ variables. In the case of $p = 250$ the corresponding values for the maximum correlation were 0.998 to 0.923.
+
+__Correlation in response variables:__
+: Correlation among response variables has been explored to a lesser extent. Here we have tried to explore that part with `r num_vec[length(opts$eta)]` levels of correlation in the response variables. We have used the `eta` ($\eta$) parameter of `simrel` for controlling the decline in eigenvalues corresponding to the response variables as \@ref(eq:eta).
+
+    \begin{equation}
+      \kappa_j = e^{-\eta(j - 1)}, \eta > 0 \text{ and } j = 1, 2, \ldots, m
+      (\#eq:eta)
+    \end{equation}
+
+    Here, $\kappa_j, i = 1, 2, \ldots m$ are the eigenvalues of the response variables and `m` is the number of response variables. We have used `r catvec(opts$eta)` as different levels of `eta`. The larger the value of eta, the larger will be the correlation will be between response variables and vice versa. In our simulation, the different levels of `eta` from small to large correspond to maximum correlation of 0, 0.442, 0.729 and 0.878 between the response variables respectively.
+
+__Position of predictor components relevant to the response:__
+: The principal components of the predictors are ordered. The first principal component captures most of the variation in the predictors. The second captures most of the remainder left by the first principal component and so on. In highly collinear predictors, the variation captured by the first few components is relatively high. However, if those components are not relevant for the response, prediction becomes difficult [@Helland1994b]. Here, two levels of the positions of these relevant components are used as `r catvec(sapply(opts$relpos, list2chr))`.
+
+
+Moreover, a complete factorial design from the levels of the above parameters gave us `r nrow(design)` designs. Each design is associated with a dataset having unique properties. Figure~\@ref(fig:design-plot), shows all the designs. For each design and prediction method, 50 datasets were simulated as replicates. In total, there were $`r length(mthds)` \times `r nrow(design)` \times 50$, i.e. `r length(mthds) * nrow(design) * 50` simulated datasets.
+
+```{r design-plot, fig.cap="Experimental Design of simulation parameters. Each point represents a unique data property.", echo = FALSE, fig.asp=0.5, fig.width=8}
+design_chr %>%
+    mutate(Design = row_number()) %>%
+    ggplot(aes(eta, gamma)) +
+    geom_point(shape=4) +
+    ggrepel::geom_text_repel(aes(label = Design), nudge_x = 0.03) +
+    facet_grid(p ~ relpos, labeller=label_both) +
+    scale_y_reverse(breaks = opts$gamma) +
+    scale_x_continuous(breaks = opts$eta) +
+    theme_minimal(base_size=16) +
+    theme(text=element_text(family="mono")) +
+    coord_fixed(ratio=0.5)
+```
+
+
+__Common parameters:__
+: Each dataset was simulated with $n = `r unique(opts$n)`$ number of observation and $m = `r unique(opts$m)`$ response variables. Furthermore, the coefficient of determination corresponding to each response components in all the designs is set to `r unique(opts$R2)`. The informative and uninformative latent components are generated according to \@ref(eq:model-2). Since $\boldsymbol{\Sigma}_{ww}$ and $\boldsymbol{\Sigma}_{zz}$ are diagonal matrices, the components are independent within $\mathbold{w}$ and $\mathbold{z}$, but dependence between the latent spaces of $\mathbold{x}$ and $\mathbold{y}$ are secured through the non-zero elements of $\boldsymbol{\Sigma}_{wz}$ with positions defined by the `relpos` and `ypos` parameters. The latent components are subsequently rotated to obtain the population covariance structure of response and predictor variables. In addition, we have assumed that there is only `r num_vec[length(unique(design$ypos)[[1]])]` informative response component. Hence, the informative response component after the orthogonal rotation together with `r num_vec[unique(opts$m) - length(unique(design$ypos)[[1]])]` uninformative response components generates `r num_vec[unique(opts$m)]` response variables. This spreads out the information in all simulated response variables. For further details on the simulation tool, see [@Rimal2018].
+
+An example of simulation parameters for the first design is as follows:
+
+```{r sample_design, echo = TRUE, eval = FALSE}
+simrel(
+    n       = 100,                 ## Training samples
+    p       = 20,                  ## Predictors
+    m       = 4,                   ## Responses
+    q       = 20,                  ## Relevant predictors
+    relpos  = list(c(1, 2, 3, 4)), ## Relevant predictor components index
+    eta     = 0,                   ## Decay factor of response eigenvalues
+    gamma   = 0.2,                 ## Decay factor of predictor eigenvalues
+    R2      = 0.8,                 ## Coefficient of determination
+    ypos    = list(c(1, 2, 3, 4)),
+    type    = "multivariate"
+)
+```
+
+
+```{r cov-plot-1, fig.width = 9, out.width = "100%", fig.asp = 0.5, fig.cap="(left) Covariance structure of latent components (right) Covariance structure of predictor and response", message=FALSE, eval=TRUE}
+set.seed(010101)
+sobj <- design %>%
+    get_design(1) %>%
+    simulate()
+plt1 <- plot_cov(sobj, type = "relpos", facetting = FALSE) +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5),
+          panel.grid.minor = element_line(size = 0.2),
+          panel.grid.major = element_blank())
+plt2 <- plot_cov(sobj, type = "relpred", facetting = FALSE) +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5),
+          panel.grid.minor = element_line(size = 0.2),
+          panel.grid.major = element_blank()) +
+    scale_fill_brewer(palette = 'Set1',
+                      labels = paste0("Y", unlist(sobj$ypos), collapse = ", "))
+plt <- gridExtra::arrangeGrob(plt1, plt2, nrow = 1)
+grid::grid.newpage()
+grid::grid.draw(plt)
+```
+
+
+
+ The covariance structure of the data simulated with this design in the Figure \@ref(fig:cov-plot-1) shows that the predictor components at positions `r catvec(unlist(sobj$relpos))` are relevant for the first response component. After the rotation with an orthogonal rotation matrix, all predictor variables are somewhat relevant for all response variables, satisfying other desired properties such as multicollinearity and coefficient of determination. For the same design, Figure \@ref(fig:est-cov-plot) (top left) shows that the predictor components `r catvec(unlist(sobj$relpos))` are relevant for the first response component. All other predictor components are irrelevant and all other response components are uninformative. However, due to orthogonal rotation of the informative response component together with uninformative response components, all response variables in the population have similar covariance with the relevant predictor components (Figure \@ref(fig:est-cov-plot) (top right)). The sample covariances between the predictor components and predictor variables with response variables are shown in Figure \@ref(fig:est-cov-plot) (bottom left) and (bottom right) respectively.
+
+
+
+(ref:simrel-plot) Expected Scaled absolute covariance between predictor components and response components (top left). Expected Scaled absolute covariance between predictor components and response variables (top right). Sample scaled absolute covariance between predictor components and response variables (bottom left). Sample scaled absolute covariance between predictor variables and response variables (bottom right). The bar graph in the background represents eigenvalues corresponding to each component in the population (top plots) and in the sample (bottom plots). One can compare the top-right plot (true covariance of the population) with bottom-left (covariance in the simulated data) which shows a similar pattern for different components.
+
+
+```{r est-cov-plot, fig.asp = 0.8, fig.width = 9, fig.cap = "(ref:simrel-plot)", warnings=FALSE, message=FALSE}
+set.seed(010101) # design-method-replication
+sobj <- design %>%
+  get_design(1) %>%
+  simulate()
+breakx <- function(x) floor(seq(min(x), max(x), 2))
+title_common <- function(title) {
+  ggtitle(NULL, title)
+}
+thm_common <- theme(
+  legend.position = c(0.99, 0.99),
+  legend.direction = "horizontal",
+  legend.justification = c(1, 1))
+guid_common <- guides(color = guide_legend(title.position = "top"))
+labs_common <- labs(y = NULL)
+plt1 <- ggsimrelplot(sobj, which = 2, use_population = TRUE) +
+  thm_common + guid_common + labs_common +
+  title_common("Between predictor components and response components.") +
+  scale_x_continuous(breaks = breakx)
+plt2 <- ggsimrelplot(sobj, which = 3, use_population = TRUE) +
+  thm_common + guid_common + labs_common +
+  title_common("Between predictor components and response variables.") +
+  scale_x_continuous(breaks = breakx)
+plt3 <- ggsimrelplot(sobj, which = 3, use_population = FALSE) +
+  title_common("Between predictor components and response variables.") +
+  scale_x_continuous(breaks = breakx) +
+  thm_common + guid_common + labs_common
+plt4 <- ggsimrelplot(sobj, which = 4, use_population = FALSE) +
+  title_common("Between predictor variables and response variables.") +
+  scale_x_continuous(breaks = breakx) +
+  thm_common + guid_common + labs_common
+plt12 <- gridExtra::arrangeGrob(
+  plt1, plt2, ncol = 2,
+  top = "Scaled absolute population covariance")
+plt34 <- gridExtra::arrangeGrob(
+  plt3, plt4, ncol = 2,
+  top = "Scaled absolute sample covariance"
+)
+plt <- gridExtra::arrangeGrob(plt12, plt34, ncol = 1, left = "Absolute Scaled Covariance")
+grid::grid.newpage()
+grid::grid.draw(plt)
+```
+
+
+A similar description can be made for all 32 designs, where each of the designs holds the properties of the data they simulate. These data are used by the prediction methods discussed in the previous section. Each prediction method is given independently simulated datasets in order to give them an equal opportunity to capture the dynamics in the data.
+
+# Basis of comparison
+
+This study focuses mainly on the prediction performance of the methods with an emphasis specifically on the interaction between the properties of the data controlled by the simulation parameters and the prediction methods. The prediction performance is measured based on the following:
+
+a) The average prediction error that a method can give using an arbitrary number of components and
+b) The average number of components used by the method to give the minimum prediction error
+
+Let us define,
+
+\begin{equation}
+\mathcal{PE}_{ijkl} = \frac{1}{\sigma_{y_{ij}|x}^2}
+  \mathsf{E}{\left[\left(\boldsymbol{\beta}_{ij} -
+  \boldsymbol{\hat{\beta}_{ijkl}}\right)^t
+  \left(\boldsymbol{\Sigma}_{xx}\right)_i
+  \left(\boldsymbol{\beta}_{ij} - \boldsymbol{\hat{\beta}_{ijkl}}\right)\right]} + 1
+(\#eq:pred-error)
+\end{equation}
+as a prediction error of response $j = 1, \ldots 4$ for a given design $i=1, 2, \ldots 32$ and method $k=1(\text{PCR}), \ldots 5(\text{Senv})$ using $l=0, \ldots 10$ number of components. Here, $\left(\boldsymbol{\Sigma}_{xx}\right)_i$ is the true covariance matrix of the predictors, unique for a particular design $i$ and $\sigma_{y_j\mid x}^2$ for response $j = 1, \ldots m$ is the true model error. Here prediction error is scaled by the true model error to remove the effects of influencing residual variances. Since both the expectation and the variance of $\hat{\boldsymbol{\beta}}$ are unknown, the prediction error is estimated using data from 50 replications as follows,
+
+\begin{equation}
+\widehat{\mathcal{PE}_{ijkl}} = \frac{1}{\sigma_{y_{ij}|x}^2}
+  \sum_{r=0}^{50}{\left[\left(\boldsymbol{\beta}_{ij} -
+  \boldsymbol{\hat{\beta}_{ijklr}}\right)^t
+  \left(\boldsymbol{\Sigma}_{xx}\right)_i
+  \left(\boldsymbol{\beta}_{ij} - \boldsymbol{\hat{\beta}_{ijklr}}\right)\right]} + 1
+(\#eq:estimated-pred-error)
+\end{equation}
+where $\widehat{\mathcal{PE}_{ijkl}}$ is the estimated prediction error averaged over $r=50$ replicates.
+
+The following section focuses on the data for the estimation of these prediction errors that are used for the two models discussed above in a) and b) of this section.
+
+# Data Preparation
+
+A dataset for estimating \@ref(eq:pred-error) is obtained from simulation which contains a) five factors corresponding to simulation parameters, b) prediction methods, c) number of components, d) replications and e) prediction error for `r num_vec[unique(opts$m)]` responses. The prediction error is computed using predictor components ranging from 0 to 10 for every 50 replicates as,
+
+
+\begin{equation*}
+\left(\widehat{\mathcal{PE_\circ}}\right)_{ijklr} =
+  \frac{1}{\sigma_{y_{ij}\mid x}^2}\left[
+    \left(\boldsymbol{\beta}_{ij} - \hat{\boldsymbol{\beta}}_{ijklr}\right)^t
+    \left(\boldsymbol{\Sigma}_{xx}\right)_{i}
+    \left(\boldsymbol{\beta}_{ij} - \hat{\boldsymbol{\beta}}_{ijklr}\right)
+  \right] + 1
+\end{equation*}
+
+Thus there are `r nrow(design)` (designs) $\times$ `r length(mthds)` (methods) $\times$ 11 (number of components) $\times$ 50 (replications), i.e. `r nrow(design) * length(mthds) * 11 * 50` observations corresponding to the response variables from `Y1` to `Y4`.
+
+```{r data-prep}
+pred_dta <- design_chr %>%
+  select_if(function(x) n_distinct(x) > 1) %>%
+  mutate(Design = as.character(1:n())) %>%
+  mutate_at(vars(p, gamma, relpos, eta), as.factor) %>%
+  right_join(pred_error, by = "Design") %>%
+  mutate_if(is.character, as.factor) %>%
+  mutate_at("p", as.factor) %>%
+  mutate(Response = paste0("Y", Response))
+pred_spread_df <- pred_dta %>%
+  as.data.frame() %>%
+  select(-Design, -q) %>%
+  spread(Response, Pred_Error)
+min_comp_stk <- pred_dta %>%
+  group_by(p, relpos, eta, gamma, Method, Tuning_Param, Response) %>%
+  summarize(Pred_Error = mean(Pred_Error)) %>%
+  group_by(p, relpos, eta, gamma, Method, Response) %>%
+  summarize(Tuning_Param = Tuning_Param[which.min(Pred_Error)])
+pred_min <- pred_dta %>%
+  select(-Design, -q) %>%
+  semi_join(min_comp_stk, by = c(
+    "p", "relpos", "eta", "gamma", "Method",
+    "Tuning_Param", "Response"
+  )) %>% select(-Tuning_Param) %>%
+  spread(Response, Pred_Error)
+comp_min <- pred_dta %>%
+  group_by(p, relpos, eta, gamma, Method, Replication, Response) %>%
+  summarize(Tuning_Param = Tuning_Param[which.min(Pred_Error)]) %>%
+  spread(Response, Tuning_Param)
+```
+
+Since our discussions focus on the average minimum prediction error that a method can obtain and the average number of components they use to get the minimum prediction error in each replicates, the dataset discussed above is summarized as constructing the following two smaller datasets. Let us call them _Error Dataset_ and _Component Dataset_.
+
+_Error Dataset_:
+: For each prediction method, design and response, an average prediction error is computed over all replicates for each component. Next, a component that gives the minimum of this average prediction error is selected, i.e.,
+  \begin{equation}
+  l_\circ = \operatorname*{argmin}_{l}\left[\frac{1}{50}\sum_{i=1}^{50}{\left(\mathcal{PE}_\circ\right)_{ijklr}}\right]
+  (\#eq:min-pred)
+  \end{equation}
+
+: Using the component $l_\circ$, a dataset of
+$\left(\mathcal{PE}_\circ\right)_{ijkl_\circ r}$ is used as the _Error Dataset_.
+Let $\mathbf{u}_{(`r nrow(pred_min)` \times 4)} = (u_j)$ for $j = 1, \ldots 4$ be the outcome variables measuring the prediction error corresponding to the response number $j$ in the context of this dataset.
+
+_Component Dataset_:
+: The number of components that gives the minimum prediction error in each replication is referred to as the _Component Dataset_, i.e.,
+  \begin{equation}
+  l_{\circ} = \operatorname*{argmin}_{l}\left[\mathcal{PE}_{ijklr}\right]
+  (\#eq:min-comp)
+  \end{equation}
+  Here $l_\circ$ is the number of components that gives minimum prediction error $\left(\mathcal{PE}_\circ\right)_{ijklr}$ for design $i$, response $j$, method $k$ and replicate $r$. Let $\mathbf{v}_{(`r nrow(comp_min)` \times 4)} = (v_j)$ for $j = 1, \ldots 4$ be the outcome variables measuring the number of components used for minimum prediction error corresponding to the response $j$ in the context of this dataset.
+
+<!--chapter:end:Includes/03-ExperimentalDesign.Rmd-->
+
+# Exploration
+
+This section explores the variation in the _error dataset_ and the _component dataset_ for which we have used Principal Component Analysis (PCA). Let $\mathbf{t}_u$ and $\mathbf{t}_v$ be the principal component score sets corresponding to PCA run on the $\mathbf{u}$ and $\mathbf{v}$ matrices respectively. The scores density in Figure-\@ref(fig:pred-pca-hist-mthd-gamma-relpos) corresponds to the first principal component of $\mathbf{u}$, i.e. the first column of $\mathbf{t}_u$.
+
+Since higher prediction errors correspond to high scores, the plot shows that the PCR, PLS1 and PLS2 methods are influenced by the two levels of the position of relevant predictor components. When the relevant predictors are at positions `r opts$relpos[2]`, the eigenvalues corresponding to them are relatively smaller. This also suggests that PCR, PLS1 and PLS2 depend greatly on the position of the relevant components, and the variation of these components affects their prediction performance. However, the envelope methods appeared to be less influenced by `relpos` in this regard.
+
+```{r pca}
+pred_pca <- with(pred_min, prcomp(cbind(Y1, Y2, Y3, Y4)))
+expl_var <- explvar(pred_pca) %>% round(2)
+pred_dta_with_pc <- bind_cols(pred_min, as.data.frame(scores(pred_pca)[]))
+comp_pca <- with(comp_min, prcomp(cbind(Y1, Y2, Y3, Y4)))
+comp_expl_var <- explvar(comp_pca) %>% round(2)
+comp_dta_with_pc <- bind_cols(comp_min, as.data.frame(scores(comp_pca)[]))
+```
+
+```{r pc-hist-plot-function}
+pc_density_plot <- function(dta, expl_var, title) {
+    dta %>% 
+        ggplot(aes(PC1, eta, fill = relpos)) +
+        geom_density_ridges(
+            scale = 0.9,
+            alpha = 0.4, size = 0.25) +
+        geom_density_ridges(
+            scale = 0.95,
+            alpha = 0.2, size = 0.25,
+            stat = "binline", bins = 30) +
+        facet_wrap(
+            . ~ interaction(Method, paste0("gamma:", gamma), sep = "|"), 
+            scales = 'free_x', ncol = 5,
+            labeller = labeller(gamma = label_both, p = label_both)) +
+        theme_grey(base_family = 'mono') +
+        theme(
+            legend.position = "bottom",
+            strip.text = element_text(family = "mono")) +
+        labs(x = paste0("PC1(", expl_var[1], "%)")) +
+        ggtitle(title) +
+        scale_x_continuous(breaks = scales::pretty_breaks(3)) +
+        scale_color_brewer(palette = "Set1") +
+        scale_fill_brewer(palette = "Set1")
+}
+```
+
+(ref:pred-hist) Scores density corresponding to first principal component of _error dataset_ ($\mathbf{u}$) subdivided by `methods`, `gamma` and `eta` and grouped by `relpos`.
+
+```{r pred-pca-hist-mthd-gamma-relpos, message=FALSE, warning=FALSE, fig.cap="(ref:pred-hist)", fig.pos="!htb"}
+pc_density_plot(pred_dta_with_pc, expl_var,
+                title = "Density of PCA scores for error model")
+```
+
+In addition, the plot also shows that the effect of `gamma`, i.e., the level of multicollinearity, has a lesser effect when the relevant predictors are at positions 1, 2, 3, 4. This indicates that the methods are somewhat robust for handling collinear predictors. Nevertheless, when the relevant predictors are at positions 5, 6, 7, 8, high multicollinearity results in a small variance of these relevant components and consequently yields poor prediction. This is in accordance with the findings of @Helland1994b.
+
+Furthermore, the density curves for PCR, PLS1 and PLS2 are similar for different levels of `eta`, i.e., the factor controlling the correlation between responses. However, the envelope models have been shown to have distinct interactions between the positions of relevant components (`relpos`) and `eta`. Here higher levels of `eta` have yielded higher scores and clear separation between two levels of `relpos`.
+In the case of high multicollinearity, envelope methods have resulted in some large outliers indicating that in some cases that the methods can result in giving an unexpected prediction.
+
+
+(ref:comp-hist) Score density corresponding to first principal component of _component dataset_ ($\mathbf{v}$) subdivided by `methods`, `gamma` and `eta` and grouped by `relpos`.
+
+```{r comp-pca-hist-mthd-gamma-relpos, message=FALSE, warning=FALSE, fig.cap="(ref:comp-hist)", fig.pos="!htb"}
+pc_density_plot(comp_dta_with_pc, comp_expl_var,
+                title = "Density of PCA scores for component model")
+```
+
+In Figure \@ref(fig:comp-pca-hist-mthd-gamma-relpos), the higher scores suggest that methods have used a larger number of components to give minimum prediction error. The plot also shows that the relevant predictor components at `r unique(opts$relpos)[2]` give larger prediction errors than those in positions `r unique(opts$relpos)[1]`. The pattern is more distinct in large multicollinearity cases and PCR and PLS methods. Both the envelope methods have shown equally enhanced performance at both levels of `relpos` and `gamma`. However, for data with low multicollinearity ($\gamma = 0.2$), the envelope methods have used a lesser number of components on average than in the high multicollinearity cases to achieve minimum prediction error.
+
+<!--chapter:end:Includes/04-Exploration.Rmd-->
+
+# Statistical Analysis
+This section has modelled the _error data_ and the _component data_ as a function of the simulation parameters to better understand the connection between data properties and prediction methods using multivariate analysis of variation (MANOVA).
+
+```{r knitr_setup}
+options(knitr.kable.NA = '')
+docs_format <- ifelse(knitr::is_latex_output(), "latex", "html")
+print_manova <- function(tbl, format = docs_format, level = 0.05, ...){
+  signif_idx <- which(tbl[, ncol(tbl)] <= level)
+  knitr::kable(
+    x = tbl, digits = 3, booktabs = TRUE,
+    longtable = TRUE, format = format,
+    escape = FALSE, linesep = "", ...) %>%
+    kableExtra::kable_styling(latex_options = c("repeat_header")) %>%
+    kableExtra::column_spec(1:7, monospace = TRUE) %>%
+    kableExtra::row_spec(signif_idx, color = "red")
+}
+```
+
+Let us consider a model with third order interaction of the simulation parameters (`p`, `gamma`, `eta` and `relpos`) and `Methods` as in \@ref(eq:error-model) and \@ref(eq:component-model) using datasets $\mathbf{u}$ and $\mathbf{v}$, respectively. Let us refer them as the _error model_ and the _component model_.
+
+**Error Model:**
+: \begin{equation}\mathbf{u}_{abcdef} = \boldsymbol{\mu}_u +
+  (\texttt{p}_a + \texttt{gamma}_b + \texttt{eta}_c +
+    \texttt{relpos}_d + \texttt{Methods}_e)^3 +
+  \left(\boldsymbol{\varepsilon}_u\right)_{abcdef}
+  (\#eq:error-model)
+  \end{equation}
+
+**Component Model:**
+: \begin{equation}\mathbf{v}_{abcdef} = \boldsymbol{\mu}_v +
+  (\texttt{p}_a + \texttt{gamma}_b + \texttt{eta}_c +
+    \texttt{relpos}_d + \texttt{Methods}_e)^3 +
+  \left(\boldsymbol{\varepsilon}_v\right)_{abcdef}
+  (\#eq:component-model)
+  \end{equation}
+
+where, $\mathbf{u}_{abcdef}$ is a vector of prediction errors in the _error model_ and $\mathbf{v}_{abcdef}$ is a vector of the number of components used by a method to obtain minimum prediction error in the _component model_.
+
+Although there are several test-statistics for MANOVA, all are essentially equivalent for large samples [@johnson2018applied]. Here we will use Pillai's trace statistic which is defined as,
+
+\begin{equation}
+\text{Pillai statistic} = \text{tr}\left[
+\left(\mathbf{E} + \mathbf{H}\right)^{-1}\mathbf{H}
+\right] = \sum_{i=1}^m{\frac{\nu_i}{1 + \nu_i}}
+(\#eq:pillai)
+\end{equation}
+Here the matrix $\mathbf{H}$ holds between-sum-of-squares and sum-of-products for each of the predictors. The matrix $\mathbf{E}$ has a within the sum of squares and sum of products for each of the predictors. $\nu_i$ represents the eigenvalues corresponding to $\mathbf{E}^{-1}\mathbf{H}$ [@rencher2003methods].
+
+For both the models \@ref(eq:error-model) and \@ref(eq:component-model), Pillai's trace statistic is used for accessing the effect of each factor and returns an F-value for the strength of their significance. Figure \@ref(fig:manova-plot) plots the Pillai's trace statistics as bars with corresponding F-values as text labels for both models.
+
+```{r manova-model}
+pred_mdl <- lm(
+  formula = cbind(Y1, Y2, Y3, Y4) ~ (p + gamma + eta + relpos + Method) ^ 3,
+  data = pred_min)
+comp_mdl <- lm(
+  formula = cbind(Y1, Y2, Y3, Y4) ~ (p + gamma + eta + relpos + Method) ^ 3,
+  data = comp_min)
+```
+
+```{r manova-summary}
+pred_aov <- anova(pred_mdl) %>%
+  as_tibble(rownames = "Factors")
+comp_aov <- anova(comp_mdl) %>%
+  as_tibble(rownames = "Factors")
+aov_df <- bind_rows(list(Pred = pred_aov, Comp = comp_aov), .id = "Type")
+```
+
+(ref:manova-plot) Pillai Statistic and F-value for the MANOVA model. The bar represents the Pillai Statistic and the text labels are F-value for the corresponding factor.
+
+
+```{r manova-plot-old, fig.width=8, out.width='100%', fig.asp=0.5, fig.cap="(ref:manova-plot)", eval=FALSE}
+model_labels <- c(
+  Comp = "Model: Number of Components",
+  Pred = "Model: Prediction Error"
+)
+aov_df %>%
+  filter(!(Factors %in% c('Residuals', '(Intercept)'))) %>%
+  select(Model = Type, Factors, Pillai,
+         Fvalue = `approx F`, Pvalue = `Pr(>F)`) %>%
+  mutate(Model = factor(Model, levels = c("Pred", "Comp"))) %>%
+  mutate(Pvalue = ifelse(Pvalue < 0.05, "<0.05", ">=0.05")) %>%
+  ggplot(aes(reorder(Factors, log1p(Fvalue)),
+             log1p(Fvalue), fill = Pvalue)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = round(Pillai, 2)), family = 'mono',
+            angle = 90, hjust = "inward") +
+  facet_grid(cols = vars(Model), scales = 'free_y',
+             labeller = labeller(Model = model_labels)) +
+  theme_grey(base_family = "mono") +
+  theme(legend.position = c(0.2, 0.9),
+        legend.direction = 'horizontal',
+        axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+  labs(x = NULL, y = "log1p(Fvalue)") +
+  scale_y_continuous(trans = "log1p", breaks = scales::pretty_breaks(n=6))
+```
+
+```{r manova-plot, fig.width=8, out.width='100%', fig.asp=0.8, fig.cap="(ref:manova-plot)"}
+model_labels <- c(
+  Comp = "Model: Number of Components",
+  Pred = "Model: Prediction Error"
+)
+aov_df %>%
+    filter(!(Factors %in% c('Residuals', '(Intercept)'))) %>%
+    select(Model = Type, Factors, Pillai,
+           Fvalue = `approx F`, Pvalue = `Pr(>F)`) %>%
+    mutate(Model = factor(Model, levels = c("Pred", "Comp"))) %>%
+    mutate(Pvalue = ifelse(Pvalue < 0.05, "<0.05", ">=0.05")) %>%
+    ggplot(aes(reorder(Factors, Pillai), Pillai, fill = Pvalue)) +
+    geom_bar(stat = "identity") +
+    geom_text(aes(label = round(Fvalue, 2)), family = 'mono',
+              angle = 0, hjust = "inward", size = 3) +
+    facet_grid(cols = vars(Model), scales = 'free_y',
+               labeller = labeller(Model = model_labels)) +
+    theme_grey(base_family = "mono") +
+    theme(legend.position = c(0.85, 0.1),
+          legend.direction = 'horizontal',
+          axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+    guides(fill = guide_legend(title.position = "top",
+                               title.hjust = 0.5)) +
+    labs(x = NULL, y = "Pillai Statistic") +
+    coord_flip()
+```
+
+Error Model:
+: Figure \@ref(fig:manova-plot) (left) shows the Pillai's trace statistic for factors of the _error model_. The main effect of `Method` followed by `relpos`, `eta` and `gamma` have largest influence on the model. A highly significant two-factor interaction of `Method` with `gamma` followed by `relpos` and `eta` clearly shows that methods perform differently for different levels of these data properties. The significant third order interaction between `Method`, `eta` and `gamma` suggests that the performance of a method differs for a given level of multicollinearity and the correlation between the responses. Since only some methods consider modelling predictor and response together, the prediction is affected by the level of correlation between the responses (`eta`) for a given method.
+
+Component Model:
+: Figure \@ref(fig:manova-plot) (right) shows the Pillai's trace statistic for factors of the _component model_. As in the _error model_, the main effects of the Method, `relpos`, `gamma` and `eta` have a significantly large effect on the number of components that a method has used to obtain minimum prediction error. The two-factor interactions of `Method` with simulation parameters are larger in this case. This shows that the Methods and these interactions have a larger effect on the use of the number of component than the prediction error itself. In addition, a similar significant high third-order interaction as found in the _error model_ is also observed in this model.
+
+
+The following section will continue to explore the effects of different levels of the factors in the case of these interactions.
+
+## Effect Analysis of Error Model
+
+The large difference in the prediction error for the envelope models in Figure \@ref(fig:pred-eff-plots) (left) is intensified when the position of the relevant predictor is at `r unique(opts$relpos)[2]`. The results also show that the envelope methods are more sensitive to the levels of `eta` than the rest of the methods. In the case of PCR and PLS, the difference in the effect of levels of `eta` is small.
+
+In Figure \@ref(fig:pred-eff-plots) (right), we can see that the multicollinearity (controlled by `gamma`) has affected all the methods. However, envelope methods have better performance on low multicollinearity, as opposed to high multicollinearity, and PCR, PLS1 and PLS2 are robust for high multicollinearity. Despite handling high multicollinearity, these methods have higher prediction error in both cases of multicollinearity than the envelope methods.
+
+(ref:pred-eff-plot) Effect plot of some interactions of the multivariate linear model of prediction error
+
+```{r pred-eff-plots, fig.width=7, out.width='100%', fig.cap='(ref:pred-eff-plot)', fig.asp = 0.6}
+thm <- theme(plot.title = element_blank(),
+             plot.subtitle = element_blank(),
+             legend.position = "top",
+             axis.title = element_blank())
+plt1 <- eff_df("eta:relpos:Method", pred_mdl) %>%
+  eff_plot3(reorder = TRUE, labeller = label_both) +
+  theme_grey(base_family = "mono") +
+  thm
+plt2 <- eff_df("relpos:gamma:Method", pred_mdl) %>%
+  eff_plot3(reorder = TRUE, labeller = label_both) +
+  theme_grey(base_family = "mono") +
+  thm
+plt <- gridExtra::arrangeGrob(plt1, plt2, ncol = 2,
+                       bottom="Methods", padding = unit(0.04, 'npc'),
+                       left = "Fitted Prediction Error")
+grid::grid.newpage()
+grid::grid.draw(plt)
+```
+
+
+## Effect Analysis of Component Model
+
+(ref:comp-eff-plot) Effect plot of some interactions of the multivariate linear model of the number of components to get minimum prediction error
+
+
+```{r comp-eff-plots, fig.width=7, out.width='100%', fig.cap='(ref:comp-eff-plot)', fig.asp = 0.6, fig.pos="!htb"}
+thm <- theme(plot.title = element_blank(),
+             plot.subtitle = element_blank(),
+             legend.position = "top",
+             ## axis.text.x = element_text(angle = 45, hjust = 1),
+             axis.title = element_blank())
+plt1 <- eff_df("eta:relpos:Method", comp_mdl) %>%
+  eff_plot3(reorder = TRUE, labeller = label_both) +
+  theme_grey(base_family = "mono") +
+  thm
+plt2 <- eff_df("relpos:gamma:Method", comp_mdl) %>%
+  eff_plot3(reorder = TRUE, labeller = label_both) +
+  theme_grey(base_family = "mono") +
+  thm
+plt <- gridExtra::arrangeGrob(plt1, plt2, ncol = 2,
+                       bottom="Methods", padding = unit(0.04, 'npc'),
+                       left = "Fitted Number of Components")
+grid::grid.newpage()
+grid::grid.draw(plt)
+```
+
+Unlike for prediction errors, Figure \@ref(fig:comp-eff-plots) (left) shows that the number of components used by the methods to obtain minimum prediction error is less affected by the levels of `eta`. All methods appear to use on average more components when eta increases. Envelope methods are able to obtain minimum prediction error by using components ranging from 1 to 3 in both the cases of `relpos`. This value is much higher in the case of PCR as its prediction is based only on the principal components of the predictor matrix. The number of components used by this method ranges from 3 to 5 when relevant components are at positions `r unique(opts$relpos)[1]` and 5 to 8 when relevant components are at positions  `r unique(opts$relpos)[2]`.
+
+When relevant components are at position 5, 6, 7, 8, the eigenvalues of relevant predictors becomes smaller and responses are relatively difficult to predict. This becomes more critical for high multicollinearity cases. Figure \@ref(fig:comp-eff-plots) (right) shows that the envelope methods are less influenced by the level of `relpos` and are particularly better in achieving minimum prediction error using a fewer number of components than other methods.
+
+<!--chapter:end:Includes/05-Analysis.Rmd-->
+
+# Examples
+
+In addition to the analysis with the simulated data, the following two examples explore the prediction performance of the methods using real datasets. Since both examples have wide predictor matrices, principal components explaining 97.5% of the variation in them are used for envelope methods. The coefficients were transformed back after the estimation.
+
+## Raman spectra analysis of contents of polyunsaturated fatty acids (PUFA)
+
+```{r ex1-source-script}
+commandArgs <- function(...) c("Raman-PUFA", 15, 2)
+source("scripts/06-example.r")
+```
+
+This dataset contains `r sum(Dataset$train)` training samples and `r sum(!Dataset$train)` test samples of fatty acid information expressed as: a) percentage of total sample weight and b) percentage of total fat content. The dataset is borrowed from @naes2013multi where more information can be found. The samples were analysed using Raman spectroscopy from which `r ncol(Dataset$X)` wavelength variables were obtained as predictors. Raman spectroscopy provides detailed chemical information from minor components in food. The aim of this example is to compare how well the prediction methods that we have considered are able to predict the contents of PUFA using these Raman spectra.
+
+(ref:ex1-relcomp-plot) (Left) Bar represents the eigenvalues corresponding to Raman Spectra. The points and line are the covariances between response and the principal components of Raman Spectra. All the values are normalized to scale from 0 to 1. (Middle) Cumulative sum of eigenvalues corresponding to predictors. (Right) Cumulative sum of eigenvalues corresponding to responses. The top and bottom row corresponds to test and training datasets respectively.
+
+
+```{r ex1-cumulative-ues, fig.asp = 0.4, fig.cap = "(ref:ex1-relcomp-plot)", fig.width=8}
+relcomp_plot <- ex_plot_relcomp(relcomp_df, ncomp = NCOMP) +
+  labs(x = NULL, title = NULL, subtitle = NULL, color = NULL)
+plt_eigen <- function(data) {
+  data %>% 
+    ggplot(aes(x = ncomp, y = var_explained)) +
+    geom_line() +
+    geom_point(shape = 21, fill = "#efefef") +
+    facet_grid(rows = vars(test_train),
+               cols = vars(xy)) +
+    labs(x = NULL, y = "Cummulative Eigenvalues") +
+    scale_x_continuous(breaks = scales::pretty_breaks(n = 4))
+}
+plts <- eigen_df %>% 
+  group_by(xy) %>% 
+  group_split(keep = TRUE) %>% 
+  map(plt_eigen)
+plts[[2]] <- plts[[2]] + labs(y = NULL)
+plts <- append(list(relcomp_plot), plts)
+plts <- append(plts, list(
+  nrow = 1,
+  widths = c(3, 3, 2),
+  bottom = "Number of Components"
+))
+plts[1:2] <- map(plts[1:2], function(p) {
+  p + theme(strip.background.y = element_blank(),
+        strip.text.y = element_blank()) +
+    expand_limits(x = 0)
+})
+plt_grobs <- do.call(gridExtra::arrangeGrob, plts)
+grid::grid.newpage()
+grid::grid.draw(plt_grobs)
+```
+
+```{r}
+ex1_design <- design_chr %>% rowid_to_column("Design") %>% 
+  filter(p == 250, 
+         relpos == "1, 2, 3, 4", 
+         gamma == 0.9, 
+         eta == 1.2) %>% 
+  pluck("Design")
+```
+
+Figure \@ref(fig:ex1-cumulative-ues) (left) shows that the first few predictor components are somewhat correlated with response variables. In addition, the most variation in predictors is explained by less than five components (middle). Further, the response variables are highly correlated, suggesting that a single latent dimension explains most of the variation (right). We may therefore also believe that the relevant latent space in the response matrix is of dimension one. This resembles the Design `r ex1_design` (Figure \@ref(fig:design-plot)) from our simulation.
+
+
+```{r ex1-minimum-prediction-error}
+min_pred <- pred_error %>% 
+  filter(Type == "test") %>% 
+  group_by(Response, Method, Type) %>% 
+  summarize(Component = Component[which.min(Error)],
+            Error = min(Error)) %>% 
+  mutate(label = paste0(round(Error, 2), " (", Component, ")")) %>% 
+  group_by(Response) %>% 
+  mutate(Color = ifelse(Error == min(Error), "red", "#484848"))
+```
+```{r}
+mmin_err <- min_pred %>% filter(Error == min(Error))
+```
+
+```{r ex1-prediction-error, fig.asp = 0.6, fig.cap = "Prediction Error of different prediction methods using different number of components.", fig.pos="!htb"}
+ggplot(pred_error, aes(Component, Error, color = Type)) +
+  geom_line(aes(group = Type)) +
+  geom_point(size = rel(0.5)) +
+  facet_grid(Response ~ Method, scales = 'free') +
+  scale_x_continuous(breaks = seq(0, NCOMP, 5)) +
+  theme(legend.position = "bottom") +
+  labs(x = "Number of Components",
+       y = "Prediction Error (RMSEP)",
+       color = NULL,
+       title = "Prediction Error per Response",
+       subtitle = "For each prediction method") +
+  scale_color_discrete(labels = stringr::str_to_title) +
+  geom_text(aes(label = paste0("Min RMSEP\n", label)), 
+            data = min_pred,
+            color = min_pred$Color,
+            x = Inf, hjust = 1, 
+            y = Inf, vjust = 1,
+            family = "mono",
+            size = rel(3))
+```
+
+Using a range of components from 1 to `r NCOMP`, regression models were fitted using each of the methods. The fitted models were used to predict the test observation, and the root mean squared error of prediction (RMSEP) was calculated. Figure \@ref(fig:ex1-prediction-error) shows that `r mmin_err[['Method']][1]` obtained a minimum prediction error of `r mmin_err[['Error']][1]` using `r mmin_err[['Component']][1]` components in the case of response `r mmin_err[['Response']][1]`, while `r mmin_err[['Method']][2]` obtained a minimum prediction error of `r mmin_err[['Error']][2]` using `r mmin_err[['Component']][2]` components in the case of response `r mmin_err[['Response']][2]`. However, the figure also shows that both envelope methods have reached to almost minimum prediction error in fewer number of components. This pattern is also visible in the simulation results (Figure \@ref(fig:comp-eff-plots)). 
+
+## Example-2: NIR spectra of biscuit dough
+
+The dataset consists of 700 wavelengths of NIR spectra (1100–2498 nm in steps of 2 nm) that were used as predictor variables. There are four response variables corresponding to the yield percentages of (a) fat, (b) sucrose, (c) flour and (d) water. The measurements were taken from 40 training observation of biscuit dough. A separate set of 32 samples created and measured on different occasions were used as test observations. The dataset is borrowed from @indahl2005twist where further information can be obtained.
+
+```{r ex2-source-script}
+commandArgs <- function(...) c("NIR_Dough", 15, 2)
+source("scripts/06-example.r")
+```
+
+(ref:ex2-relcomp-plot) (Left) Bar represents the eigenvalues corresponding to NIR Spectra. The points and line are the covariances between response and the principal components of NIR Spectra. All the values are normalized to scale from 0 to 1. (Middle) Cumulative sum of eigenvalues corresponding to predictors. (Right) Cumulative sum of eigenvalues corresponding to responses.
+
+
+```{r ex2-cumulative-eigenvalues, fig.asp = 0.4, fig.cap = "(ref:ex2-relcomp-plot)", fig.width=8}
+relcomp_plot <- ex_plot_relcomp(relcomp_df, ncomp = NCOMP) +
+  labs(x = NULL, title = NULL, subtitle = NULL, color = NULL) +
+  theme(legend.position = c(0.65, 0.8)) +
+  guides(color = guide_legend(nrow = 2))
+plt_eigen <- function(data) {
+  data %>% 
+    ggplot(aes(x = ncomp, y = var_explained)) +
+    geom_line() +
+    geom_point(shape = 21, fill = "#efefef") +
+    facet_grid(rows = vars(test_train),
+               cols = vars(xy)) +
+    labs(x = NULL, y = "Cummulative Eigenvalues") +
+    scale_x_continuous(breaks = scales::pretty_breaks(n = 4))
+}
+plts <- eigen_df %>% 
+  group_by(xy) %>% 
+  group_split(keep = TRUE) %>% 
+  map(plt_eigen)
+plts[[2]] <- plts[[2]] + labs(y = NULL)
+plts <- append(list(relcomp_plot), plts)
+plts <- append(plts, list(
+  nrow = 1,
+  widths = c(3, 3, 2),
+  bottom = "Number of Components"
+))
+plts[1:2] <- map(plts[1:2], function(p) {
+  p + theme(strip.background.y = element_blank(),
+        strip.text.y = element_blank()) +
+    expand_limits(x = 0)
+})
+plt_grobs <- do.call(gridExtra::arrangeGrob, plts)
+grid::grid.newpage()
+grid::grid.draw(plt_grobs)
+```
+
+```{r}
+ex2_design <- design_chr %>% rowid_to_column("Design") %>% 
+  filter(p == 250, 
+         relpos == "1, 2, 3, 4", 
+         gamma == 0.9, 
+         eta == 1.2) %>% 
+  pluck("Design")
+```
+
+Figure \@ref(fig:ex2-cumulative-eigenvalues) (left) shows that the first predictor component has the largest variance and also has large covariance with all response variables. The second component, however, has larger variance (middle) than the succeeding components but has a small covariance with all the responses, which indicates that the component is less relevant for any of the responses. In addition, two response components have explained most of the variation in response variables (right). This structure is `r if(ex1_design == ex2_design) "also"` somewhat similar to Design `r ex2_design`, although it is uncertain whether the dimension of the relevant space in the response matrix is larger than one.
+
+
+```{r ex2-minimum-prediction-error}
+min_pred <- pred_error %>% 
+  filter(Type == "test") %>% 
+  group_by(Response, Method, Type) %>% 
+  summarize(Component = Component[which.min(Error)],
+            Error = min(Error)) %>% 
+  mutate(label = paste0(round(Error, 2), " (", Component, ")")) %>% 
+  group_by(Response) %>% 
+  mutate(Color = ifelse(Error == min(Error), "red", "#484848"))
+```
+```{r}
+mmin_err <- min_pred %>% filter(Error == min(Error))
+```
+
+```{r ex2-prediction-error, fig.asp = 0.8, fig.cap = "Prediction Error of different prediction methods using different number of components.", fig.pos="!htb"}
+ggplot(pred_error, aes(Component, Error, color = Type)) +
+  geom_line(aes(group = Type)) +
+  geom_point(size = rel(0.5)) +
+  facet_grid(Response ~ Method, scales = 'free') +
+  scale_x_continuous(breaks = seq(0, NCOMP, 5)) +
+  theme(legend.position = "bottom") +
+  labs(x = "Number of Components",
+       y = "Prediction Error (RMSEP)",
+       color = NULL,
+       title = "Prediction Error per Response",
+       subtitle = "For each prediction method") +
+  scale_color_discrete(labels = stringr::str_to_title) +
+  geom_text(aes(label = paste0("Min RMSEP\n", label)), 
+            data = min_pred,
+            color = min_pred$Color,
+            x = Inf, hjust = 1, 
+            y = Inf, vjust = 1,
+            family = "mono",
+            size = rel(3))
+```
+
+Figure \@ref(fig:ex2-prediction-error) (corresponding to Figure \@ref(fig:ex1-prediction-error)) shows the root mean squared error for both test and train prediction of the biscuit dough data. Here four different methods have minimum test prediction error for the four responses. As the structure of the data is similar to that of the first example, the pattern in the prediction is also similar for all methods.
+
+The prediction performance on the test data of the envelope methods appears to be more stable compared to the PCR and PLS methods. Furthermore, the envelope methods achieve good performance generally using fewer components, which is in accordance with Figure \@ref(fig:comp-pca-hist-mthd-gamma-relpos).
+
+<!--chapter:end:Includes/06-Examples.Rmd-->
+
+# Discussions and Conclusion
+
+Analysis using both simulated data and real data has shown that the envelope methods are more stable, less influenced by `relpos` and `gamma` and in general, performed better than PCR and PLS methods. These methods are also found to be less dependent on the number of components.
+
+Since the facet in the Figures \@ref(fig:pred-pca-hist-mthd-gamma-relpos) and \@ref(fig:comp-pca-hist-mthd-gamma-relpos) have their own scales, despite having some large prediction errors seen at the right tail, envelope methods still have a smaller prediction error and have used a fewer number of components than the other methods. 
+
+The envelope methods may have this problem of being caught in a local optimum of the objective function. If these cases of sub-optimal convergence were identified and rerun to obtain better convergence, the envelope results may have become even better. Particularly in the case of the simultaneous envelope, since users can specify the number of dimension for the response envelope, the method can leverage the relevant space of response while PCR, PLS and Xenv are constrained to play only on predictor space.
+
+Furthermore, we have fixed the coefficient of determination ($R^2$) as a constant throughout all the designs. Initial simulations (not shown) indicated that low $R^2$ affects all methods in a similar manner and that the MANOVA is highly dominated by $R^2$. Keeping the value of $R^2$ fixed has allowed us to analyze other factors properly.
+
+Two clear comments can be made about the effect of correlation of response on the prediction methods. The highly correlated response has shown the highest prediction error in general and the effect is most distinct in envelope methods. Since the envelope methods identify the relevant space as the span of relevant eigenvectors, the methods are able to obtain the minimum average prediction error by using a lesser number of components for all levels of `eta`.
+
+To our knowledge, the effect of correlation in the response on PCR and PLS methods has been explored only to a limited extent. In this regards, it is interesting to see that these methods have applied a large number of components and returned a larger prediction error than envelope methods in the case of highly correlated responses. To fully understand the effect of `eta`, it is necessary to study the estimation performance of these methods with different numbers of components.
+
+In addition, since using principal components or actual variables as predictors in envelope methods has shown similar results, we have used principal components that have explained 97.5% of the variation, as mentioned previously, in the cases of envelope methods for the designs where $p>n$. Using 97.5% is slightly arbitrary here, but for the chosen simulation designs this proportion captured a fair amount of variations in predictor variables and also reduce the dimension significantly while enabling us to use envelope methods in all settings. The analyst should choose this number to balance the explained amount of variation to the number of components which is practical for model fitting using the envelope model. The methodology used to adapt envelopes to settings in which $p>n$ is in fact the same as that used by PLS: reduce by principal components, run the method, and then back transform to the original scale. The minor relative impact of $p$ shown in Figure \@ref(fig:manova-plot) suggests that this adaptation method is useful.
+
+The results from this study will help researchers to understand these methods for their performance in various linear model data and encourage them to use newly developed methods such as the envelopes. Since this study has focused entirely on prediction performance, further analysis of the estimative properties of these methods is required. A study of estimation error and the performance of methods on the non-optimal number of components can give a deeper understanding of these methods.
+
+A shiny application [@shiny] is available at [http://therimalaya.shinyapps.io/Comparison](http://therimalaya.shinyapps.io/Comparison) where all the results related to this study can be visualized. In addition, a GitHub repository at [https://github.com/therimalaya/03-prediction-comparison](https://github.com/therimalaya/03-prediction-comparison) can be used to reproduce this study.
+
+# Acknowledgment
+We are grateful to Inge Helland for his inputs on this paper throughout the period. His guidance on the envelope models and his review of the paper helped us greatly. Our gratitude also goes to thank Kristian Lillan, Ulf Indahl, Tormod Næs, Ingrid Måge and the team for providing the data for analysis. We are also thankful to the reviewers for their comments which helped us to improve this paper.
+
+<!--chapter:end:Includes/07-DiscussionConclusion.Rmd-->
+
+`r if (knitr:::is_html_output()) '# References {-}'`
+<!-- # References {-} -->
+
+```{r include=FALSE, eval = FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown', 'tidyverse', 'simrel'
+), 'packages.bib')
+```
+
+<div id="refs"></div>
+
+
+<!--chapter:end:Includes/08-References.Rmd-->
+
+<!-- `r if (knitr:::is_html_output()) '# References {-}'` -->
+
+# (APPENDIX) Appendix A {-}
+
+`r if (knitr::is_html_output()) '# Shiny Application' `
+
+<embed src="http://therimalaya.shinyapps.io/Comparison" height="900px" width="100%">
+
+<script>
+  $("document").ready(function(){
+    $("#shiny-application").parents('.page-inner').css("max-width", "100%");
+    $("#shiny-application>h1:first").hide();
+  })
+</script>
+
+     
+`r if (knitr::is_html_output()) '# Reproduce 
+This document along with PDF, EPUB and shiny application can be reproduced using
+Docker.'`
+
+<!--chapter:end:Includes/09-Appendix.Rmd-->
+

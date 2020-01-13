@@ -5,14 +5,14 @@ output_dir: docs
 clean: [packages.bib, bookdown.bbl]
 rmd_files: [
   "index.Rmd", 
-  "includes/02-SimulationModel.Rmd",
-  "includes/03-ExperimentalDesign.Rmd",
-  "includes/04-Exploration.Rmd",
-  "includes/05-Analysis.Rmd",
-  "includes/06-Examples.Rmd",
-  "includes/07-DiscussionConclusion.Rmd",
-  "includes/08-References.Rmd",
-  "includes/09-Appendix.Rmd",
+  "Includes/02-SimulationModel.Rmd",
+  "Includes/03-ExperimentalDesign.Rmd",
+  "Includes/04-Exploration.Rmd",
+  "Includes/05-Analysis.Rmd",
+  "Includes/06-Examples.Rmd",
+  "Includes/07-DiscussionConclusion.Rmd",
+  "Includes/08-References.Rmd",
+  "Includes/09-Appendix.Rmd",
   ]
 language:
   label:
